@@ -5,35 +5,66 @@ import EditOrg from './Editorg'; // Import your Edit component
 
 const Org = () => {
   const [data, setData] = useState([]);
-  const [editingRow, setEditingRow] = useState(null); // State to keep track of the row being edited
+const [editingRow, setEditingRow] = useState(null);
+const [listData, setListData] = useState([]);
+
+useEffect(() => {
+  const abortController = new AbortController();
+  
+  fetch(`https://hmsapi.appxes-erp.in/Organisation/GetOrganisationbycode?OrganisationId=1`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    signal: abortController.signal,
+  })
+    .then(result => result.json())
+    .then(data => {
+      setData(data.Data);
+    })
+    .catch(err => console.log(err));
+
+  return () => {
+    abortController.abort();
+  };
+}, []);
+
+// Separate useEffect to update listData after data has been fetched
+useEffect(() => {
+  if (data.length > 0) {
+    setListData(data.map(el => ({
+      Company_Name: el.Company_Name,
+      GST_NO: el.GST_NO,
+      Address: `${el.Address_Line1} ${el.Address_Line2} ${el.Address_Line3}`,
+      Country: `${el.Country} ${el.State} ${el.PostalCode}`,
+      Email: el.Email_Address,
+      Phone: el.Phone_No
+    })));
+  }
+}, [data]); // This effect runs whenever 'data' is updated
 
   useEffect(() => {
-    const abortController = new AbortController();
-    
-    fetch(`${import.meta.env.VITE_URL}/dashboards/organisation/`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      signal: abortController.signal,
-    })
-      .then(result => result.json())
-      .then(data => setData(data))
-      .catch(err => console.log(err));
-
-    return () => {
-      abortController.abort();
-    };
+    console.log(listData);
   }, []);
 
+//   [
+//     {
+//         "OrgId": 2,
+//         "ORG_Name": "AS ENTERPRISE EDITED",
+//         "BusinessRegNo": "20230212",
+//         "Address": "33, 1ST FLOOR T NAGAR CHENNAI SINGAPORE 600001"
+//     }
+// ]
 
   const handleEdit = (row) => {
+    console.log(row);
+    
     setEditingRow(row); // Set the row to be edited
   };
 
   const handleCancelEdit = () => {
     setEditingRow(null); // Cancel edit and return to view mode
-    setEditData(null); // Clear the edit data
+    // setEditData(null); 
   };
 
   return (
@@ -56,7 +87,7 @@ const Org = () => {
                       />
                     ) : (
                       <ResponsiveDataTable 
-                        data={data} 
+                        data={listData} 
                         onEdit={handleEdit} // Pass the handleEdit function to ResponsiveDataTable
                       />
                     )}

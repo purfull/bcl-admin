@@ -3,7 +3,7 @@ import { Buffer } from 'buffer';
 import "./org.css";
 import noImage from '../../../assets/images/no-images/no-image.png';
 
-const EditOrg = ({ onCancel }) => {
+const EditOrg = ({ row, onCancel }) => {
   const [editData, setEditData] = useState({});
   const [country, setCountry] = useState([]);
   const [taxName, setTaxName] = useState([]);
@@ -150,7 +150,7 @@ const EditOrg = ({ onCancel }) => {
             </div>
           </div> */}
           <div className="flex items-center justify-start">
-            <label htmlFor="ORG_Name" className="w-[30%] font-medium text-black">Organization Name</label>
+            <label htmlFor="ORG_Name" className="w-[30%] font-medium text-black">Company Name</label>
             <div className="w-[70%]">
               <input type="text" className="form-control" id="ORG_Name" value={editData.ORG_Name || ''} onChange={handleChange} />
             </div>
@@ -194,6 +194,13 @@ const EditOrg = ({ onCancel }) => {
               </select>
             </div>
           </div>
+          
+          <div className="flex items-center justify-start">
+            <label htmlFor="Phone" className="w-[30%] font-medium text-black">State</label>
+            <div className="w-[70%]">
+              <input type="text" className="form-control" id="Phone" value={editData.Phone || ''} onChange={handleChange} />
+            </div>
+          </div>
           <div className="flex items-center justify-start">
             <label htmlFor="PostalCode" className="w-[30%] font-medium text-black">Postal Code</label>
             <div className="w-[70%] flex">
@@ -213,12 +220,6 @@ const EditOrg = ({ onCancel }) => {
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="Mobile" className="w-[30%] font-medium text-black">Mobile</label>
-            <div className="w-[70%]">
-              <input type="text" className="form-control" id="Mobile" value={editData.Mobile || ''} onChange={handleChange} />
-            </div>
-          </div>
-          <div className="flex items-center justify-start">
             <label htmlFor="Fax" className="w-[30%] font-medium text-black">Fax</label>
             <div className="w-[70%]">
               <input type="text" className="form-control" id="Fax" value={editData.Fax || ''} onChange={handleChange} />
@@ -231,17 +232,17 @@ const EditOrg = ({ onCancel }) => {
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="BusinessRegNo" className="w-[30%] font-medium text-black">Business Reg No</label>
+            <label htmlFor="BusinessRegNo" className="w-[30%] font-medium text-black">Currency</label>
             <div className="w-[70%]">
               <input type="text" className="form-control" id="BusinessRegNo" value={editData.BusinessRegNo || ''} onChange={handleChange} />
             </div>
           </div>
-          <div className="flex items-center justify-start">
+          {/* <div className="flex items-center justify-start">
             <label htmlFor="TaxRegNo" className="w-[30%] font-medium text-black">Tax Reg No</label>
             <div className="w-[70%]">
               <input type="text" className="form-control" id="TaxRegNo" value={editData.TaxRegNo || ''} onChange={handleChange} />
             </div>
-          </div>
+          </div> */}
           <div className="flex items-center justify-start">
             <label htmlFor="TaxName" className="w-[30%] font-medium text-black">Tax Name</label>
             <div className="w-[70%]">
@@ -263,7 +264,27 @@ const EditOrg = ({ onCancel }) => {
               </select>
             </div>
           </div>
+        <div className="flex items-center justify-start">
+          <label htmlFor="ORG_Name" className="w-[30%] font-medium text-black">Cp Name</label>
+          <div className="w-[70%]">
+            <input type="text" className="form-control" id="ORG_Name" value={editData.ORG_Name || ''} onChange={handleChange} />
+          </div>
         </div>
+        
+        <div className="flex items-center justify-start">
+            <label htmlFor="Phone" className="w-[30%] font-medium text-black">Cp Number</label>
+            <div className="w-[70%]">
+              <input type="text" className="form-control" id="Phone" value={editData.Phone || ''} onChange={handleChange} />
+            </div>
+          </div>
+        <div className="flex items-center justify-start">
+            <label htmlFor="Mail" className="w-[30%] font-medium text-black">Cp Email</label>
+            <div className="w-[70%]">
+              <input type="email" className="form-control" id="Mail" value={editData.Mail || ''} onChange={handleChange} />
+            </div>
+          </div>
+        </div>
+        
         <div className="w-full grid grid-cols-2 gap-4 py-[8vh]">
           <div className="flex items-center justify-start">
             <label htmlFor="Logo" className="w-[30%] font-medium text-black">Logo</label>
@@ -284,7 +305,7 @@ const EditOrg = ({ onCancel }) => {
               />
             </div>
           </div>
-          <div className="flex items-center justify-start">
+          {/* <div className="flex items-center justify-start">
             <label htmlFor="QR" className="w-[30%] font-medium text-black">QR</label>
             <div className="w-[10vw]">
               <img
@@ -302,9 +323,9 @@ const EditOrg = ({ onCancel }) => {
                 onChange={handleQrFileChange}
               />
             </div>
-          </div>
+          </div> */}
         </div>
-        <div className="w-1/2 flex justify-between">
+        {/* <div className="w-1/2 flex justify-between">
           <div className="flex items-center justify-start">
             <label htmlFor="ERP" className="font-medium text-black mr-[1vw]">ERP</label>
             <label className="switch">
@@ -333,7 +354,7 @@ const EditOrg = ({ onCancel }) => {
               <span className="slider round"></span>
             </label>
           </div>
-        </div>
+        </div> */}
         <div className="fixed bottom-0 right-0 bg-white w-full py-4 px-6 flex justify-end mt-8">
           <button type="button" onClick={onCancel} className="ti-btn ti-btn-outline-primary !px-[20px] !py-[2px] !mr-[2vw] !text-[18px]">
             Back
