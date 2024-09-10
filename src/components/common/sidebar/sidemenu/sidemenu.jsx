@@ -49,11 +49,11 @@ const combinedMenu = [
     MenuId: 1,
     MenuName: 'Masters',
     subMenu: [
-      'organisation',
-      'tax',
-      'bank',
-      'paymode',
-      'country'
+      'Organisation',
+      'Tax',
+      'Bank',
+      'Paymode',
+      'Country'
     ]
   }
 ];

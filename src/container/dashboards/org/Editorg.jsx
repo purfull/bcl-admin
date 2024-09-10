@@ -524,6 +524,7 @@ const EditOrg = ({ row, onCancel }) => {
                 type="date"
                 className="form-control"
                 id="expiryDate"
+                min={editCertificateData.issuingDate}
                 value={editCertificateData.expiryDate}
                 onChange={handleCertificateChange}
               />

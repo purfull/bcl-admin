@@ -101,10 +101,10 @@ const Branch = () => {
   useEffect(() => {
     if (data.length > 0) {
       setListData(data.map(el => ({
-        TaxID: el.TaxID,
-        TaxName: el.TaxName,
-        CountryCode: el.CountryCode,
-        TaxRate: el.TaxRate
+        // "Tax ID": el.TaxID,
+        "Tax Name": el.TaxName,
+        "Tax Type": el.TaxType,
+        "Tax Rate": el.TaxRate
       })));
     }
   }, [data]);

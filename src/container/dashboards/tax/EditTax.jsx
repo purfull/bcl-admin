@@ -192,19 +192,32 @@ const EditBranch = ({row,  onCancel }) => {
           <div className="flex items-center justify-start">
             <label htmlFor="ORG_Name" className="w-[30%] font-medium ">Tax Rate</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="taxRate" defaultValue={editData.TaxRate || 0} onChange={handleChange} />
+              <input type="number" className="form-control" id="taxRate" defaultValue={editData.TaxRate || 0} onChange={handleChange} />
             </div>
           </div>
           <div className="flex items-center justify-start">
             <label htmlFor="ORG_Name" className="w-[30%] font-medium ">Tax Application Type</label>
-            <div className="w-[70%]">
+            {/* <div className="w-[70%]">
               <input type="text" className="form-control" id="taxAppType" defaultValue={editData.TaxApplicationType || ''} onChange={handleChange} />
+            </div> */}
+            <div className="w-[70%]">
+              <select
+                className="form-control"
+                id="TaxName"
+                // value={}
+                // onChange={handleTaxChange}
+              >
+                
+                <option value="">Inclusive</option>
+                <option value="">Exclusive</option>
+                <option value="">Zero</option>
+              </select>
             </div>
           </div>
           <div className="flex items-center justify-start">
             <label htmlFor="ORG_Name" className="w-[30%] font-medium ">Effective Date</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="taxEffDate" defaultValue={editData.EffectiveDate || ''} onChange={handleChange} />
+              <input type="date" className="form-control" id="taxEffDate" defaultValue={editData.EffectiveDate || ''} onChange={handleChange} />
             </div>
           </div>
           <div className="flex items-center justify-start">
@@ -217,7 +230,7 @@ const EditBranch = ({row,  onCancel }) => {
         </div>
         
         
-        <div className="w-full sm:w-[70%] flex justify-between my-[4vh]">
+        <div className="w-full sm:w-[50%] flex justify-between my-[4vh]">
           <div className="flex items-center justify-start">
             <label htmlFor="ERP" className="font-medium  mr-[1vw]">Is Active</label>
             <label className="switch">
@@ -225,13 +238,13 @@ const EditBranch = ({row,  onCancel }) => {
               <span className="slider round"></span>
             </label>
           </div>
-          <div className="flex items-center justify-start">
+          {/* <div className="flex items-center justify-start">
             <label htmlFor="POS" className="font-medium  mr-[1vw]">Is Product wise Tax Applicable</label>
             <label className="switch">
               <input type="checkbox" id="PTA" checked={editData.IsProductWiseTaxApplicable} onChange={handleChange} />
               <span className="slider round"></span>
             </label>
-          </div>
+          </div> */}
           <div className="flex items-center justify-start">
             <label htmlFor="B2B" className="font-medium  mr-[1vw]">Is State wise Tax Applicable</label>
             <label className="switch">
@@ -261,7 +274,7 @@ const EditBranch = ({row,  onCancel }) => {
             </div>
           </div> */}
           <div className="flex items-center justify-start">
-            <label htmlFor="ORG_Name" className="w-[30%] font-medium ">State Name</label>
+            <label htmlFor="ORG_Name" className="w-[30%] font-medium ">State Tax Name</label>
             <div className="w-[70%]">
             <input type="text" className="form-control" id="StateName" defaultValue={addTaxData.StateName} onChange={handleStateTaxChange} />
             </div>
@@ -269,7 +282,7 @@ const EditBranch = ({row,  onCancel }) => {
           <div className="flex items-center justify-start">
             <label htmlFor="ORG_Name" className="w-[30%] font-medium ">Tax Percentage</label>
             <div className="w-[70%]">
-            <input type="number" className="form-control" id="TaxPercentage" defaultValue={addTaxData.TaxPercentage} onChange={handleStateTaxChange} />
+            <input type="number" className="form-control" id="TaxPercentage" defaultValue={addTaxData.TaxPercentage} max={editData.TaxRate} onChange={handleStateTaxChange} />
             </div>
           </div>
           <div className="flex items-center justify-start">
@@ -326,13 +339,6 @@ const EditBranch = ({row,  onCancel }) => {
               <span className="slider round"></span>
             </label>
           </div>
-          {/* <div className="flex items-center justify-start">
-            <label htmlFor="B2C" className="font-medium  mr-[1vw]">B2C</label>
-            <label className="switch">
-              <input type="checkbox" id="B2C" checked={editData.B2C || false} onChange={handleChange} />
-              <span className="slider round"></span>
-            </label>
-          </div> */}
         </div>
         
         <div className="fixed bottom-0 right-0 bg-white w-full py-4 px-6 flex justify-end mt-8">
