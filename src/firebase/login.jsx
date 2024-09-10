@@ -20,31 +20,31 @@ const Login = () => {
     
     const currentYear = new Date().getFullYear();
 
-    useEffect(() => {
-        const abortController = new AbortController();
+    // useEffect(() => {
+    //     const abortController = new AbortController();
 
-        fetch(`${import.meta.env.VITE_URL}/org_name`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            signal: abortController.signal,
-            body: JSON.stringify({ org_selection: formData.org_selection })
-        })
-            .then(result => result.json())
-            .then(data => {
-                setorgData(data);
-            })
-            .catch(err => console.log(err));
+    //     fetch(`${import.meta.env.VITE_URL}/org_name`, {
+    //         method: 'POST',
+    //         headers: {
+    //           'Content-Type': 'application/json',
+    //         },
+    //         signal: abortController.signal,
+    //         body: JSON.stringify({ org_selection: formData.org_selection })
+    //     })
+    //         .then(result => result.json())
+    //         .then(data => {
+    //             setorgData(data);
+    //         })
+    //         .catch(err => console.log(err));
 
-        return () => {
-            abortController.abort();
-        };
-    }, [formData.org_selection]);
+    //     return () => {
+    //         abortController.abort();
+    //     };
+    // }, [formData.org_selection]);
 
     useEffect(() => {
         if (isLoggedIn) {
-            const path = `${import.meta.env.BASE_URL}dashboards/ecommerce/`;
+            const path = `dashboards/ecommerce/`;
             navigate(path);
         }
     }, [isLoggedIn, navigate]);
@@ -58,45 +58,46 @@ const Login = () => {
         setBranchSelection(e.target.value);
     };
 
-    useEffect(() => {
-        if (formData.org_selection) {
-            fetch(`${import.meta.env.VITE_URL}/branch`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ org_selection: formData.org_selection })
-            })
-                .then(res => res.json())
-                .then(data => setBranchData(data))
-                .catch(err => console.log(err));
-        }
-    }, [formData.org_selection]);
+    // useEffect(() => {
+    //     if (formData.org_selection) {
+    //         fetch(`${import.meta.env.VITE_URL}/branch`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({ org_selection: formData.org_selection })
+    //         })
+    //             .then(res => res.json())
+    //             .then(data => setBranchData(data))
+    //             .catch(err => console.log(err));
+    //     }
+    // }, [formData.org_selection]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const response = await fetch(`${import.meta.env.VITE_URL}/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            });
-            const data = await response.json();
-            // console.log(data); 
+        setIsLoggedIn(true);
+        // try {
+        //     const response = await fetch(`${import.meta.env.VITE_URL}/login`, {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify(formData)
+        //     });
+        //     const data = await response.json();
+        //     // console.log(data); 
 
-            if (data.message === "login successful") {
-                setIsLoggedIn(true);
-                if (data.role === "admin") {
-                    setIsAdmin(true);
-                }
-            } else {
-                console.error('Login failed:', data.message); // Log the error message from the response
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
+        //     if (data.message === "login successful") {
+        //         setIsLoggedIn(true);
+        //         if (data.role === "admin") {
+        //             setIsAdmin(true);
+        //         }
+        //     } else {
+        //         console.error('Login failed:', data.message); // Log the error message from the response
+        //     }
+        // } catch (error) {
+        //     console.error('Error:', error);
+        // }
     };
 
     return (
@@ -108,13 +109,13 @@ const Login = () => {
                 fontFamily: 'sans-serif'
             }}>
 
-            <div className="w-[90%] sm:w-[60%] lg:w-[25%] h-[80vh] sm:h-[80vh] lg:h-[75vh] bg-white  lg:absolute right-[12%] top-[5%] p-4 flex flex-col justify-evenly items-center rounded-xl">
+            <div className="w-[90%] sm:w-[60%] lg:w-[25%] h-[80vh] sm:h-[80vh] lg:h-[55vh] bg-white lg:absolute right-[12%] top-[15%] p-4 flex flex-col justify-evenly items-center rounded-xl">
 
                 <img src={logo} alt="logo" />
                 <span className="text-lg font-bold">Enterprise Resource Planning</span>
                 <span className="text-sm">Bridging Technology and Expertise</span>
 
-                <div className="w-[90%] h-[65%] flex flex-col justify-between ">
+                <div className="w-[90%] h-[85%] flex flex-col justify-center ">
                     <form onSubmit={handleSubmit}>
                         <input
                             className="login-input w-full rounded-lg"
@@ -132,7 +133,7 @@ const Login = () => {
                             value={formData.password}
                             onChange={handleChange}
                         />
-                        <select
+                        {/* <select
                             className="login-input text-sm w-full rounded-lg"
                             name="org_selection"
                             value={formData.org_selection}
@@ -165,7 +166,7 @@ const Login = () => {
                             ) : (
                                 <option value="" disabled>No branch Available</option>
                             )}
-                        </select>
+                        </select> */}
                         <button className="login-btn w-full text-sm mt-[20px]" type="submit">Login</button>
                     </form>
                 </div>

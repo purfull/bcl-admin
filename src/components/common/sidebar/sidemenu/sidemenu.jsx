@@ -8,35 +8,56 @@
 // .catch(err => console.log(err))
 
 // console.log(menu);
-let data
-try {
-  const response = await fetch('http://localhost:3000/login', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json'
-      },
-  });
-  data = await response.json();
+
+
+
+// menu start frome here
+
+
+// let data
+// try {
+//   const response = await fetch('http://localhost:3000/login', {
+//       method: 'POST',
+//       headers: {
+//           'Content-Type': 'application/json'
+//       },
+//   });
+//   data = await response.json();
 
   
-} catch (error) {
-  console.error('Error:', error);
-}
+// } catch (error) {
+//   console.error('Error:', error);
+// }
 
 // console.log(data.submenu); 
-const menu = data.menu
-const subMenu = data.submenu
+// const menu = data.menu
+// const subMenu = data.submenu
 
-const combinedMenu = menu.map(menuItem => {
-  const subMenuItems = subMenu
-    .filter(subMenu => subMenu.MenuId === menuItem.MenuId)
-    .map(subMenu => subMenu.SubMenuName);
+// const combinedMenu = menu.map(menuItem => {
+//   const subMenuItems = subMenu
+//     .filter(subMenu => subMenu.MenuId === menuItem.MenuId)
+//     .map(subMenu => subMenu.SubMenuName);
   
-  return {
-    ...menuItem,
-    subMenu: subMenuItems
-  };
-});
+//   return {
+//     ...menuItem,
+//     subMenu: subMenuItems
+//   };
+// });
+
+const combinedMenu = [
+  {
+    MenuId: 1,
+    MenuName: 'Masters',
+    subMenu: [
+      'organisation',
+      'tax',
+      'bank',
+      'paymode',
+      'country'
+    ]
+  }
+];
+
 console.log(combinedMenu);
 
 

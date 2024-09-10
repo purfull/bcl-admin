@@ -124,7 +124,7 @@ export const ResponsiveBranchDataTable = ({ data = [], onEdit, onDelete, active 
           </div>
           <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
           <div className="">
-            <button className='px-[1vw] py-[1.5vh] bg-violet-700 text-white ml-[1vw] rounded-md ' onClick={() => {onEdit({ newBranch: true }) }} >+ NEW TAX</button>
+            <button className='px-[1vw] py-[1.5vh] bg-violet-700 text-white ml-[1vw] rounded-md ' onClick={() => {onEdit({ newBranch: true }) }} >+ NEW BANK</button>
           </div>
         </div>
         <div className="table-responsive table-bordered text-center">

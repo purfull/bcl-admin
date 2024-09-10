@@ -12,6 +12,7 @@ const Branch = () => {
   const [isAlertOpen, setIsAlertOpen] = useState(false); // State to control alert visibility
   const [rowToDelete, setRowToDelete] = useState(null); // State to keep track of the row to delete
   const [rowToAdd, setRowToAdd] = useState(null);
+  const [listData, setListData] = useState([]);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -91,10 +92,22 @@ const Branch = () => {
   };
   
 
+
   const handleCloseAlert = () => {
     setIsAlertOpen(false);
     setRowToDelete(null);
   };
+
+  useEffect(() => {
+    if (data.length > 0) {
+      setListData(data.map(el => ({
+        TaxID: el.TaxID,
+        TaxName: el.TaxName,
+        CountryCode: el.CountryCode,
+        TaxRate: el.TaxRate
+      })));
+    }
+  }, [data]);
 
   return (
     <Fragment>
@@ -129,7 +142,7 @@ const Branch = () => {
                     />
                   ) : (
                     <ResponsiveBranchDataTable
-                      data={data}
+                      data={listData}
                       onEdit={handleEdit}
                       onDelete={handleDeleteClick} // Pass the delete handler
                       // onAdd={handleAddClick}

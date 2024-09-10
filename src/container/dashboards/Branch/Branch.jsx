@@ -34,6 +34,7 @@ const Branch = () => {
 
   const handleEdit = (row) => {
     setEditingRow(row); // Set the row to be edited
+    
   };
 
   const handleCancelEdit = () => {

@@ -57,9 +57,12 @@ useEffect(() => {
 // ]
 
   const handleEdit = (row) => {
-    console.log(row);
+    const rowData = data.filter(el => {
+      return el.Company_Name === row.Company_Name
+    })
+    console.log("editing row",rowData);
     
-    setEditingRow(row); // Set the row to be edited
+    setEditingRow(rowData); // Set the row to be edited
   };
 
   const handleCancelEdit = () => {
@@ -89,6 +92,7 @@ useEffect(() => {
                       <ResponsiveDataTable 
                         data={listData} 
                         onEdit={handleEdit} // Pass the handleEdit function to ResponsiveDataTable
+                        filters = {true}
                       />
                     )}
                   </div>

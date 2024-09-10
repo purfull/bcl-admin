@@ -65,9 +65,6 @@ export const GlobalFilter = ({ filter, setFilter }) => (
 
 export const ResponsiveBranchDataTable = ({ data = [], onEdit, onDelete, active }) => {
   // Handle null or undefined data
-  useEffect(() => {
-    console.log(data);
-  }, []);
   
 
   // Generate columns and table instance based on props.data
@@ -124,7 +121,7 @@ export const ResponsiveBranchDataTable = ({ data = [], onEdit, onDelete, active 
           </div>
           <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
           <div className="">
-            <button className='px-[1vw] py-[1.5vh] bg-violet-700 text-white ml-[1vw] rounded-md ' onClick={() => {onEdit({ newBranch: true }) }} >+ NEW TAX</button>
+            <button className='px-[1vw] py-[1.5vh] bg-violet-700 text-white ml-[1vw] rounded-md ' onClick={() => {onEdit({ newBranch: true }) }} >+ NEW PAYMODE</button>
           </div>
         </div>
         <div className="table-responsive table-bordered text-center">
