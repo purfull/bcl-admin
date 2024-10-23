@@ -44,7 +44,7 @@ const Login = () => {
 
     useEffect(() => {
         if (isLoggedIn) {
-            const path = `dashboards/ecommerce/`;
+            const path = `/Dashboard`;
             navigate(path);
         }
     }, [isLoggedIn, navigate]);

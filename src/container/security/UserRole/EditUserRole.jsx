@@ -3,7 +3,7 @@ import { Buffer } from 'buffer';
 // import "./org.css";
 import noImage from '../../../assets/images/no-images/no-image.png';
 
-const EditBranch = ({row,  onCancel }) => {
+const EditUserRole = ({row,  onCancel }) => {
   const [editData, setEditData] = useState({});
   const [country, setCountry] = useState([]);
   const [logo, setLogo] = useState(noImage);
@@ -107,23 +107,17 @@ const EditBranch = ({row,  onCancel }) => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4">
           <div className="flex items-center justify-start">
-            <label htmlFor="OrgId" className="w-[30%] font-medium">Bank Code</label>
-            <div className="w-[70%]">
+            <label htmlFor="OrgId" className="w-[10%] font-medium">User Role Code</label>
+            <div className="w-[90%]">
               <input type="text" className="form-control" id="bankCode" defaultValue={editData.BankCode || ''} onChange={handleChange} disabled />
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="ORG_Name" className="w-[30%] font-medium ">Bank Name</label>
-            <div className="w-[70%]">
+            <label htmlFor="ORG_Name" className="w-[10%] font-medium ">User Role Name</label>
+            <div className="w-[90%]">
               <input type="text" className="form-control" id="bankName" defaultValue={editData.BankName || ''} onChange={handleChange} />
-            </div>
-          </div>
-          <div className="flex items-center justify-start">
-            <label htmlFor="ORG_Name" className="w-[30%] font-medium ">Remarks</label>
-            <div className="w-[70%]">
-              <input type="text" className="form-control" id="remarks" defaultValue={editData.Remarks || ''} onChange={handleChange} />
             </div>
           </div>
         </div>
@@ -150,4 +144,4 @@ const EditBranch = ({row,  onCancel }) => {
   );
 };
 
-export default EditBranch;
+export default EditUserRole;

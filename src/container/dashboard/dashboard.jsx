@@ -1,45 +1,45 @@
 import  {  Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Countries, Earning, ProductsOverview, Recentorders } from './ecommercedata';
-import Pageheader from '../../../components/common/pageheader/pageheader';
-import ecommerce35 from "../../../assets/images/ecommerce/png/35.png";
-import face2 from "../../../assets/images/faces/2.jpg";
-import face4 from "../../../assets/images/faces/4.jpg";
-import face10 from "../../../assets/images/faces/10.jpg";
-import face12 from "../../../assets/images/faces/12.jpg";
-import face5 from "../../../assets/images/faces/5.jpg";
-import face6 from "../../../assets/images/faces/6.jpg";
-import face7 from "../../../assets/images/faces/7.jpg";
-import face3 from "../../../assets/images/faces/3.jpg";
-import face9 from "../../../assets/images/faces/9.jpg";
-import face13 from "../../../assets/images/faces/13.jpg";
-import face15 from "../../../assets/images/faces/15.jpg";
-import face16 from "../../../assets/images/faces/16.jpg";
-import face14 from "../../../assets/images/faces/14.jpg";
-import ecommerce1 from "../../../assets/images/ecommerce/png/1.png";
-import ecommerce2 from "../../../assets/images/ecommerce/png/2.png";
-import ecommerce3 from "../../../assets/images/ecommerce/png/3.png";
-import ecommerce4 from "../../../assets/images/ecommerce/png/4.png";
-import ecommerce5 from "../../../assets/images/ecommerce/png/5.png";
-import ecommerce6 from "../../../assets/images/ecommerce/png/6.png";
-import ecommerce7 from "../../../assets/images/ecommerce/png/7.png";
-import ecommerce8 from "../../../assets/images/ecommerce/png/8.png";
-import ecommerce9 from "../../../assets/images/ecommerce/png/9.png";
-import ecommerce10 from "../../../assets/images/ecommerce/png/10.png";
-import ecommerce11 from "../../../assets/images/ecommerce/png/11.png";
-import ecommerce12 from "../../../assets/images/ecommerce/png/12.png";
-import ecommerce13 from "../../../assets/images/ecommerce/png/13.png";
-import ecommerce14 from "../../../assets/images/ecommerce/png/14.png";
-import ecommerce15 from "../../../assets/images/ecommerce/png/15.png";
-import ecommerce36 from "../../../assets/images/ecommerce/png/36.png";
-import ecommerce38 from "../../../assets/images/ecommerce/png/38.png";
-import ecommerce39 from "../../../assets/images/ecommerce/png/39.png";
-import ecommerce40 from "../../../assets/images/ecommerce/png/40.png";
+import { Countries, Earning, ProductsOverview, Recentorders } from './dashboardData';
+import Pageheader from '../../components/common/pageheader/pageheader';
+import ecommerce35 from "../../assets/images/ecommerce/png/35.png";
+import face2 from "../../assets/images/faces/2.jpg";
+import face4 from "../../assets/images/faces/4.jpg";
+import face10 from "../../assets/images/faces/10.jpg";
+import face12 from "../../assets/images/faces/12.jpg";
+import face5 from "../../assets/images/faces/5.jpg";
+import face6 from "../../assets/images/faces/6.jpg";
+import face7 from "../../assets/images/faces/7.jpg";
+import face3 from "../../assets/images/faces/3.jpg";
+import face9 from "../../assets/images/faces/9.jpg";
+import face13 from "../../assets/images/faces/13.jpg";
+import face15 from "../../assets/images/faces/15.jpg";
+import face16 from "../../assets/images/faces/16.jpg";
+import face14 from "../../assets/images/faces/14.jpg";
+import ecommerce1 from "../../assets/images/ecommerce/png/1.png";
+import ecommerce2 from "../../assets/images/ecommerce/png/2.png";
+import ecommerce3 from "../../assets/images/ecommerce/png/3.png";
+import ecommerce4 from "../../assets/images/ecommerce/png/4.png";
+import ecommerce5 from "../../assets/images/ecommerce/png/5.png";
+import ecommerce6 from "../../assets/images/ecommerce/png/6.png";
+import ecommerce7 from "../../assets/images/ecommerce/png/7.png";
+import ecommerce8 from "../../assets/images/ecommerce/png/8.png";
+import ecommerce9 from "../../assets/images/ecommerce/png/9.png";
+import ecommerce10 from "../../assets/images/ecommerce/png/10.png";
+import ecommerce11 from "../../assets/images/ecommerce/png/11.png";
+import ecommerce12 from "../../assets/images/ecommerce/png/12.png";
+import ecommerce13 from "../../assets/images/ecommerce/png/13.png";
+import ecommerce14 from "../../assets/images/ecommerce/png/14.png";
+import ecommerce15 from "../../assets/images/ecommerce/png/15.png";
+import ecommerce36 from "../../assets/images/ecommerce/png/36.png";
+import ecommerce38 from "../../assets/images/ecommerce/png/38.png";
+import ecommerce39 from "../../assets/images/ecommerce/png/39.png";
+import ecommerce40 from "../../assets/images/ecommerce/png/40.png";
 
 
 
 
-const Ecommerce = () => {
+const Dashboard = () => {
     //    for User search function
     const [Data, setData] = useState(ProductsOverview);
 
@@ -76,7 +76,7 @@ const Ecommerce = () => {
                                             </span>
                                         </div>
                                         <div className="xxxl:col-span-9 col-span-8 ps-0">
-                                            <div className="mb-2">Total Sales</div>
+                                            <div className="mb-2">Total Products</div>
                                             <div className="text-[#8c9097] dark:text-white/50 mb-1 text-[0.75rem]">
                                                 <span className="text-defaulttextcolor font-semibold text-[1.25rem] leading-none vertical-bottom">
                                                     14,732
@@ -100,10 +100,10 @@ const Ecommerce = () => {
                                             </span>
                                         </div>
                                         <div className="xxxl:col-span-9 col-span-8 ps-0">
-                                            <div className="mb-2">Total Expenses</div>
+                                            <div className="mb-2">Total Customers</div>
                                             <div className="text-[#8c9097] dark:text-white/50 mb-1 text-[0.75rem]">
                                                 <span className="font-semibold text-[1.25rem] leading-none text-defaulttextcolor vertical-bottom">
-                                                    $28,346.00
+                                                    38,346.
                                                 </span>
                                             </div>
                                             <div>
@@ -162,7 +162,7 @@ const Ecommerce = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="xxl:col-span-6 xl:col-span-6 lg:col-span-6 md:col-span-6 col-span-12">
+                        {/* <div className="xxl:col-span-6 xl:col-span-6 lg:col-span-6 md:col-span-6 col-span-12">
                             <div className="box overflow-hidden">
                                 <div className="ecommerce-sale-image">
                                     <img src={ecommerce35} className="card-img-top" alt="..." />
@@ -227,8 +227,8 @@ const Ecommerce = () => {
                                     </ul>
                                 </div>
                             </div>
-                        </div>
-                        <div className="xl:col-span-12 col-span-12">
+                        </div> */}
+                        {/* <div className="xl:col-span-12 col-span-12">
                             <div className="box">
                                 <div className="box-header justify-between sm:flex block">
                                     <div className="box-title">
@@ -833,7 +833,7 @@ const Ecommerce = () => {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="xxl:col-span-6 col-span-12">
@@ -841,7 +841,7 @@ const Ecommerce = () => {
                         <div className="xl:col-span-12 col-span-12">
                             <div className="box">
                                 <div className="box-header justify-between">
-                                    <div className="box-title">Earnings</div>
+                                    <div className="box-title">Customers</div>
                                     <div className="hs-dropdown ti-dropdown">
                                         <Link to="#" className="text-[0.75rem] px-2 font-normal text-[#8c9097] dark:text-white/50"
                                             aria-expanded="false">
@@ -862,7 +862,7 @@ const Ecommerce = () => {
                                         <div className="xl:col-span-4 lg:col-span-4 md:col-span-4 sm:col-span-4">
                                             <div className="mb-1 earning first-half ms-4">First Half</div>
                                             <div className="mb-0">
-                                                <span className="mt-1 text-[1rem] font-semibold me-2">$51.94k</span>
+                                                <span className="mt-1 text-[1rem] font-semibold me-2">1.94k</span>
                                                 <span className="text-success">
                                                     <span className="badge bg-success/10 text-success !px-1 !py-2 text-[0.625rem]">+ 0.9%</span></span>
                                             </div>
@@ -870,7 +870,7 @@ const Ecommerce = () => {
                                         <div className="xl:col-span-4 lg:col-span-4 md:col-span-4 sm:col-span-4">
                                             <div className="mb-1 earning top-gross ms-4">Top Gross</div>
                                             <div className="mb-0">
-                                                <span className="mt-1 text-[1rem] font-semibold me-2">$18.32k</span>
+                                                <span className="mt-1 text-[1rem] font-semibold me-2">8.32k</span>
                                                 <span className="text-success">
                                                     <span className="badge bg-success/10 text-success !px-1 !py-2 text-[0.625rem]">+ 0.39%</span></span>
                                             </div>
@@ -878,7 +878,7 @@ const Ecommerce = () => {
                                         <div className="xl:col-span-4 lg:col-span-4 md:col-span-4 sm:col-span-4">
                                             <div className="mb-1 earning second-half ms-3">Second Half</div>
                                             <div className="mb-0">
-                                                <span className="mt-1 text-[1rem] font-semibold me-2">$38k</span>
+                                                <span className="mt-1 text-[1rem] font-semibold me-2">13k</span>
                                                 <span className="text-danger">
                                                     <span className="badge bg-danger/10 text-danger !px-1 !py-2 text-[0.625rem]">- 0.15%</span></span>
                                             </div>
@@ -890,7 +890,7 @@ const Ecommerce = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="xl:col-span-12 col-span-12">
+                        {/* <div className="xl:col-span-12 col-span-12">
                             <div className="box custom-card">
                                 <div className="box-header">
                                     <div className="box-title">Top Selling Products</div>
@@ -903,7 +903,6 @@ const Ecommerce = () => {
                                                     <th scope="col" className="text-center">S.no</th>
                                                     <th scope="col" className="text-start">Product Name</th>
                                                     <th scope="col" className="text-start">Category</th>
-                                                    <th scope="col" className="text-start">Stock</th>
                                                     <th scope="col" className="text-start">Total Sales</th>
                                                 </tr>
                                             </thead>
@@ -914,9 +913,8 @@ const Ecommerce = () => {
                                                             <img src={ecommerce36} className="p-2 !rounded-full bg-light" alt="" />
                                                         </span>
                                                     </td>
-                                                    <td>Ethnic School bag for children (24L)</td>
-                                                    <td>Bags</td>
-                                                    <td><span className="badge badge-sm bg-success/10 text-success !font-normal">In Stock</span></td>
+                                                    <td>Microsoft 360 </td>
+                                                    <td>Mocrosoft</td>
                                                     <td>
                                                         <span className="font-semibold">5,093</span>
                                                     </td>
@@ -965,8 +963,8 @@ const Ecommerce = () => {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="xxl:col-span-6 xl:col-span-6 col-span-12">
+                        </div> */}
+                        {/* <div className="xxl:col-span-6 xl:col-span-6 col-span-12">
                             <div className="box">
                                 <div className="box-header justify-between">
                                     <div className="box-title">
@@ -1102,11 +1100,11 @@ const Ecommerce = () => {
                                     </ul>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
-            <div className="grid grid-cols-12 gap-x-6">
+            {/* <div className="grid grid-cols-12 gap-x-6">
                 <div className="xl:col-span-12 col-span-12">
                     <div className="box">
                         <div className="box-header justify-between">
@@ -1209,9 +1207,9 @@ const Ecommerce = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </Fragment>
     );
 }
 
-export default Ecommerce;
+export default Dashboard;

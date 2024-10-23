@@ -4,16 +4,6 @@ import App from './pages/App.jsx'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 // import Crm from './container/dashboards/crm/crm.jsx'
 import Ecommerce from './container/dashboards/ecommerce/ecommerce.jsx'
-// import Crypto from './container/dashboards/crypto/crypto.jsx'
-// import Jobs from './container/dashboards/jobs/jobs.jsx'
-// import Nft from './container/dashboards/nft/nft.jsx'
-// import Sales from './container/dashboards/sales/sales.jsx'
-// import Analytics from './container/dashboards/analytics/analytics.jsx'
-// import Projects from './container/dashboards/projects/projects.jsx'
-// import Hrm from './container/dashboards/hrm/hrm.jsx'
-// import Stocks from './container/dashboards/stocks/stocks.jsx'
-// import Courses from './container/dashboards/courses/courses.jsx'
-// import Personal from './container/dashboards/personal/personal.jsx'
 import Aboutus from './container/pages/aboutus/aboutus.jsx'
 import Blog from './container/pages/blogs/blog/blog.jsx'
 import Blogdetails from './container/pages/blogs/blogdetails/blogdetails.jsx'
@@ -186,6 +176,16 @@ import Sales from './container/dashboards/sales/sales.jsx'
 import Terms from './container/dashboards/terms/Terms.jsx'
 import Country from './container/dashboards/country/Country.jsx'
 
+
+
+
+
+import Dashboard from './container/dashboard/dashboard.jsx';
+import FeaturedProducts from './container/home/FeaturedProducts/FeaturedProducts.jsx';
+import Testimonials from './container/home/Testimonials/Testimonials.jsx'
+import Blogs from './container/home/Blogs/Blogs.jsx';
+
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.Fragment>
     <BrowserRouter>
@@ -198,19 +198,28 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path={`firebase/signup`} element={<Signup />} />
           </Route>
           <Route path={``} element={<App />}>
-            <Route path={`dashboards/crm`} element={<Emp />} />
-            <Route path={`dashboards/empty`} element={<Emp />} />
-            <Route path={`dashboards/ecommerce`} element={<Ecommerce />} />
-            <Route path={`dashboards/Organisation`} element={<Org />} />
-            <Route path={`dashboards/branch`} element={<Branch />} />
-            <Route path={`dashboards/customer`} element={<Customer /> } />
-            <Route path={`dashboards/suplier`} element={<Suplier /> } />
-            <Route path={`dashboards/currency`} element={<Currency /> } />
-            <Route path={`dashboards/Tax`} element={<Tax />} />
-            <Route path={`dashboards/Bank`} element={<Bank /> } />
-            <Route path={`dashboards/Paymode`} element={<Paymode /> } />
-            <Route path={`dashboards/terms`} element={<Terms /> } />
-            <Route path={`dashboards/Country`} element={<Country /> } />
+
+            <Route path={`Dashboard`} element={<Dashboard />} />
+            <Route path={`Home/featured-products`} element={<FeaturedProducts />} />
+            <Route path={`Home/testimonials`} element={<Testimonials />} />
+            <Route path={`Home/blogs`} element={<Blogs />} />
+
+
+
+            <Route path={`Master/crm`} element={<Emp />} />
+            <Route path={`Master/empty`} element={<Emp />} />
+            <Route path={`Master/dashboard`} element={<Ecommerce />} />
+            <Route path={`Master/Organisation`} element={<Org />} />
+            <Route path={`Master/branch`} element={<Branch />} />
+            <Route path={`Master/customer`} element={<Customer /> } />
+            <Route path={`Master/suplier`} element={<Suplier /> } />
+            <Route path={`Master/currency`} element={<Currency /> } />
+            <Route path={`Master/Tax`} element={<Tax />} />
+            <Route path={`Master/Bank`} element={<Bank /> } />
+            <Route path={`Master/Paymode`} element={<Paymode /> } />
+            <Route path={`Master/terms`} element={<Terms /> } />
+            <Route path={`Master/Country`} element={<Country /> } />
+
             {/* till this  */}
 
             <Route path={`pages/aboutus`} element={<Aboutus />} />

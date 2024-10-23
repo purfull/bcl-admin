@@ -3,7 +3,7 @@ import { Buffer } from 'buffer';
 // import "./org.css";
 import noImage from '../../../assets/images/no-images/no-image.png';
 
-const EditBranch = ({row,  onCancel }) => {
+const EditUserPermission = ({row,  onCancel }) => {
   const [editData, setEditData] = useState({});
   const [country, setCountry] = useState([]);
   const [logo, setLogo] = useState(noImage);
@@ -107,26 +107,74 @@ const EditBranch = ({row,  onCancel }) => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="flex items-center justify-start">
-            <label htmlFor="OrgId" className="w-[30%] font-medium">Bank Code</label>
-            <div className="w-[70%]">
-              <input type="text" className="form-control" id="bankCode" defaultValue={editData.BankCode || ''} onChange={handleChange} disabled />
-            </div>
-          </div>
-          <div className="flex items-center justify-start">
-            <label htmlFor="ORG_Name" className="w-[30%] font-medium ">Bank Name</label>
-            <div className="w-[70%]">
-              <input type="text" className="form-control" id="bankName" defaultValue={editData.BankName || ''} onChange={handleChange} />
-            </div>
-          </div>
-          <div className="flex items-center justify-start">
-            <label htmlFor="ORG_Name" className="w-[30%] font-medium ">Remarks</label>
-            <div className="w-[70%]">
-              <input type="text" className="form-control" id="remarks" defaultValue={editData.Remarks || ''} onChange={handleChange} />
-            </div>
+      <div className="grid grid-cols-1 gap-4">
+        <div className="flex items-center justify-start">
+          <label htmlFor="role" className="w-[10%] font-medium">Role</label>
+          <div className="w-[90%]">
+            <input type="text" className="form-control" id="role" onChange={handleChange} />
           </div>
         </div>
+        <div className="flex items-center justify-start">
+          <label htmlFor="name" className="w-[10%] font-medium">Name*</label>
+          <div className="w-[90%]">
+            <input type="text" className="form-control" id="name" onChange={handleChange} required />
+          </div>
+        </div>
+        <div className="flex items-center justify-start">
+          <label htmlFor="username" className="w-[10%] font-medium">User Name*</label>
+          <div className="w-[90%]">
+            <input type="text" className="form-control" id="username" onChange={handleChange} required />
+          </div>
+        </div>
+        <div className="flex items-center justify-start">
+          <label htmlFor="password" className="w-[10%] font-medium">Password*</label>
+          <div className="w-[90%]">
+            <input type="password" className="form-control" id="password" onChange={handleChange} required />
+          </div>
+        </div>
+        <div className="flex items-center justify-start">
+          <label htmlFor="email" className="w-[10%] font-medium">Email</label>
+          <div className="w-[90%]">
+            <input type="email" className="form-control" id="email" onChange={handleChange} />
+          </div>
+        </div>
+        <div className="flex items-center justify-start">
+          <label htmlFor="addressLine1" className="w-[10%] font-medium">Address Line 1</label>
+          <div className="w-[90%]">
+            <input type="text" className="form-control" id="addressLine1" onChange={handleChange} />
+          </div>
+        </div>
+        <div className="flex items-center justify-start">
+          <label htmlFor="addressLine2" className="w-[10%] font-medium">Address Line 2</label>
+          <div className="w-[90%]">
+            <input type="text" className="form-control" id="addressLine2" onChange={handleChange} />
+          </div>
+        </div>
+        <div className="flex items-center justify-start">
+          <label htmlFor="addressLine3" className="w-[10%] font-medium">Address Line 3</label>
+          <div className="w-[90%]">
+            <input type="text" className="form-control" id="addressLine3" onChange={handleChange} />
+          </div>
+        </div>
+        <div className="flex items-center justify-start">
+          <label htmlFor="country" className="w-[10%] font-medium">Country</label>
+          <div className="w-[90%]">
+            <input type="text" className="form-control" id="country" onChange={handleChange} />
+          </div>
+        </div>
+        <div className="flex items-center justify-start">
+          <label htmlFor="postalCode" className="w-[10%] font-medium">Postal Code</label>
+          <div className="w-[90%]">
+            <input type="text" className="form-control" id="postalCode" onChange={handleChange} />
+          </div>
+        </div>
+        <div className="flex items-center justify-start">
+          <label htmlFor="mobileNo" className="w-[10%] font-medium">Mobile No</label>
+          <div className="w-[90%]">
+            <input type="text" className="form-control" id="mobileNo" onChange={handleChange} />
+          </div>
+        </div>
+      </div>
         <div className="w-full sm:w-[70%] flex justify-between my-[4vh]">
           <div className="flex items-center justify-start">
             <label htmlFor="ERP" className="font-medium  mr-[1vw]">Is Active</label>
@@ -150,4 +198,4 @@ const EditBranch = ({row,  onCancel }) => {
   );
 };
 
-export default EditBranch;
+export default EditUserPermission;

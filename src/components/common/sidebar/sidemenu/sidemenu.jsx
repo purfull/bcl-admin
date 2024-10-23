@@ -1,69 +1,76 @@
-
-
-// let menu = []
-
-// fetch('http://localhost:5173/login',{method: 'POST'})
-// .then(res => res.json)
-// .then(data => menu.push(data))
-// .catch(err => console.log(err))
-
-// console.log(menu);
-
-
-
-// menu start frome here
-
-
-// let data
-// try {
-//   const response = await fetch('http://localhost:3000/login', {
-//       method: 'POST',
-//       headers: {
-//           'Content-Type': 'application/json'
-//       },
-//   });
-//   data = await response.json();
-
-  
-// } catch (error) {
-//   console.error('Error:', error);
-// }
-
-// console.log(data.submenu); 
-// const menu = data.menu
-// const subMenu = data.submenu
-
-// const combinedMenu = menu.map(menuItem => {
-//   const subMenuItems = subMenu
-//     .filter(subMenu => subMenu.MenuId === menuItem.MenuId)
-//     .map(subMenu => subMenu.SubMenuName);
-  
-//   return {
-//     ...menuItem,
-//     subMenu: subMenuItems
-//   };
-// });
-
 const combinedMenu = [
   {
     MenuId: 1,
-    MenuName: 'Masters',
+    MenuName: 'Home',
     subMenu: [
-      'Organisation',
-      'Tax',
-      'Bank',
-      'Paymode',
-      'Country'
+      'Featured Products',
+      'Testimonials',
+      'Blogs',
     ]
-  }
+  },
+  {
+    MenuId: 2,
+    MenuName: 'MarketPlace',
+    subMenu: [
+      'Products',
+    ]
+  },
+  {
+    MenuId: 3,
+    MenuName: 'Customers',
+    subMenu: [
+      'Customers',
+    ]
+  },
+  {
+    MenuId: 4,
+    MenuName: 'Orders',
+    subMenu: [
+      'Customers',
+    ]
+  },
+  {
+    MenuId: 5,
+    MenuName: 'Reports',
+    subMenu: [
+      'Customers',
+    ]
+  },
+  {
+    MenuId: 6,
+    MenuName: 'Contact Query',
+    subMenu: [
+      'Customers',
+    ]
+  },
+  // {
+  //   MenuId: 4,
+  //   MenuName: 'Individuals',
+  //   subMenu: [
+  //     'Individuals',
+  //   ]
+  // },
+  // {
+  //   MenuId: 4,
+  //   MenuName: 'Security',
+  //   subMenu: [
+  //     'User Role',
+  //     'User Master',
+  //     'User Permission',
+  //   ]
+  // }
 ];
 
-console.log(combinedMenu);
-
-
+// Icon mapping for different menus
+const menuIcons = {
+  'Masters': 'bx bx-planet',
+  'Business': 'bx bx-briefcase',
+  'Specialist': 'bx bx-user',
+  'Individuals': 'bx bx-group',
+  'Security': 'bx bx-lock'
+};
 
 export const MENUITEMS = [
-  
   {
     icon: (<i className="side-menu__icon bx bx-home"></i>),
     type: 'sub',
@@ -73,20 +80,18 @@ export const MENUITEMS = [
     dirchange: false,
     title: 'Dashboards',
     badge: '',
-    // badgetxt: '12',
-    // path: `${import.meta.env.BASE_URL}dashboards/ecommerce`,
     class: 'badge !bg-warning/10 !text-warning !py-[0.25rem] !px-[0.45rem] !text-[0.75em] ms-2',
     children: [
-      { path: `${import.meta.env.BASE_URL}dashboards/ecommerce`, type: 'link', active: false, selected: false, dirchange: false, title: 'Main' },
-      
+      { path: `${import.meta.env.BASE_URL}Dashboard`, type: 'link', active: false, selected: false, dirchange: false, title: 'Main' },
     ]
   },
-  
+
   {
     menutitle: 'MENU',
   },
+
   ...combinedMenu.map(menu => ({
-    icon: (<i className="side-menu__icon bx bx-home"></i>),
+    icon: (<i className={`side-menu__icon ${menuIcons[menu.MenuName]}`}></i>), // Assign specific icon
     type: 'sub',
     Name: '',
     active: false,
@@ -97,7 +102,7 @@ export const MENUITEMS = [
     badgetxt: menu.subMenu.length,
     class: 'badge !bg-warning/10 !text-warning !py-[0.25rem] !px-[0.45rem] !text-[0.75em] ms-2',
     children: menu.subMenu.map(subMenuName => ({
-      path: `${import.meta.env.BASE_URL}dashboards/${subMenuName.toLowerCase().replace(/ /g, '-')}`,
+      path: `${import.meta.env.BASE_URL}${menu.MenuName}/${subMenuName.toLowerCase().replace(/ /g, '-')}`, // Construct path dynamically
       type: 'link',
       active: false,
       selected: false,
