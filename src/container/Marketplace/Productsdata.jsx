@@ -9,6 +9,7 @@ const generateColumns = (data, onEdit, onDelete, active) => {
   const firstItem = data[0];
   const keys = Object.keys(firstItem);
 
+  
 
   const columns = keys.map(key => {
     // If the key is 'Logo', render an image
@@ -28,20 +29,37 @@ const generateColumns = (data, onEdit, onDelete, active) => {
     };
   });
 
+
   // Add the "Action" column
   columns.push({
     Header: 'Action',
     accessor: 'edit',
     Cell: ({ row }) => (
-      <div className="">
-       <button
-         className='px-4 ti-btn ti-btn-outline-danger !py-1 !mx-2'
-         onClick={() => onDelete(row.original,{add: false})} // Use the onDelete prop
-       >
-         Remove
-       </button>
-      </div>
-
+      active ? (
+        <div className="">
+          {/* <button
+            className='px-4 py-1 bg-violet-700 text-white'
+            onClick={() => onEdit(row.original)} // Use the onEdit prop
+          >
+            Edit
+          </button> */}
+          <button
+            className='px-4 ti-btn ti-btn-outline-danger !py-1 !mx-2'
+            onClick={() => onDelete(row.original,{add: false})} // Use the onDelete prop
+          >
+            Inactive
+          </button>
+        </div>
+      ) : (
+        <div className="">
+          <button
+            className='px-4 py-1 bg-violet-700 text-white mx-2'
+            onClick={() => onDelete(row.original,{add: true})}
+          >
+            Active
+          </button>
+        </div>
+      )
     ),
   });
 
@@ -61,11 +79,8 @@ export const GlobalFilter = ({ filter, setFilter }) => (
   </span>
 );
 
-export const ResponsiveFeaturedDataTable = ({ data = [], onEdit, onDelete, active }) => {
+export const ResponsiveProductsDataTable = ({ data = [], onEdit, onDelete, active }) => {
   // Handle null or undefined data
-  useEffect(() => {
-    console.log(data);
-  }, []);
   
 
   // Generate columns and table instance based on props.data
@@ -104,8 +119,8 @@ export const ResponsiveFeaturedDataTable = ({ data = [], onEdit, onDelete, activ
       <div className="e-table pb-5">
         <div className="">
         </div>
-        <div className="flex justify-end my-4">
-          {/* <div className="flex items-center justify-between mb-4">
+        <div className="flex">
+          <div className="flex items-center justify-between mb-4">
             <span>show</span>
             <select
               className="selectpage border text-[16px] mx-2"
@@ -119,20 +134,11 @@ export const ResponsiveFeaturedDataTable = ({ data = [], onEdit, onDelete, activ
               ))}
             </select>
             <span>entities</span>
+          </div>
+          <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+          {/* <div className="">
+            <button className='px-[1vw] py-[1.5vh] bg-violet-700 text-white ml-[1vw] rounded-md ' onClick={() => {onEdit({ newProducts: true }) }} >+ NEW BRANCH</button>
           </div> */}
-          {/* <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} /> */}
-          
-          <div className="" style={{float:'right'}}>
-            <button 
-            disabled={data?.length >= 10}
-            className='px-[1vw] py-[1.5vh] bg-violet-700 text-white ml-[1vw] rounded-md'
-            style={{background: data?.length >= 10 && 'gray' }}
-
-            onClick={() => { onEdit({ newBusiness: true }) }}
-          >
-            + ADD NEW
-          </button>
-        </div>
         </div>
         <div className="table-responsive table-bordered text-center">
           <table
@@ -171,7 +177,7 @@ export const ResponsiveFeaturedDataTable = ({ data = [], onEdit, onDelete, activ
                 return (
                   <tr {...row.getRowProps()} key={Math.random()}>
                     {row.cells.map((cell) => (
-                      <td {...cell.getCellProps()} key={Math.random()} style={{ textAlign: 'left' }}>
+                      <td {...cell.getCellProps()} key={Math.random()} style={{textAlign:'left'}}>
                         {cell.render('Cell')}
                       </td>
                     ))}
@@ -181,7 +187,7 @@ export const ResponsiveFeaturedDataTable = ({ data = [], onEdit, onDelete, activ
             </tbody>
           </table>
         </div>
-        {/* <div className="block sm:flex mt-4 px-4">
+        <div className="block sm:flex mt-4 px-4">
           <span className="">
             Showing {page.length} of {data.length} entries
           </span>
@@ -215,7 +221,7 @@ export const ResponsiveFeaturedDataTable = ({ data = [], onEdit, onDelete, activ
               {' Next '}
             </button>
           </span>
-        </div> */}
+        </div>
       </div>
     </>
   );

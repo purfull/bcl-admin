@@ -1,0 +1,119 @@
+GET http://luxcycs.com:3000/api/product/list
+
+###
+GET http://luxcycs.com:3000/api/admin/set_auth
+
+
+###
+
+GET http://luxcycs.com:3000/api/product/detail/WindowsServerCAL22-in
+### --url 'https://ion.tdsynnex.com/api/v3/customers/%7BcustomerId%7D/carts?pagination=SOME_UNKNOWN_VALUE&status=SOME_STRING_VALUE'
+
+
+###
+POST http://luxcycs.com:3000/api/admin/customer/create
+Content-Type: application/json
+
+{
+    "customerOrganization": "Marcus_Apr_29",
+    "customerAddress": {
+        "street": "St Address 12",
+        "city": "Barcelona",
+        "state": "Barcelona",
+        "zip": "20190",
+        "country": "US"
+    },
+    "customerName": "Marcus_Apr_30",
+    "customerEmail": "api_test_8000@mytecd.com",
+    "customerTitle": "Officer123",
+    "customertPhone": "5643454321",
+    "customerDomain": "test@test.com",
+    "languageCode": "EN"
+}
+###
+
+GET  http://luxcycs.com:3000/api/admin/customer/get_customer/575910
+###
+GET http://luxcycs.com:3000/api/admin/product-detials/TDCarbonBlackR2D-in
+
+###
+GET http://luxcycs.com:3000/api/admin/products
+
+###
+POST http://luxcycs.com:3000/blog/create-blog
+Content-Type: application/json
+
+{
+    "title": "test-1",
+    "content": "test",
+    "image":  "test",
+    "author": "test"
+
+}
+
+###
+PUT http://luxcycs.com:3000/blog/update-blog
+Content-Type: application/json
+
+{
+    "id": 2,
+    "title": "test-1",
+    "content": "test",
+    "image":  "image",
+    "author": "test"
+
+}
+###
+DELETE  http://luxcycs.com:3000/blog/delete-blog
+Content-Type: application/json
+
+{
+    "id": 1
+
+}
+###
+GET  http://luxcycs.com:3000/blog/
+
+###
+POST http://luxcycs.com:3000/testimonial/create-testimonial
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "image":  "https://pics.craiyon.com/2023-11-26/oMNPpACzTtO5OVERUZwh3Q.webp",
+    "message": "I had an amazing experience with this service! The team was professional, responsive, and exceeded my expectations in every way. Their attention to detail and commitment to customer satisfaction are unmatched. I would highly recommend them to anyone looking for quality and reliability!"
+
+}
+
+###
+GET http://luxcycs.com:3000/testimonial/
+###
+DELETE  http://luxcycs.com:3000/testimonial/delete-testimonial
+Content-Type: application/json
+
+{
+    "id": 1
+}
+###
+PUT  http://luxcycs.com:3000/testimonial/update-testimonial
+Content-Type: application/json
+
+{
+    "id": 2,
+    "name": "abc-2",
+    "image":  "test",
+    "message": "test"
+}
+
+###
+GET http://luxcycs.com:3000/cart/1
+
+###
+POST http://localhost:3000/cart/add-to-cart
+Content-Type: application/json
+Authorization: Bearer <your-auth-token>
+
+{
+    "userId": 1,
+    "productId": 123
+}

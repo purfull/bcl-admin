@@ -3,7 +3,7 @@ import noImage from '../../../assets/images/no-images/no-image.png';
 
 const EditTestimonial = ({ row, onCancel }) => {
   const [editData, setEditData] = useState({});
-  const [logo, setLogo] = useState(noImage);
+  const [logo, setLogo] = useState(noImage); // Default image state
   const req = row.newTestimonial ? true : false;
 
   const handleChange = (event) => {
@@ -14,7 +14,47 @@ const EditTestimonial = ({ row, onCancel }) => {
     }));
   };
 
-  const handleSubmit = () => {};
+  const handleImageChange = (event) => {
+    const logoFile = event.target.files[0]; // Get the selected file
+    if (logoFile) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result; // Get Base64 string from the reader
+        setLogo(base64String); // Set logo state to Base64 string
+        setEditData((prevData) => ({
+          ...prevData,
+          image: base64String, // Store Base64 image in editData
+        }));
+        console.log('Base64 String:', base64String); // Log Base64 string
+      };
+      reader.readAsDataURL(logoFile); // Convert the image to Base64
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // Prevent default form submission
+
+    try {
+      const response = await fetch('http://luxcycs.com:3000/testimonial/create-testimonial', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(editData), // Send editData including Base64 image
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      console.log('Success:', data);
+      // Handle success (e.g., close the modal, show a success message)
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle error (e.g., show an error message)
+    }
+  };
 
   return (
     <div>
@@ -45,6 +85,7 @@ const EditTestimonial = ({ row, onCancel }) => {
                 id="image"
                 accept="image/*"
                 required
+                onChange={handleImageChange} // Use the image change handler
               />
             </div>
           </div>
@@ -86,9 +127,9 @@ const EditTestimonial = ({ row, onCancel }) => {
               <input
                 type="checkbox"
                 id="isActive"
-                checked={editData.IsActive}
+                checked={editData.isActive || false} // Make sure to handle default value
                 onChange={(e) =>
-                  setEditData({ ...editData, IsActive: e.target.checked })
+                  setEditData({ ...editData, isActive: e.target.checked })
                 }
               />
               <span className="slider round"></span>
@@ -103,6 +144,7 @@ const EditTestimonial = ({ row, onCancel }) => {
             className="ti-btn ti-btn-outline-primary !px-[20px] !py-[2px] !mr-[2vw] !text-[18px]"
           >
             Cancel
+            
           </button>
           <button
             type="submit"

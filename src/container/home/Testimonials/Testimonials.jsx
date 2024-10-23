@@ -4,6 +4,7 @@ import EditTestimonial from './EditTestimonial';
 // import '../org/org.css';
 import { ResponsiveTestimonialDataTable } from "./TestimonialsData";
 import Alert from '../../dashboards/alert/Alert';
+import { AppEnv } from '../../../../config';
 
 const Testimonials = () => {
   const [data, setData] = useState([]);
@@ -52,6 +53,34 @@ const Testimonials = () => {
       date: '2024-07-30',
     },
   ]);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const response = await fetch(`${AppEnv.baseUrl}/testimonial`);
+            const result = await response.json();
+            console.log(result , "Filtered Data");
+
+            if (result) {
+
+              // console.log(result , "kkkkkkkkkkkkkkkkkkkkkk")
+              //   const filteredData = result.map(item => ({
+              //       Product_name: item.product_name,
+              //       Logo: item.marketing_defaultImage_content,
+              //       Type: item.type,
+              //       Price: item.amount,
+              //       CreatedAt: formatDate(item.createdAt),
+              //     }));
+              //   setData(filteredData);
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    fetchData();
+}, []);
   
 
   const handleEdit = (row) => {
