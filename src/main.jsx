@@ -16,7 +16,7 @@ import Checkout from './container/pages/ecommerce/checkout/checkout.jsx'
 import Editproducts from './container/pages/ecommerce/editproducts/editproducts.jsx'
 import Orderdetails from './container/pages/ecommerce/orderdetails/orderdetails.jsx'
 import Orders from './container/pages/ecommerce/orders/orders.jsx'
-import Products from './container/pages/ecommerce/products/products.jsx'
+// import Products from './container/pages/ecommerce/products/products.jsx'
 import Productdetails from './container/pages/ecommerce/productdetails/productdetails.jsx'
 import Productlist from './container/pages/ecommerce/productlist/productlist.jsx'
 import Wishlist from './container/pages/ecommerce/wishlist/wishlist.jsx'
@@ -166,7 +166,7 @@ import Suneditors from './container/forms/formeditors/suneditors/suneditors.jsx'
 import Emp from './container/dashboards/Emp.jsx'
 import Org from './container/dashboards/org/Org.jsx'
 import Branch from './container/dashboards/Branch/Branch.jsx'
-import Customer from './container/dashboards/customer/Customer.jsx'
+// import Customer from './container/dashboards/customer/Customer.jsx'
 import Suplier from './container/dashboards/suplier/Suplier.jsx'
 import Bank from './container/dashboards/bank/Bank.jsx'
 import Currency from './container/dashboards/currency/Currency.jsx'
@@ -184,6 +184,8 @@ import Dashboard from './container/dashboard/dashboard.jsx';
 import FeaturedProducts from './container/home/FeaturedProducts/FeaturedProducts.jsx';
 import Testimonials from './container/home/Testimonials/Testimonials.jsx'
 import Blogs from './container/home/Blogs/Blogs.jsx';
+import Products from './container/Marketplace/Products.jsx';
+import Customer from './container/Customers/Customer.jsx'
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -200,18 +202,18 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path={``} element={<App />}>
 
             <Route path={`Dashboard`} element={<Dashboard />} />
-            <Route path={`Home/featured-products`} element={<FeaturedProducts />} />
-            <Route path={`Home/testimonials`} element={<Testimonials />} />
-            <Route path={`Home/blogs`} element={<Blogs />} />
-
-
+            <Route path={`featured-products`} element={<FeaturedProducts />} />
+            <Route path={`testimonials`} element={<Testimonials />} />
+            <Route path={`blogs`} element={<Blogs />} />
+            <Route path={`Marketplace/products`} element={<Products />} />
+            <Route path={`customers`} element={<Customer />} />
 
             <Route path={`Master/crm`} element={<Emp />} />
             <Route path={`Master/empty`} element={<Emp />} />
             <Route path={`Master/dashboard`} element={<Ecommerce />} />
             <Route path={`Master/Organisation`} element={<Org />} />
             <Route path={`Master/branch`} element={<Branch />} />
-            <Route path={`Master/customer`} element={<Customer /> } />
+            {/* <Route path={`Master/customer`} element={<Customer /> } /> */}
             <Route path={`Master/suplier`} element={<Suplier /> } />
             <Route path={`Master/currency`} element={<Currency /> } />
             <Route path={`Master/Tax`} element={<Tax />} />
@@ -238,7 +240,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path={`pages/ecommerce/editproducts`} element={<Editproducts />} />
             <Route path={`pages/ecommerce/orderdetails`} element={<Orderdetails />} />
             <Route path={`pages/ecommerce/orders`} element={<Orders />} />
-            <Route path={`pages/ecommerce/products`} element={<Products />} />
+            {/* <Route path={`pages/ecommerce/products`} element={<Products />} /> */}
             <Route path={`pages/ecommerce/productdetails`} element={<Productdetails />} />
             <Route path={`pages/ecommerce/productlist`} element={<Productlist />} />
             <Route path={`pages/ecommerce/wishlist`} element={<Wishlist />} />

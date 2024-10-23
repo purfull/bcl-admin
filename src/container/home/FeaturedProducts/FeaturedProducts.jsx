@@ -4,6 +4,7 @@ import EditFeatured from './EditFeatured';
 // import '../org/org.css';
 import { ResponsiveFeaturedDataTable } from "./FeaturedProductsData";
 import Alert from '../../dashboards/alert/Alert';
+import { AppEnv } from '../../../../config';
 
 const Business = () => {
   const [data, setData] = useState([]);
@@ -77,6 +78,42 @@ const Business = () => {
       Price: '$59.99',
     }
   ]);
+
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const response = await fetch(`${AppEnv.baseUrl}/api/admin/products`);
+            const result = await response.json();
+            console.log(result , "Filtered Data");
+
+            if (result) {
+
+              console.log(result , "kkkkkkkkkkkkkkkkkkkkkk")
+                const filteredData = result?.length && result.map(item => ({
+                    Product_name: item.product_name,
+                    Logo: item.marketing_defaultImage_content,
+                    Type: item.type,
+                    Price: "₹" + item.amount.toLocaleString('en-IN'),
+                    CreatedAt: formatDate(item.createdAt),
+                  }));
+                setData(filteredData);
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    fetchData();
+}, []);
   
 
   const handleEdit = (row) => {
@@ -148,7 +185,7 @@ const Business = () => {
                     />
                   ) : (
                     <ResponsiveFeaturedDataTable
-                      data={listData}
+                      data={data}
                       onEdit={handleEdit}
                       onDelete={handleDeleteClick} // Pass the delete handler
                       // onAdd={handleAddClick}
