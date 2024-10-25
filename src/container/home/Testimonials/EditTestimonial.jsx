@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import noImage from '../../../assets/images/no-images/no-image.png';
+import { AppEnv } from '../../../../config';
 
 const EditTestimonial = ({ row, onCancel }) => {
   const [editData, setEditData] = useState({});
-  const [logo, setLogo] = useState(noImage); // Default image state
+  const [logo, setLogo] = useState(noImage);
+  const fileInputRef = useRef(null);
   const req = row.newTestimonial ? true : false;
 
   const handleChange = (event) => {
@@ -14,33 +16,91 @@ const EditTestimonial = ({ row, onCancel }) => {
     }));
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log("rowww ", row);
+      
+        try {
+            const response = await fetch(`${AppEnv.baseUrl}/testimonial/${row.Id}`);
+            const result = await response.json();
+            console.log(result , "Filtered Data");
+
+            if (result) {
+
+              // console.log(result , "kkkkkkkkkkkkkkkkkkkkkk")
+              //   const filteredData = result.map(item => ({
+              //       Product_name: item.product_name,
+              //       Logo: item.marketing_defaultImage_content,
+              //       Type: item.type,
+              //       Price: item.amount,
+              //       CreatedAt: formatDate(item.createdAt),
+              //     }));
+              //   setData(filteredData);
+              // setListData(result.data);
+              setEditData(result.data);
+              setLogo(result.data.image);
+
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    fetchData();
+}, []);
+
   const handleImageChange = (event) => {
-    const logoFile = event.target.files[0]; // Get the selected file
+    const logoFile = event.target.files[0];
     if (logoFile) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        const base64String = reader.result; // Get Base64 string from the reader
-        setLogo(base64String); // Set logo state to Base64 string
+        const base64String = reader.result;
+        setLogo(base64String);
         setEditData((prevData) => ({
           ...prevData,
-          image: base64String, // Store Base64 image in editData
+          image: base64String,
         }));
-        console.log('Base64 String:', base64String); // Log Base64 string
       };
-      reader.readAsDataURL(logoFile); // Convert the image to Base64
+      reader.readAsDataURL(logoFile);
+    }
+  };
+
+  const handleImageClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result;
+        setLogo(base64String);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Prevent default form submission
-
+    event.preventDefault();
+    console.log("dataaa ",editData);
+    const dataToSend = {
+      "name": editData.name,
+      "message": editData.message,
+      "image":  logo,
+      "designation": editData.designation,
+      "isActive": editData.isActive
+  }
+  // console.log("data to send", dataToSend);
+  
+    
     try {
       const response = await fetch('http://luxcycs.com:3000/testimonial/create-testimonial', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(editData), // Send editData including Base64 image
+        body: JSON.stringify(dataToSend),
       });
 
       if (!response.ok) {
@@ -49,10 +109,8 @@ const EditTestimonial = ({ row, onCancel }) => {
 
       const data = await response.json();
       console.log('Success:', data);
-      // Handle success (e.g., close the modal, show a success message)
     } catch (error) {
       console.error('Error:', error);
-      // Handle error (e.g., show an error message)
     }
   };
 
@@ -60,7 +118,6 @@ const EditTestimonial = ({ row, onCancel }) => {
     <div>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-4">
-          {/* Name Field */}
           <div className="flex items-center justify-start">
             <label htmlFor="name" className="w-[15%] font-medium">Name*</label>
             <div className="w-[85%]">
@@ -75,22 +132,28 @@ const EditTestimonial = ({ row, onCancel }) => {
             </div>
           </div>
 
-          {/* Image Field */}
+            
           <div className="flex items-center justify-start">
-            <label htmlFor="image" className="w-[15%] font-medium">Image*</label>
-            <div className="w-[85%]">
+            <label htmlFor="name" className="w-[15%] font-medium">Image*</label>
+            <div className="w-[10vw]">
+              <img
+                src={logo || noImage}
+                className="form-control cursor-pointer"
+                id="Logo"
+                alt="logo"
+                onClick={handleImageClick}
+              />
               <input
                 type="file"
-                className="form-control"
-                id="image"
                 accept="image/*"
-                required
-                onChange={handleImageChange} // Use the image change handler
+                style={{ display: 'none' }}
+                ref={fileInputRef}
+                onChange={handleFileChange}
               />
             </div>
           </div>
+        
 
-          {/* Message Field */}
           <div className="flex items-center justify-start">
             <label htmlFor="message" className="w-[15%] font-medium">Message*</label>
             <div className="w-[85%]">
@@ -105,7 +168,6 @@ const EditTestimonial = ({ row, onCancel }) => {
             </div>
           </div>
 
-          {/* Designation Field */}
           <div className="flex items-center justify-start">
             <label htmlFor="designation" className="w-[15%] font-medium">Designation*</label>
             <div className="w-[85%]">
@@ -120,6 +182,7 @@ const EditTestimonial = ({ row, onCancel }) => {
             </div>
           </div>
         </div>
+
         <div className="w-full sm:w-[70%] flex justify-between my-[4vh]">
           <div className="flex items-center justify-start">
             <label htmlFor="isActive" className="font-medium mr-[1vw]">Is Active</label>
@@ -127,7 +190,7 @@ const EditTestimonial = ({ row, onCancel }) => {
               <input
                 type="checkbox"
                 id="isActive"
-                checked={editData.isActive || false} // Make sure to handle default value
+                checked={editData.isActive || false}
                 onChange={(e) =>
                   setEditData({ ...editData, isActive: e.target.checked })
                 }
@@ -144,7 +207,6 @@ const EditTestimonial = ({ row, onCancel }) => {
             className="ti-btn ti-btn-outline-primary !px-[20px] !py-[2px] !mr-[2vw] !text-[18px]"
           >
             Cancel
-            
           </button>
           <button
             type="submit"

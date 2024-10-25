@@ -16,43 +16,7 @@ const Testimonials = () => {
   // const [listData, setListData] = useState([]);
 
 
-  const [listData, setListData] = useState([
-    {
-      testimonialId: '101',
-      customerName: 'John Doe',
-      feedback: 'Amazing service! The staff were very friendly and helpful.',
-      designation: 'Manager',
-      date: '2024-08-15',
-    },
-    {
-      testimonialId: '102',
-      customerName: 'Jane Smith',
-      feedback: 'The software product portal is intuitive and easy to navigate. I found everything I needed without any hassle!',
-      designation: 'Software Engineer',
-      date: '2024-08-10',
-    },
-    {
-      testimonialId: '103',
-      customerName: 'Sam Wilson',
-      feedback: 'Great tools available on the portal, but I wish the load times were a bit faster for some features.',
-      designation: 'Product Designer',
-      date: '2024-08-08',
-    },
-    {
-      testimonialId: '104',
-      customerName: 'Emily Davis',
-      feedback: 'The support team was super accommodating. They helped me troubleshoot an issue quickly through the portal.',
-      designation: 'Marketing Director',
-      date: '2024-08-05',
-    },
-    {
-      testimonialId: '105',
-      customerName: 'Michael Brown',
-      feedback: 'Good experience overall, but it would be great to have more tutorials available on the software product portal.',
-      designation: 'Business Analyst',
-      date: '2024-07-30',
-    },
-  ]);
+  const [listData, setListData] = useState([]);
 
 
   useEffect(() => {
@@ -73,6 +37,8 @@ const Testimonials = () => {
               //       CreatedAt: formatDate(item.createdAt),
               //     }));
               //   setData(filteredData);
+              setListData(result.data);
+
             }
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -116,7 +82,15 @@ const Testimonials = () => {
     setRowToDelete(null);
   };
 
-
+  useEffect(() => {
+    if (listData.length > 0) {
+      setData(listData.map(el => ({
+        Id: el.id,
+        Name: el.name,
+        Message: el.message
+      })));
+    }
+  }, [listData]);
 
   
   return (
@@ -141,7 +115,7 @@ const Testimonials = () => {
                     />
                   ) : (
                     <ResponsiveTestimonialDataTable
-                      data={listData}
+                      data={data}
                       onEdit={handleEdit}
                       onDelete={handleDeleteClick} // Pass the delete handler
                       // onAdd={handleAddClick}
