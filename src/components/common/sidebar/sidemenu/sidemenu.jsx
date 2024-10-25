@@ -1,4 +1,4 @@
-const combinedMenu = [
+export const combinedMenu = [
   {
     MenuId: 2,
     MenuName: 'MarketPlace',
