@@ -3,6 +3,7 @@ import Pageheader from '../../components/common/pageheader/pageheader';
 import EditCustomer from "./EditCustomer";
 import { ResponsiveCustomerDataTable } from "./Customerdata";
 import Alert from '../dashboards/alert/Alert';
+import { AppEnv } from '../../../config';
 
 const Customer = () => {
   const [editingRow, setEditingRow] = useState(null); // State to keep track of the row being edited
@@ -27,17 +28,17 @@ const Customer = () => {
   useEffect(() => {
       const fetchData = async () => {
           try {
-              const response = await fetch('http://luxcycs.com:3000/api/admin/products');
+              const response = await fetch(`${AppEnv.baseUrl}/api/admin/customer/list`);
               const result = await response.json();
               console.log(result , "Filtered Data");
 
-              if (result) {
-                  // Filter the data to only include the specified fields
-                  const filteredData = result.map(item => ({
-                      Product_name: item.product_name,
-                      Type: item.type,
-                      Logo: item.marketing_defaultImage_content,
-                      CreatedAt: formatDate(item.createdAt),
+              if (result.data) {
+                  const filteredData = result?.data?.length && result.data.map(item => ({
+                      Id: item.id,
+                      Name: item.customerName,
+                      Email: item.customerEmail,
+                      Phone: item.customerPhone,
+                      CreatedAt: formatDate(item.createTime),
                     }));
                   setData(filteredData);
               }
