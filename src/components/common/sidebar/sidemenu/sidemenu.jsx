@@ -1,4 +1,4 @@
-const combinedMenu = [
+export const combinedMenu = [
   {
     MenuId: 2,
     MenuName: 'MarketPlace',
@@ -15,10 +15,6 @@ const combinedMenu = [
   {
     MenuId: 5,
     MenuName: 'Reports'
-  },
-  {
-    MenuId: 6,
-    MenuName: 'Contact Query'
   },
   {
     MenuId: 7,
@@ -39,7 +35,11 @@ const combinedMenu = [
   {
     MenuId: 11,
     MenuName: 'Permission'
-  }
+  },
+  {
+    MenuId: 6,
+    MenuName: 'Contact Query'
+  },
 ];
 
 // Icon mapping for different menus

@@ -1,55 +1,88 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import Pageheader from '../../components/common/pageheader/pageheader';
-import EditCustomer from "./EditCustomer";
-import { ResponsiveCustomerDataTable } from "./Customerdata";
+import EditAdminUser from "./EditAdminUser";
+import './branch.css';
+import { ResponsiveAdminUserDataTable } from "./AdminUserData";
 import Alert from '../dashboards/alert/Alert';
-import { AppEnv } from '../../../config';
+const AdminUser = () => {
 
-const Customer = () => {
+  
+  const formatDate = (date) => {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+  
+  const today = new Date();
+  const [data, setData] = useState([
+    {
+      id: 1,
+      name: "John Doe",
+      userRole: "Admin",
+      createdAt: formatDate(new Date(today.setDate(today.getDate()))),
+    },
+    {
+      id: 2,
+      name: "Jane Smith",
+      userRole: "User",
+      createdAt: formatDate(new Date(today.setDate(today.getDate() - 1))),
+    },
+    {
+      id: 3,
+      name: "Alice Johnson",
+      userRole: "Moderator",
+      createdAt: formatDate(new Date(today.setDate(today.getDate() - 2))),
+    },
+    {
+      id: 4,
+      name: "Bob Brown",
+      userRole: "Editor",
+      createdAt: formatDate(new Date(today.setDate(today.getDate() - 3))),
+    },
+    {
+      id: 5,
+      name: "Charlie Green",
+      userRole: "User",
+      createdAt: formatDate(new Date(today.setDate(today.getDate() - 4))),
+    },
+    {
+      id: 6,
+      name: "Diana White",
+      userRole: "Admin",
+      createdAt: formatDate(new Date(today.setDate(today.getDate() - 5))),
+    },
+    {
+      id: 7,
+      name: "Eve Black",
+      userRole: "Moderator",
+      createdAt: formatDate(new Date(today.setDate(today.getDate() - 6))),
+    },
+    {
+      id: 8,
+      name: "Frank Gray",
+      userRole: "Editor",
+      createdAt: formatDate(new Date(today.setDate(today.getDate() - 7))),
+    },
+    {
+      id: 9,
+      name: "Grace Blue",
+      userRole: "User",
+      createdAt: formatDate(new Date(today.setDate(today.getDate() - 8))),
+    },
+    {
+      id: 10,
+      name: "Hank Yellow",
+      userRole: "Admin",
+      createdAt: formatDate(new Date(today.setDate(today.getDate() - 9))),
+    },
+  ]);
+
   const [editingRow, setEditingRow] = useState(null); // State to keep track of the row being edited
   const [isActive, setIsActive] = useState(true); // State to track the checkbox
   const [isAlertOpen, setIsAlertOpen] = useState(false); // State to control alert visibility
   const [rowToDelete, setRowToDelete] = useState(null); // State to keep track of the row to delete
   const [rowToAdd, setRowToAdd] = useState(null);
-
-
-  const [data, setData] = useState([]);
-
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
-    const year = date.getFullYear();
-    return `${day}-${month}-${year}`;
-};
-
-
-  useEffect(() => {
-      const fetchData = async () => {
-          try {
-              const response = await fetch(`${AppEnv.baseUrl}/api/admin/customer/list`);
-              const result = await response.json();
-              console.log(result , "Filtered Data");
-
-              if (result.data) {
-                  const filteredData = result?.data?.length && result.data.map(item => ({
-                      Id: item.id,
-                      Name: item.customerName,
-                      Email: item.customerEmail,
-                      Phone: item.customerPhone,
-                      CreatedAt: formatDate(item.createTime),
-                    }));
-                  setData(filteredData);
-              }
-          } catch (error) {
-              console.error('Error fetching data:', error);
-          }
-      };
-
-      fetchData();
-  }, []);
-
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -108,13 +141,13 @@ const Customer = () => {
         'Content-Type': 'application/json',
       },
       signal: abortController.signal,
-      body: JSON.stringify({ CustomerCode: rowToDelete.row.CustomerCode }) // Ensure the payload is correctly formatted
+      body: JSON.stringify({ AdminUserCode: rowToDelete.row.AdminUserCode }) // Ensure the payload is correctly formatted
     })
       .then(result => result.json())
       .then(response => {
         if (response.success) { // Check if the response indicates a successful deletion
           // Remove the row from the data
-          setData(prevData => prevData.filter(item => item.CustomerCode !== rowToDelete.row.CustomerCode));
+          setData(prevData => prevData.filter(item => item.AdminUserCode !== rowToDelete.row.AdminUserCode));
         } else {
           console.error('Failed to delete the row:', response.message);
         }
@@ -136,7 +169,7 @@ const Customer = () => {
 
   return (
     <Fragment>
-      <Pageheader currentpage="Customer" activepage="Master" mainpage="Customer" />
+      <Pageheader currentpage="AdminUser" activepage="Master" mainpage="AdminUser" />
 
 
       <div id="a1" className="grid grid-cols-12 gap-6">
@@ -160,13 +193,13 @@ const Customer = () => {
                 <div id="reactivity-table" className="ti-custom-table ti-striped-table ti-custom-table-hover">
                 
                   {editingRow ? (
-                    <EditCustomer 
+                    <EditAdminUser 
                       row={editingRow} 
                       onCancel={handleCancelEdit} 
                       active={isActive}
                     />
                   ) : (
-                    <ResponsiveCustomerDataTable
+                    <ResponsiveAdminUserDataTable
                       data={data}
                       onEdit={handleEdit}
                       onDelete={handleDeleteClick} // Pass the delete handler
@@ -190,4 +223,4 @@ const Customer = () => {
   );
 };
 
-export default Customer;
+export default AdminUser;

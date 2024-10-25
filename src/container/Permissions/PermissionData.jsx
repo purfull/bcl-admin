@@ -9,26 +9,10 @@ const generateColumns = (data, onEdit, onDelete, active) => {
   const firstItem = data[0];
   const keys = Object.keys(firstItem);
 
-  
-
-  const columns = keys.map(key => {
-    // If the key is 'Logo', render an image
-    if (key === 'Logo') {
-      return {
-        Header: key,
-        accessor: key,
-        Cell: ({ cell: { value } }) => (
-          <img src={value} alt="Product Logo" style={{ width: '100px' }} />
-        ),
-      };
-    }
-
-    return {
-      Header: key,
-      accessor: key,
-    };
-  });
-
+  const columns = keys.map(key => ({
+    Header: key,
+    accessor: key,
+  }));
 
   // Add the "Action" column
   columns.push({
@@ -79,7 +63,7 @@ export const GlobalFilter = ({ filter, setFilter }) => (
   </span>
 );
 
-export const ResponsiveCustomerDataTable = ({ data = [], onEdit, onDelete, active }) => {
+export const ResponsivePermissionDataTable = ({ data = [], onEdit, onDelete, active }) => {
   // Handle null or undefined data
   
 
@@ -137,7 +121,7 @@ export const ResponsiveCustomerDataTable = ({ data = [], onEdit, onDelete, activ
           </div>
           <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
           <div className="">
-            <button className='px-[1vw] py-[1.5vh] bg-violet-700 text-white ml-[1vw] rounded-md ' onClick={() => {onEdit({ newCustomer: true }) }} >+ NEW CUSTOMER</button>
+            <button className='px-[1vw] py-[1.5vh] bg-violet-700 text-white ml-[1vw] rounded-md ' onClick={() => {onEdit({ newPermission: true }) }} >+ NEW USER</button>
           </div>
         </div>
         <div className="table-responsive table-bordered text-center">
@@ -177,7 +161,7 @@ export const ResponsiveCustomerDataTable = ({ data = [], onEdit, onDelete, activ
                 return (
                   <tr {...row.getRowProps()} key={Math.random()}>
                     {row.cells.map((cell) => (
-                      <td {...cell.getCellProps()} key={Math.random()} style={{textAlign:'left'}}>
+                      <td {...cell.getCellProps()} key={Math.random()}>
                         {cell.render('Cell')}
                       </td>
                     ))}
