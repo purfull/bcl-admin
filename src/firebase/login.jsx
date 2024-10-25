@@ -111,8 +111,8 @@ const Login = () => {
 
             <div className="w-[90%] sm:w-[60%] lg:w-[25%] h-[80vh] sm:h-[80vh] lg:h-[55vh] bg-white lg:absolute right-[12%] top-[15%] p-4 flex flex-col justify-evenly items-center rounded-xl">
 
-                <img src={logo} alt="logo" />
-                <span className="text-lg font-bold">Enterprise Resource Planning</span>
+                {/* <img src={logo} alt="logo" /> */}
+                <span className="text-lg font-bold">App Bowl</span>
                 <span className="text-sm">Bridging Technology and Expertise</span>
 
                 <div className="w-[90%] h-[85%] flex flex-col justify-center ">
@@ -172,9 +172,9 @@ const Login = () => {
                 </div>
             </div>
             <div className="lg:absolute bottom-[5%] text-center">
-                <span className="text-white text-lg font-medium">
+                {/* <span className="text-white text-lg font-medium">
                     Copyright © {currentYear} AppXperts Solutions Pte ltd - Design & Developed by appxperts.sg
-                </span>
+                </span> */}
             </div>
         </div>
     );

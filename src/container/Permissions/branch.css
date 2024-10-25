@@ -1,0 +1,11 @@
+/* Add this to your CSS file */
+.custom-input {
+  border: 1px solid #C0C0C0;
+}
+
+.custom-input:focus,
+.custom-input:hover,
+.custom-input:active {
+  border: 1px solid #C0C0C0 !important; /* Same border for all states */
+  outline: none; /* Remove default blue outline */
+}

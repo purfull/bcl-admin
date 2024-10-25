@@ -116,7 +116,7 @@ const handleSubmit = (event) => {
         <div>
         <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {data?.length && data.map((item, index) => (
-            <div key={index} className="p-2">
+            <div key={index} className="py-2">
               <div
                 className="bg-white rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow duration-300"
               >
@@ -135,7 +135,7 @@ const handleSubmit = (event) => {
                   alt={item.product_name}
                   className="object-contain w-1/2 mx-auto max-h-40 transition-transform duration-500 transform hover:scale-125"
                 />
-                <CardContent className="p-1">
+                <CardContent className="px-1">
                   <Typography
                     gutterBottom
                     variant="body1"
@@ -168,7 +168,7 @@ const handleSubmit = (event) => {
                       <KeyboardArrowRight className="text-[#62c3da] border-2 border-[#62c3da] rounded-full" />
                     </div>
                   </div>
-                  <div className="w-full flex justify-center">
+                  <div className="w-full flex justify-center" style={{marginTop:'5px'}}>
                     <button type="button" className="ti-btn ti-btn-primary-full w-full !px-[20px] !py-[2px] !text-[18px]">
                       Add to Featured
                     </button>

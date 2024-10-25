@@ -186,7 +186,8 @@ import Testimonials from './container/home/Testimonials/Testimonials.jsx'
 import Blogs from './container/home/Blogs/Blogs.jsx';
 import Products from './container/Marketplace/Products.jsx';
 import Customer from './container/Customers/Customer.jsx'
-
+import AdminUser from './container/AdminUser/AdminUser.jsx';
+import Permission from './container/Permissions/Permissions.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.Fragment>
@@ -207,6 +208,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path={`blogs`} element={<Blogs />} />
             <Route path={`Marketplace/products`} element={<Products />} />
             <Route path={`customers`} element={<Customer />} />
+            <Route path={`admin-user`} element={<AdminUser />} />
+            <Route path={`permission`} element={<Permission />} />
 
             <Route path={`Master/crm`} element={<Emp />} />
             <Route path={`Master/empty`} element={<Emp />} />

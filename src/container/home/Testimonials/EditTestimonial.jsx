@@ -38,7 +38,7 @@ const EditTestimonial = ({ row, onCancel }) => {
               //   setData(filteredData);
               // setListData(result.data);
               setEditData(result.data);
-              setLogo(result.data.image);
+              setLogo(result?.data?.image);
 
             }
         } catch (error) {
@@ -126,7 +126,7 @@ const EditTestimonial = ({ row, onCancel }) => {
                 className="form-control"
                 id="name"
                 required
-                value={editData.name || ''}
+                value={editData?.name || ''}
                 onChange={handleChange}
               />
             </div>
@@ -162,7 +162,7 @@ const EditTestimonial = ({ row, onCancel }) => {
                 id="message"
                 rows="4"
                 required
-                value={editData.message || ''}
+                value={editData?.message || ''}
                 onChange={handleChange}
               ></textarea>
             </div>
@@ -176,7 +176,7 @@ const EditTestimonial = ({ row, onCancel }) => {
                 className="form-control"
                 id="designation"
                 required
-                value={editData.designation || ''}
+                value={editData?.designation || ''}
                 onChange={handleChange}
               />
             </div>
@@ -190,7 +190,7 @@ const EditTestimonial = ({ row, onCancel }) => {
               <input
                 type="checkbox"
                 id="isActive"
-                checked={editData.isActive || false}
+                checked={editData?.isActive || false}
                 onChange={(e) =>
                   setEditData({ ...editData, isActive: e.target.checked })
                 }
