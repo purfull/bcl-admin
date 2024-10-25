@@ -4,6 +4,8 @@ import Pageheader from '../../../components/common/pageheader/pageheader';
 // import '../org/org.css';
 import { ResponsiveFeaturedDataTable } from "./BlogsData";
 import Alert from '../../dashboards/alert/Alert';
+import EditBlog from './EditBlog';
+import { AppEnv } from '../../../../config';
 
 const Blogs = () => {
   const [data, setData] = useState([]);
@@ -15,58 +17,35 @@ const Blogs = () => {
   // const [listData, setListData] = useState([]);
 
 
-  const [listData, setListData] = useState([
-    {
-      id: '101',
-      title: 'How to Brew Perfect Coffee',
-      author: 'John Doe',
-    },
-    {
-      id: '102',
-      title: 'Top 10 Morning Workouts',
-      author: 'Jane Smith',
-    },
-    {
-      id: '103',
-      title: 'Best Practices for Yoga',
-      author: 'Sam Wilson',
-    },
-    {
-      id: '104',
-      title: 'Healthy Breakfast Ideas',
-      author: 'Emily Johnson',
-    },
-    {
-      id: '105',
-      title: 'The Art of Meditation',
-      author: 'Michael Brown',
-    },
-    {
-      id: '106',
-      title: 'Exploring the Outdoors',
-      author: 'Sarah Wilson',
-    },
-    {
-      id: '107',
-      title: 'Home Workout Tips',
-      author: 'Chris Evans',
-    },
-    {
-      id: '108',
-      title: 'Cooking with Herbs',
-      author: 'Jessica Lee',
-    },
-    {
-      id: '109',
-      title: 'Mindfulness Practices',
-      author: 'David Garcia',
-    },
-    {
-      id: '110',
-      title: 'Benefits of Journaling',
-      author: 'Laura Martinez',
-    }
-  ]);
+  const [listData, setListData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const response = await fetch(`${AppEnv.baseUrl}/blog`);
+            const result = await response.json();
+            console.log(result , "Filtered Data");
+
+            if (result) {
+
+              // console.log(result , "kkkkkkkkkkkkkkkkkkkkkk")
+              //   const filteredData = result.map(item => ({
+              //       Product_name: item.product_name,
+              //       Logo: item.marketing_defaultImage_content,
+              //       Type: item.type,
+              //       Price: item.amount,
+              //       CreatedAt: formatDate(item.createdAt),
+              //     }));
+              //   setData(filteredData);
+              setListData(result.data);
+
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    fetchData();
+}, []);
   
 
   const handleEdit = (row) => {
@@ -101,6 +80,15 @@ const Blogs = () => {
     setIsAlertOpen(false);
     setRowToDelete(null);
   };
+  useEffect(() => {
+    if (listData.length > 0) {
+      setData(listData.map(el => ({
+        Id: el.id,
+        Author: el.author,
+        Title: el.title
+      })));
+    }
+  }, [listData]);
 
 
 
@@ -131,15 +119,14 @@ const Blogs = () => {
                 <div id="reactivity-table" className="ti-custom-table ti-striped-table ti-custom-table-hover">
                 
                   {editingRow ? (
-                    // <EditBlogs 
-                    //   row={editingRow} 
-                    //   onCancel={handleCancelEdit} 
-                    //   active={isActive}
-                    // />
-                    <h1>Hiiiiiiiiii</h1>
+                    <EditBlog
+                      row={editingRow} 
+                      onCancel={handleCancelEdit} 
+                      active={isActive}
+                    />
                   ) : (
                     <ResponsiveFeaturedDataTable
-                      data={listData}
+                      data={data}
                       onEdit={handleEdit}
                       onDelete={handleDeleteClick} // Pass the delete handler
                       // onAdd={handleAddClick}
