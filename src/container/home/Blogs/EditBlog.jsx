@@ -2,11 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import noImage from '../../../assets/images/no-images/no-image.png';
 import { AppEnv } from '../../../../config';
 
-const EditTestimonial = ({ row, onCancel }) => {
+const EditBlog = ({ row, onCancel }) => {
   const [editData, setEditData] = useState({});
   const [logo, setLogo] = useState(noImage);
   const fileInputRef = useRef(null);
-  const req = row.newTestimonial ? true : false;
+  const req = row.newBlogs ? true : false;
 
   const handleChange = (event) => {
     const { id, value } = event.target;
@@ -21,7 +21,7 @@ const EditTestimonial = ({ row, onCancel }) => {
       console.log("rowww ", row);
       
         try {
-            const response = await fetch(`${AppEnv.baseUrl}/testimonial/${row.Id}`);
+            const response = await fetch(`${AppEnv.baseUrl}/blog/${row.Id}`);
             const result = await response.json();
             console.log(result , "Filtered Data");
 
@@ -37,8 +37,9 @@ const EditTestimonial = ({ row, onCancel }) => {
               //     }));
               //   setData(filteredData);
               // setListData(result.data);
-              setEditData(result.data);
-              setLogo(result?.data?.image);
+              setEditData(result?.data);
+              setLogo(result.data?.image || null);
+
             }
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -84,17 +85,18 @@ const EditTestimonial = ({ row, onCancel }) => {
     event.preventDefault();
     console.log("dataaa ",editData);
     const dataToSend = {
-      "name": editData.name,
-      "message": editData.message,
+      "id": row.Id,
+      "author": editData.author,
+      "title": editData.title,
+      "content": editData.content,
       "image":  logo,
-      "designation": editData.designation,
-      "isActive": editData.isActive
+      "isActive": editData.isActive || false
   }
-  // console.log("data to send", dataToSend);
+  console.log("data to send", dataToSend);
   
     
     try {
-      const response = await fetch(`${req ? 'http://luxcycs.com:3000/testimonial/create-testimonial' : 'http://luxcycs.com:3000/testimonial/update-testimonial'}`, {
+      const response = await fetch(`${req ? 'http://luxcycs.com:3000/blog/create-blog' : 'http://luxcycs.com:3000/blog/update-blog'}`, {
         method: req ? 'POST' : 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -118,16 +120,42 @@ const EditTestimonial = ({ row, onCancel }) => {
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-4">
           <div className="flex items-center justify-start">
-            <label htmlFor="name" className="w-[15%] font-medium">Name*</label>
+            <label htmlFor="author" className="w-[15%] font-medium">Author</label>
             <div className="w-[85%]">
               <input
                 type="text"
                 className="form-control"
-                id="name"
+                id="author"
                 required
-                value={editData?.name || ''}
+                value={editData.author || ''}
                 onChange={handleChange}
               />
+            </div>
+          </div>
+          <div className="flex items-center justify-start">
+            <label htmlFor="title" className="w-[15%] font-medium">Title*</label>
+            <div className="w-[85%]">
+              <input
+                type="text"
+                className="form-control"
+                id="title"
+                required
+                value={editData.title || ''}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          <div className="flex items-center justify-start">
+            <label htmlFor="content" className="w-[15%] font-medium">Content</label>
+            <div className="w-[85%]">
+              <textarea
+                className="form-control"
+                id="content"
+                rows="4"
+                required
+                value={editData.content || ''}
+                onChange={handleChange}
+              ></textarea>
             </div>
           </div>
 
@@ -153,33 +181,7 @@ const EditTestimonial = ({ row, onCancel }) => {
           </div>
         
 
-          <div className="flex items-center justify-start">
-            <label htmlFor="message" className="w-[15%] font-medium">Message*</label>
-            <div className="w-[85%]">
-              <textarea
-                className="form-control"
-                id="message"
-                rows="4"
-                required
-                value={editData?.message || ''}
-                onChange={handleChange}
-              ></textarea>
-            </div>
-          </div>
 
-          <div className="flex items-center justify-start">
-            <label htmlFor="designation" className="w-[15%] font-medium">Designation*</label>
-            <div className="w-[85%]">
-              <input
-                type="text"
-                className="form-control"
-                id="designation"
-                required
-                value={editData?.designation || ''}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
         </div>
 
         <div className="w-full sm:w-[70%] flex justify-between my-[4vh]">
@@ -189,7 +191,7 @@ const EditTestimonial = ({ row, onCancel }) => {
               <input
                 type="checkbox"
                 id="isActive"
-                checked={editData?.isActive || false}
+                checked={editData.isActive || false}
                 onChange={(e) =>
                   setEditData({ ...editData, isActive: e.target.checked })
                 }
@@ -219,4 +221,4 @@ const EditTestimonial = ({ row, onCancel }) => {
   );
 };
 
-export default EditTestimonial;
+export default EditBlog;
