@@ -137,7 +137,7 @@ export const ResponsiveCustomerDataTable = ({ data = [], onEdit, onDelete, activ
           </div>
           <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
           <div className="">
-            <button className='px-[1vw] py-[1.5vh] bg-violet-700 text-white ml-[1vw] rounded-md ' onClick={() => {onEdit({ newCustomer: true }) }} >+ NEW Customer</button>
+            <button className='px-[1vw] py-[1.5vh] bg-violet-700 text-white ml-[1vw] rounded-md ' onClick={() => {onEdit({ newCustomer: true }) }} >+ NEW CUSTOMER</button>
           </div>
         </div>
         <div className="table-responsive table-bordered text-center">

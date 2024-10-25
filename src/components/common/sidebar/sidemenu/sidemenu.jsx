@@ -17,10 +17,6 @@ const combinedMenu = [
     MenuName: 'Reports'
   },
   {
-    MenuId: 6,
-    MenuName: 'Contact Query'
-  },
-  {
     MenuId: 7,
     MenuName: 'Featured Products'
   },
@@ -39,7 +35,11 @@ const combinedMenu = [
   {
     MenuId: 11,
     MenuName: 'Permission'
-  }
+  },
+  {
+    MenuId: 6,
+    MenuName: 'Contact Query'
+  },
 ];
 
 // Icon mapping for different menus

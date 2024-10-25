@@ -144,7 +144,6 @@ const EditTestimonial = ({ row, onCancel }) => {
             className="ti-btn ti-btn-outline-primary !px-[20px] !py-[2px] !mr-[2vw] !text-[18px]"
           >
             Cancel
-            
           </button>
           <button
             type="submit"
