@@ -6,7 +6,7 @@ const EditBlog = ({ row, onCancel }) => {
   const [editData, setEditData] = useState({});
   const [logo, setLogo] = useState(noImage);
   const fileInputRef = useRef(null);
-  const req = row.newTestimonial ? true : false;
+  const req = row.newBlogs ? true : false;
 
   const handleChange = (event) => {
     const { id, value } = event.target;
@@ -37,8 +37,8 @@ const EditBlog = ({ row, onCancel }) => {
               //     }));
               //   setData(filteredData);
               // setListData(result.data);
-              setEditData(result.data);
-              setLogo(result.data.image);
+              setEditData(result?.data);
+              setLogo(result.data?.image || null);
 
             }
         } catch (error) {
@@ -85,6 +85,7 @@ const EditBlog = ({ row, onCancel }) => {
     event.preventDefault();
     console.log("dataaa ",editData);
     const dataToSend = {
+      "id": row.Id,
       "author": editData.author,
       "title": editData.title,
       "content": editData.content,
@@ -95,8 +96,8 @@ const EditBlog = ({ row, onCancel }) => {
   
     
     try {
-      const response = await fetch('http://luxcycs.com:3000/blog/create-blog', {
-        method: 'POST',
+      const response = await fetch(`${req ? 'http://luxcycs.com:3000/blog/create-blog' : 'http://luxcycs.com:3000/blog/update-blog'}`, {
+        method: req ? 'POST' : 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
