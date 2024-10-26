@@ -73,12 +73,12 @@ const EditAdminUser = ({ row, onCancel }) => {
     <div>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-4">
-          <div className="flex items-center justify-start">
+          {/* <div className="flex items-center justify-start">
             <label htmlFor="id" className="w-[30%] font-medium">ID</label>
             <div className="w-[70%]">
               <input type="text" className="form-control custom-input" id="id" value={editData.id} onChange={handleChange} />
             </div>
-          </div>
+          </div> */}
 
           <div className="flex items-center justify-start">
             <label htmlFor="name" className="w-[30%] font-medium">Name</label>
@@ -110,19 +110,19 @@ const EditAdminUser = ({ row, onCancel }) => {
           <div className="flex items-center justify-start">
             <label htmlFor="password" className="w-[30%] font-medium">Password</label>
             <div className="w-[70%] flex">
-              <input type="text" className="form-control custom-input" id="password" value={editData.password} onChange={handleChange} />
+              <input type="text" className="form-control custom-input mr-2" id="password" value={editData.password} onChange={handleChange} />
               <button type="button" onClick={handlePasswordGenerate} className='ti-btn ti-btn-primary-full !px-[20px] !py-[2px] !text-[18px]' style={{minWidth:'220px'}} >Generate Password</button>
             </div>
           </div>
-          <div className="flex items-start justify-start">
+          {/* <div className="flex items-start justify-start">
             <label htmlFor="image" className="w-[30%] font-medium">Upload Image</label>
             <div className="w-[70%]">
               <input type="file" className="form-control custom-input" id="image" onChange={handleImageChange} accept="image/*" />
             </div>
-          </div>
+          </div> */}
           <div className="flex items-center justify-start">
+          <label className="w-[30%] font-medium">Image</label>
             <div>
-              <label className="font-medium">Selected Image Preview:</label>
               <img src={imagePreview} alt="Selected" className="w-32 h-32 mt-2 border rounded" />
             </div>
           </div>
