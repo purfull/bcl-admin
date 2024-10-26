@@ -25,7 +25,7 @@ const EditTestimonial = ({ row, onCancel }) => {
             const result = await response.json();
             console.log(result , "Filtered Data");
 
-            if (result.data) {
+            if (result) {
 
               // console.log(result , "kkkkkkkkkkkkkkkkkkkkkk")
               //   const filteredData = result.map(item => ({
@@ -39,6 +39,7 @@ const EditTestimonial = ({ row, onCancel }) => {
               // setListData(result.data);
               setEditData(result.data);
               setLogo(result?.data?.image);
+
             }
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -94,8 +95,8 @@ const EditTestimonial = ({ row, onCancel }) => {
   
     
     try {
-      const response = await fetch(`${req ? 'http://luxcycs.com:3000/testimonial/create-testimonial' : 'http://luxcycs.com:3000/testimonial/update-testimonial'}`, {
-        method: req ? 'POST' : 'PUT',
+      const response = await fetch('http://luxcycs.com:3000/testimonial/create-testimonial', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
