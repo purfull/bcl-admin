@@ -5,12 +5,10 @@ import { Autocomplete, TextField, Button } from '@mui/material';
 import { combinedMenu } from '../../components/common/sidebar/sidemenu/sidemenu';
 import './branch.css';
 
-// Sample data for users
 const users = [
   { id: 1, name: 'User 1' },
   { id: 2, name: 'User 2' },
   { id: 3, name: 'User 3' },
-  // Add more users as needed
 ];
 
 const ToggleSwitch = ({ checked, onChange }) => (
@@ -31,14 +29,13 @@ const Permission = () => {
   const [rowToDelete, setRowToDelete] = useState(null);
   const [feedbackMessage, setFeedbackMessage] = useState('');
 
-
   useEffect(() => {
-    // Load permissions for the selected user when they change
     if (selectedUser) {
       const existingPermissions = combinedMenu.map((menu) => ({
         id: menu.MenuId,
         module: menu.MenuName,
-        isActive: false, // Initialize as inactive
+        isViewActive: false,
+        isFullAccess: false,
       }));
       setUserPermissions(existingPermissions);
     } else {
@@ -52,24 +49,27 @@ const Permission = () => {
   };
 
   const handleConfirmDelete = () => {
-    // Logic for deleting permission (if needed), then close alert
     handleCloseAlert();
   };
 
-  const handlePermissionChange = (permissionId) => {
+  const handlePermissionChange = (permissionId, type) => {
     setUserPermissions((prevPermissions) =>
       prevPermissions.map((perm) =>
-        perm.id === permissionId ? { ...perm, isActive: !perm.isActive } : perm
+        perm.id === permissionId
+          ? {
+              ...perm,
+              isViewActive: type === 'isViewActive' ? !perm.isViewActive : false,
+              isFullAccess: type === 'isFullAccess' ? !perm.isFullAccess : false,
+            }
+          : perm
       )
     );
   };
 
   const handleSavePermissions = () => {
-    // Logic to save user permissions
     console.log('Saving permissions for:', selectedUser);
     console.log('Permissions:', userPermissions);
 
-    // Simulate a save action
     setFeedbackMessage(`Permissions saved for ${selectedUser.name}`);
   };
 
@@ -81,7 +81,6 @@ const Permission = () => {
         <div className="col-span-12">
           <div className="box">
             <div className="box-body space-y-3">
-              {/* Autocomplete Dropdown for Users */}
               <div className="flex flex-col">
                 <label htmlFor="user" className="font-medium mb-2">Select User:</label>
                 <Autocomplete
@@ -94,9 +93,8 @@ const Permission = () => {
                 />
               </div>
 
-              {/* Permission Management Table */}
               {selectedUser && (
-                <div className="overflow-hidden mt-4" style={{marginBottom:'40px'}}>
+                <div className="overflow-hidden mt-4" style={{ marginBottom: '40px' }}>
                   <h5 className="font-medium" style={{ fontWeight: 'bold', margin: '20px 0' }}>
                     Manage Permissions for {selectedUser.name}
                   </h5>
@@ -104,7 +102,8 @@ const Permission = () => {
                     <thead>
                       <tr>
                         <th>Module</th>
-                        <th>Active</th>
+                        <th>View</th>
+                        <th>Full Access</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -113,8 +112,14 @@ const Permission = () => {
                           <td>{permission.module}</td>
                           <td>
                             <ToggleSwitch
-                              checked={permission.isActive}
-                              onChange={() => handlePermissionChange(permission.id)}
+                              checked={permission.isViewActive}
+                              onChange={() => handlePermissionChange(permission.id, 'isViewActive')}
+                            />
+                          </td>
+                          <td>
+                            <ToggleSwitch
+                              checked={permission.isFullAccess}
+                              onChange={() => handlePermissionChange(permission.id, 'isFullAccess')}
                             />
                           </td>
                         </tr>
@@ -128,7 +133,6 @@ const Permission = () => {
                 <div className="fixed bottom-0 right-0 bg-white w-full py-4 px-6 flex justify-end mt-8">
                   <button
                     type="button"
-                    // onClick={onCancel}
                     className="ti-btn ti-btn-outline-primary !px-[20px] !py-[2px] !mr-[2vw] !text-[18px]"
                   >
                     Cancel
@@ -142,8 +146,6 @@ const Permission = () => {
                   </button>
                 </div>
               )}
-
-  
             </div>
           </div>
         </div>
