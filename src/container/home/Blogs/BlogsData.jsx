@@ -167,7 +167,7 @@ export const ResponsiveFeaturedDataTable = ({ data = [], onEdit, onDelete, activ
                 return (
                   <tr {...row.getRowProps()} key={Math.random()}>
                     {row.cells.map((cell) => (
-                      <td {...cell.getCellProps()} key={Math.random()} style={{ textAlign: 'left',maxWidth: '30vw', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <td {...cell.getCellProps()} key={Math.random()} style={{ textAlign: 'left' }}>
                         {cell.render('Cell')}
                       </td>
                     ))}
