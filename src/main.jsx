@@ -189,11 +189,16 @@ import Customer from './container/Customers/Customer.jsx'
 import AdminUser from './container/AdminUser/AdminUser.jsx';
 import Permission from './container/Permissions/Permissions.jsx';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.Fragment>
     <BrowserRouter>
       <React.Suspense>
         <ScrollToTop/>
+      <ToastContainer />
         <Routes>
           <Route path={``} element={<Auth />}>
             <Route index element={<Login />} />
@@ -211,181 +216,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path={`admin-user`} element={<AdminUser />} />
             <Route path={`permission`} element={<Permission />} />
 
-            <Route path={`Master/crm`} element={<Emp />} />
-            <Route path={`Master/empty`} element={<Emp />} />
-            <Route path={`Master/dashboard`} element={<Ecommerce />} />
-            <Route path={`Master/Organisation`} element={<Org />} />
-            <Route path={`Master/branch`} element={<Branch />} />
-            {/* <Route path={`Master/customer`} element={<Customer /> } /> */}
-            <Route path={`Master/suplier`} element={<Suplier /> } />
-            <Route path={`Master/currency`} element={<Currency /> } />
-            <Route path={`Master/Tax`} element={<Tax />} />
-            <Route path={`Master/Bank`} element={<Bank /> } />
-            <Route path={`Master/Paymode`} element={<Paymode /> } />
-            <Route path={`Master/terms`} element={<Terms /> } />
-            <Route path={`Master/Country`} element={<Country /> } />
+            
 
             {/* till this  */}
 
-            <Route path={`pages/aboutus`} element={<Aboutus />} />
-
-            <Route path={`pages/blog/blog`} element={<Blog />} />
-            <Route path={`pages/blog/blogdetails`} element={<Blogdetails />} />
-            <Route path={`pages/blog/createblog`} element={<Createblog />} />
-
-            <Route path={`pages/chat`} element={<Chat />} />
-            <Route path={`pages/contacts`} element={<Contacts />} />
-            <Route path={`pages/contactus`} element={<Contactus />} />
-
-            <Route path={`pages/ecommerce/addproducts`} element={<Addproducts />} />
-            <Route path={`pages/ecommerce/cart`} element={<Cart />} />
-            <Route path={`pages/ecommerce/checkout`} element={<Checkout />} />
-            <Route path={`pages/ecommerce/editproducts`} element={<Editproducts />} />
-            <Route path={`pages/ecommerce/orderdetails`} element={<Orderdetails />} />
-            <Route path={`pages/ecommerce/orders`} element={<Orders />} />
-            {/* <Route path={`pages/ecommerce/products`} element={<Products />} /> */}
-            <Route path={`pages/ecommerce/productdetails`} element={<Productdetails />} />
-            <Route path={`pages/ecommerce/productlist`} element={<Productlist />} />
-            <Route path={`pages/ecommerce/wishlist`} element={<Wishlist />} />
-
-            <Route path={`pages/email/mailapp`} element={<Mailapp />} />
-            <Route path={`pages/email/mailsettings`} element={<Mailsettings />} />
-
-            <Route path={`pages/empty`} element={<Empty />} />
-            <Route path={`pages/faqs`} element={<Faqs />} />
-
-            <Route path={`pages/filemanager/filemanager`} element={<Filemanager />} />
-
-            <Route path={`pages/invoice/createinvoice`} element={<Createinvoice />} />
-            <Route path={`pages/invoice/invoicedetails`} element={<Invoicedetails />} />
-            <Route path={`pages/invoice/invoicelist`} element={<Invoicelist />} />
-
-            <Route path={`pages/notifications`} element={<Notifications />} />
-            <Route path={`pages/pricing`} element={<Pricing />} />
-            <Route path={`pages/profile`} element={<Profile />} />
-            <Route path={`pages/reviews`} element={<Reviews />} />
-            <Route path={`pages/team`} element={<Team />} />
-            <Route path={`pages/termsconditions`} element={<Termsconditions />} />
-            <Route path={`pages/timeline`} element={<Timeline />} />
-            <Route path={`pages/todolist`} element={<Todolist />} />
-
-            <Route path={`task/kanbanboard`} element={<Kanbanboard />} />
-            <Route path={`task/listview`} element={<Listview />} />
-            <Route path={`task/taskdetails`} element={<Taskdetails />} />
-
-            <Route path={`uielements/alerts`} element={<Alerts />} />
-            <Route path={`uielements/badge`} element={<Badge />} />
-            <Route path={`uielements/breadcrumb`} element={<Breadcrumb />} />
-            <Route path={`uielements/buttons`} element={<Buttons />} />
-            <Route path={`uielements/buttongroup`} element={<Buttongroup />} />
-            <Route path={`uielements/cards`} element={<Cards />} />
-            <Route path={`uielements/dropdowns`} element={<Dropdowns />} />
-            <Route path={`uielements/imagesfigures`} element={<Imagesandfigure />} />
-            <Route path={`uielements/listgroup`} element={<Listgroup />} />
-            <Route path={`uielements/navtabs`} element={<Navtabs />} />
-            <Route path={`uielements/objectfit`} element={<Objectfit />} />
-            <Route path={`uielements/pagination`} element={<Pagination />} />
-            <Route path={`uielements/popoovers`} element={<Popovers />} />
-            <Route path={`uielements/progress`} element={<Progress />} />
-            <Route path={`uielements/spinners`} element={<Spinners />} />
-            <Route path={`uielements/indicators`} element={<Indicators />} />
-            <Route path={`uielements/toasts`} element={<Toasts />} />
-            <Route path={`uielements/tooltips`} element={<Tooltips />} />
-
-            <Route path={`utilities/avatars`} element={<Avatars />} />
-            <Route path={`utilities/borders`} element={<Borders />} />
-            <Route path={`utilities/colors`} element={<Colors />} />
-            <Route path={`utilities/grids`} element={<Grids />} />
-            <Route path={`utilities/flex`} element={<Flex />} />
-            <Route path={`utilities/columns`} element={<Columns />} />
-
-            <Route path={`forms/formelements/inputs`} element={<Inputs />} />
-            <Route path={`forms/formelements/checksradios`} element={<Checkradios />} />
-            <Route path={`forms/formelements/inputgroup`} element={<Inputgroup />} />
-            <Route path={`forms/formelements/formselect`} element={<Formselect />} />
-            <Route path={`forms/formelements/rangeslider`} element={<Rangesliders />} />
-            <Route path={`forms/formelements/fileuploads`} element={<Fileuploads />} />
-            <Route path={`forms/formelements/datetimepicker`} element={<Datetimepicker />} />
-            <Route path={`forms/formelements/colorpickers`} element={<Colorpicker />} />
-
-            <Route path={`forms/formlayouts`} element={<Formlayouts />} />
-            <Route path={`forms/validation`} element={<Validation />} />
-            <Route path={`forms/select2`} element={<Select2 />} />
-
-            <Route path={`forms/formeditor/suneditors`} element={<Suneditors/>} />
-
-            <Route path={`advancedui/accordionscollapse`} element={<Accordioncollapse />} />
-            <Route path={`advancedui/draggablecards`} element={<Draggablecards />} />
-            <Route path={`advancedui/modalscloses`} element={<Modalcloses />} />
-            <Route path={`advancedui/navbar`} element={<Navbar />} />
-            <Route path={`advancedui/offcanvas`} element={<Offcanvas />} />
-            <Route path={`advancedui/scrollspy`} element={<Scrollspy />} />
-            <Route path={`advancedui/ratings`} element={<Ratings />} />
-            <Route path={`advancedui/swiperjs`} element={<Swiperjs />} />
-
-            <Route path={`widgets`} element={<Widgets />} />
-
-            <Route path={`apps/fullcalendar`} element={<Fullacalendar />} />
-            <Route path={`apps/gallery`} element={<Gallery />} />
-
-            <Route path={`apps/projects/projectslist`} element={<Projectlist />} />
-            <Route path={`apps/projects/projectoverview`} element={<Projectoverview />} />
-            <Route path={`apps/projects/createproject`} element={<Createproject />} />
-
-            <Route path={`apps/jobs/jobdetails`} element={<Jobdetails />} />
-            <Route path={`apps/jobs/searchcompany`} element={<Searchcompany />} />
-            <Route path={`apps/jobs/searchjobs`} element={<Searchjobs />} />
-            <Route path={`apps/jobs/jobpost`} element={<Jobpost />} />
-            <Route path={`apps/jobs/jobslist`} element={<Joblist />} />
-            <Route path={`apps/jobs/searchcandidate`} element={<Searchcandidate />} />
-            <Route path={`apps/jobs/candidatedetails`} element={<Candidatedetails />} />
-
-            <Route path={`apps/nft/marketplace`} element={<Marketplace />} />
-            <Route path={`apps/nft/nftdetails`} element={<Nftdetails />} />
-            <Route path={`apps/nft/createnft`} element={<Createnft />} />
-            <Route path={`apps/nft/walletintegration`} element={<Walletintegration />} />
-            <Route path={`apps/nft/liveauction`} element={<Liveauction />} />
-
-            <Route path={`apps/crm/crmcontacts`} element={<Contactscrm />} />
-            <Route path={`apps/crm/companies`} element={<Companies />} />
-            <Route path={`apps/crm/deals`} element={<Deals />} />
-            <Route path={`apps/crm/leads`} element={<Leads />} />
-
-            <Route path={`apps/crypto/transactions`} element={<Transactions />} />
-            <Route path={`apps/crypto/currencyexchange`} element={<Currencyexchange />} />
-            <Route path={`apps/crypto/buysell`} element={<Buysell />} />
-            <Route path={`apps/crypto/marketcap`} element={<Marketcap />} />
-            <Route path={`apps/crypto/wallet`} element={<Wallet />} />
-
-            <Route path={`tables/tables`} element={<Tables />} />
-            <Route path={`tables/gridjstables`} element={<Gridjstables />} />
-            <Route path={`tables/datatables`} element={<Datatables />} />
-
-            <Route path={`apexcharts/linecharts`} element={<Linechart />} />
-            <Route path={`apexcharts/areacharts`} element={<Areachart />} />
-            <Route path={`apexcharts/columncharts`} element={<Columnchart />} />
-            <Route path={`apexcharts/barcharts`} element={<Barchart />} />
-            <Route path={`apexcharts/mixedcharts`} element={<Mixedchart />} />
-            <Route path={`apexcharts/rangeareacharts`} element={<Rangeareachart />} />
-            <Route path={`apexcharts/timelinecharts`} element={<Timelinechart />} />
-            <Route path={`apexcharts/candlestickcharts`} element={<Candlestickchart />} />
-            <Route path={`apexcharts/boxplotcharts`} element={<Boxplotchart />} />
-            <Route path={`apexcharts/bubblecharts`} element={<Bubblechart />} />
-            <Route path={`apexcharts/scattercharts`} element={<Scatterchart />} />
-            <Route path={`apexcharts/heatmapcharts`} element={<Heatmapchart />} />
-            <Route path={`apexcharts/treemapcharts`} element={<Treemapchart />} />
-            <Route path={`apexcharts/piecharts`} element={<Piechart />} />
-            <Route path={`apexcharts/radialbarcharts`} element={<Radialbarchart />} />
-            <Route path={`apexcharts/polarareacharts`} element={<Polarareachart />} />
-            <Route path={`apexcharts/radarcharts`} element={<Radarchart />} />
-
-            <Route path={`charts/chartjscharts`} element={<Chartjs />} />
-            <Route path={`charts/echartscharts`} element={<Echarts />} />
-
-            <Route path={`maps/leafletmaps`} element={<Leafletmaps />} />
-            <Route path={`maps/vectormaps`} element={<Vectormaps />} />
-
-            <Route path={`icons`} element={<Icons />} />
 
           </Route>
           <Route path={``} element={<Authenticationlayout />}>

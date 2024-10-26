@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import loginbg from "../assets/images/login/login-bg.jpg";
 import logo from "../assets/images/login/login-logo.png";
+import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [formData, setFormData] = useState({
-        username: '',
-        password: '',
-        org_selection: ''
+        email: '',
+        password: ''
     });
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -73,37 +73,49 @@ const Login = () => {
     //     }
     // }, [formData.org_selection]);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setIsLoggedIn(true);
-        // try {
-        //     const response = await fetch(`${import.meta.env.VITE_URL}/login`, {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         },
-        //         body: JSON.stringify(formData)
-        //     });
-        //     const data = await response.json();
-        //     // console.log(data); 
 
-        //     if (data.message === "login successful") {
-        //         setIsLoggedIn(true);
-        //         if (data.role === "admin") {
-        //             setIsAdmin(true);
-        //         }
-        //     } else {
-        //         console.error('Login failed:', data.message); // Log the error message from the response
-        //     }
-        // } catch (error) {
-        //     console.error('Error:', error);
-        // }
-    };
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        console.log("dataaa ",formData);
+        const dataToSend = {
+          "email": formData.email,
+          "password": formData.password
+        }
+          // console.log("data to send", dataToSend);
+      
+        
+        try {
+          const response = await fetch(`http://luxcycs.com:3000/api/admin/user/login`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dataToSend),
+          });    
+          const data = await response.json();
+    
+          if (data.success) {
+            console.log("loggedddddddd");
+            
+            setIsLoggedIn(true)
+          }
+          else {
+            toast.error(data.message, {
+                autoClose: 3000,
+              });
+              
+           }
 
+          console.log('Success:', data);
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      };
+    
     return (
         <div className="w-full h-[100vh] flex flex-col items-center justify-evenly" 
             style={{
-                backgroundImage: `url(${loginbg})`,
+                // backgroundImage: `url(${loginbg})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 fontFamily: 'sans-serif'
@@ -119,10 +131,10 @@ const Login = () => {
                     <form onSubmit={handleSubmit}>
                         <input
                             className="login-input w-full rounded-lg"
-                            type="text"
-                            name="username"
-                            placeholder="Username"
-                            value={formData.username}
+                            type="email"
+                            name="email"
+                            placeholder="email"
+                            value={formData.email}
                             onChange={handleChange}
                         />
                         <input

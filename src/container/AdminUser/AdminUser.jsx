@@ -4,6 +4,8 @@ import EditAdminUser from "./EditAdminUser";
 import './branch.css';
 import { ResponsiveAdminUserDataTable } from "./AdminUserData";
 import Alert from '../dashboards/alert/Alert';
+import { AppEnv } from '../../../config';
+
 const AdminUser = () => {
 
   
@@ -15,68 +17,8 @@ const AdminUser = () => {
   };
   
   const today = new Date();
-  const [data, setData] = useState([
-    {
-      id: 1,
-      name: "John Doe",
-      userRole: "Admin",
-      createdAt: formatDate(new Date(today.setDate(today.getDate()))),
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      userRole: "User",
-      createdAt: formatDate(new Date(today.setDate(today.getDate() - 1))),
-    },
-    {
-      id: 3,
-      name: "Alice Johnson",
-      userRole: "Moderator",
-      createdAt: formatDate(new Date(today.setDate(today.getDate() - 2))),
-    },
-    {
-      id: 4,
-      name: "Bob Brown",
-      userRole: "Editor",
-      createdAt: formatDate(new Date(today.setDate(today.getDate() - 3))),
-    },
-    {
-      id: 5,
-      name: "Charlie Green",
-      userRole: "User",
-      createdAt: formatDate(new Date(today.setDate(today.getDate() - 4))),
-    },
-    {
-      id: 6,
-      name: "Diana White",
-      userRole: "Admin",
-      createdAt: formatDate(new Date(today.setDate(today.getDate() - 5))),
-    },
-    {
-      id: 7,
-      name: "Eve Black",
-      userRole: "Moderator",
-      createdAt: formatDate(new Date(today.setDate(today.getDate() - 6))),
-    },
-    {
-      id: 8,
-      name: "Frank Gray",
-      userRole: "Editor",
-      createdAt: formatDate(new Date(today.setDate(today.getDate() - 7))),
-    },
-    {
-      id: 9,
-      name: "Grace Blue",
-      userRole: "User",
-      createdAt: formatDate(new Date(today.setDate(today.getDate() - 8))),
-    },
-    {
-      id: 10,
-      name: "Hank Yellow",
-      userRole: "Admin",
-      createdAt: formatDate(new Date(today.setDate(today.getDate() - 9))),
-    },
-  ]);
+  const [data, setData] = useState([]);
+  const [listData, setListData] = useState([]);
 
   const [editingRow, setEditingRow] = useState(null); // State to keep track of the row being edited
   const [isActive, setIsActive] = useState(true); // State to track the checkbox
@@ -85,23 +27,35 @@ const AdminUser = () => {
   const [rowToAdd, setRowToAdd] = useState(null);
 
   useEffect(() => {
-    const abortController = new AbortController();
+    const fetchData = async () => {
+        try {
+            const response = await fetch(`${AppEnv.baseUrl}/api/admin/user/list`);
+            const result = await response.json();
+            console.log(result , "Filtered Data");
 
-    fetch(`${import.meta.env.VITE_URL}/dashboards/branch?isActive=${isActive}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      signal: abortController.signal,
-    })
-      .then(result => result.json())
-      .then(data => setData(data))
-      .catch(err => console.log(err));
+            if (result) {
+              setListData(result.data);
 
-    return () => {
-      abortController.abort();
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
     };
+
+    fetchData();
   }, [isActive]);
+
+  useEffect(() => {
+    if (listData.length > 0) {
+      setData(listData.map(el => ({
+        Id: el.id,
+        Name: el.name,
+        Email: el.email,
+        Role: el.role,
+
+      })));
+    }
+  }, [listData]);
 
   const handleEdit = (row) => {
     setEditingRow(row); // Set the row to be edited
@@ -131,12 +85,13 @@ const AdminUser = () => {
   const handleConfirmDelete = () => {
     // Create a new AbortController instance
     const abortController = new AbortController();
+    console.log(rowToDelete, "dellllll");
+    
     
     const path = rowToDelete.add ? 'add' : 'delete'
-    // Perform the delete action here, e.g., call an API to delete the row
 
-    fetch(`${import.meta.env.VITE_URL}/branch/${path}`, {
-      method: 'PUT', // Ensure this is the correct method for your API
+    fetch(`${AppEnv.baseUrl}/api/admin/user/delete-user/${rowToDelete.row.Id}`, {
+      method: 'DELETE', // Ensure this is the correct method for your API
       headers: {
         'Content-Type': 'application/json',
       },

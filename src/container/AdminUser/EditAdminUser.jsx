@@ -1,35 +1,61 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import noImage from '../../assets/images/no-images/no-image.png';
+import { AppEnv } from '../../../config';
 
 const EditAdminUser = ({ row, onCancel }) => {
-  const [editData, setEditData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    role: '',
-    image: '',
-    IsActive: true,
-    password: ''
-  });
+  const [editData, setEditData] = useState({});
+  const [logo, setLogo] = useState(noImage);
+  const fileInputRef = useRef(null);
 
   const [imagePreview, setImagePreview] = useState(noImage);
+  const req = row.newAdminUser ? true : false;
 
-  const handleChange = (e) => {
-    const { id, value, type, checked } = e.target;
-    setEditData((prevState) => ({
-      ...prevState,
-      [id]: type === 'checkbox' ? checked : value,
-    }));
+
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log("rowww ", row);
+      
+        try {
+            const response = await fetch(`${AppEnv.baseUrl}/api/admin/user/get-user/${row.Id}`);
+            const result = await response.json();
+            console.log(result , "Filtered Data");
+
+            if (result) {
+              setEditData(result.data);
+              setLogo(result?.data?.image);
+
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    fetchData();
+}, []);
+
+
+const handleChange = (event) => {
+  const { id, value } = event.target;
+  setEditData((prevData) => ({
+    ...prevData,
+    [id]: value,
+  }));
+};
+
+  const handleImageClick = () => {
+    fileInputRef.current.click();
   };
 
-  const handleImageChange = (e) => {
+  const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setEditData((prevState) => ({
-        ...prevState,
-        image: file,
-      }));
-      setImagePreview(URL.createObjectURL(file));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result;
+        setLogo(base64String);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -64,11 +90,42 @@ const EditAdminUser = ({ row, onCancel }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(editData); // Log or send the data as needed
-  };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log("dataaa ",editData);
+    const dataToSend = {
+      "id": row.Id,
+      "name": editData.name,
+      "email": editData.email,
+      "phone": editData.phone,
+      "role": editData.role,
+      "password": editData.password,
+      "image": logo,
+      "isActive": editData.isActive
+    }
+      // console.log("data to send", dataToSend);
+  
+    
+    try {
+      const response = await fetch(`${req ? 'http://luxcycs.com:3000/api/admin/user/create-user' :  'http://luxcycs.com:3000/api/admin/user/update-user'}`, {
+        method: req ? 'POST' : 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSend),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      console.log('Success:', data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -83,34 +140,34 @@ const EditAdminUser = ({ row, onCancel }) => {
           <div className="flex items-center justify-start">
             <label htmlFor="name" className="w-[30%] font-medium">Name</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control custom-input" id="name" value={editData.name} onChange={handleChange} />
+              <input type="text" className="form-control custom-input" id="name" value={editData?.name || ''} onChange={handleChange} />
             </div>
           </div>
 
           <div className="flex items-center justify-start">
             <label htmlFor="email" className="w-[30%] font-medium">Email</label>
             <div className="w-[70%]">
-              <input type="email" className="form-control custom-input" id="email" value={editData.email} onChange={handleChange} />
+              <input type="email" className="form-control custom-input" id="email" value={editData?.email} onChange={handleChange} />
             </div>
           </div>
 
           <div className="flex items-center justify-start">
             <label htmlFor="phone" className="w-[30%] font-medium">Phone</label>
             <div className="w-[70%]">
-              <input type="tel" className="form-control custom-input" id="phone" value={editData.phone} onChange={handleChange} />
+              <input type="tel" className="form-control custom-input" id="phone" value={editData?.phone} onChange={handleChange} />
             </div>
           </div>
 
           <div className="flex items-center justify-start">
             <label htmlFor="role" className="w-[30%] font-medium">Role</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control custom-input" id="role" value={editData.role} onChange={handleChange} />
+              <input type="text" className="form-control custom-input" id="role" value={editData?.role} onChange={handleChange} />
             </div>
           </div>
           <div className="flex items-center justify-start">
             <label htmlFor="password" className="w-[30%] font-medium">Password</label>
             <div className="w-[70%] flex">
-              <input type="text" className="form-control custom-input mr-2" id="password" value={editData.password} onChange={handleChange} />
+              <input type="text" className="form-control custom-input mr-2" id="password" value={editData?.password} onChange={handleChange} />
               <button type="button" onClick={handlePasswordGenerate} className='ti-btn ti-btn-primary-full !px-[20px] !py-[2px] !text-[18px]' style={{minWidth:'220px'}} >Generate Password</button>
             </div>
           </div>
@@ -121,9 +178,22 @@ const EditAdminUser = ({ row, onCancel }) => {
             </div>
           </div> */}
           <div className="flex items-center justify-start">
-          <label className="w-[30%] font-medium">Image</label>
-            <div>
-              <img src={imagePreview} alt="Selected" className="w-32 h-32 mt-2 border rounded" />
+            <label className="w-[30%] font-medium">Image</label>
+            <div className="w-[10vw]">
+              <img
+                src={logo || noImage}
+                className="form-control cursor-pointer"
+                id="Logo"
+                alt="logo"
+                onClick={handleImageClick}
+              />
+              <input
+                type="file"
+                accept="image/*"
+                style={{ display: 'none' }}
+                ref={fileInputRef}
+                onChange={handleFileChange}
+              />
             </div>
           </div>
 
@@ -133,9 +203,11 @@ const EditAdminUser = ({ row, onCancel }) => {
 
         <div className="w-1/2 flex justify-between my-[4vh]">
           <div className="flex items-center justify-start">
-            <label htmlFor="ERP" className="font-medium mr-[1vw]">Is Active</label>
+            <label htmlFor="isActive" className="font-medium mr-[1vw]">Is Active</label>
             <label className="switch">
-              <input type="checkbox" id="ERP" checked={editData.IsActive} onChange={handleChange} />
+              <input type="checkbox" id="isActive" checked={editData?.isActive === 1 ? true : false } onChange={(e) =>
+                  setEditData({ ...editData, isActive: e.target.checked ? 1 : 0 })
+                } />
               <span className="slider round"></span>
             </label>
           </div>      

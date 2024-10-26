@@ -6,7 +6,7 @@ const EditTestimonial = ({ row, onCancel }) => {
   const [editData, setEditData] = useState({});
   const [logo, setLogo] = useState(noImage);
   const fileInputRef = useRef(null);
-  const req = row.newTestimonial ? true : false;
+  // const req = row.newTestimonial ? true : false;
 
   const handleChange = (event) => {
     const { id, value } = event.target;
@@ -95,8 +95,8 @@ const EditTestimonial = ({ row, onCancel }) => {
   
     
     try {
-      const response = await fetch('http://luxcycs.com:3000/testimonial/create-testimonial', {
-        method: 'POST',
+      const response = await fetch(`${req ? 'http://luxcycs.com:3000/testimonial/create-testimonial' :  'http://luxcycs.com:3000/testimonial/update-testimonial'}`, {
+        method: req ? 'POST' : 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },

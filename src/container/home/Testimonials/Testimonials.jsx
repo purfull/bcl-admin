@@ -44,9 +44,9 @@ const Testimonials = () => {
             console.error('Error fetching data:', error);
         }
     };
-
     fetchData();
 }, []);
+
   
 
   const handleEdit = (row) => {

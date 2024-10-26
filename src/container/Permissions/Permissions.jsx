@@ -3,13 +3,10 @@ import Pageheader from '../../components/common/pageheader/pageheader';
 import Alert from '../dashboards/alert/Alert';
 import { Autocomplete, TextField, Button } from '@mui/material';
 import { combinedMenu } from '../../components/common/sidebar/sidemenu/sidemenu';
+import { AppEnv } from '../../../config';
 import './branch.css';
 
-const users = [
-  { id: 1, name: 'User 1' },
-  { id: 2, name: 'User 2' },
-  { id: 3, name: 'User 3' },
-];
+
 
 const ToggleSwitch = ({ checked, onChange }) => (
   <label className="switch">
@@ -28,6 +25,7 @@ const Permission = () => {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [rowToDelete, setRowToDelete] = useState(null);
   const [feedbackMessage, setFeedbackMessage] = useState('');
+  const [users, setUser] = useState([])
 
   useEffect(() => {
     if (selectedUser) {
@@ -42,6 +40,35 @@ const Permission = () => {
       setUserPermissions([]);
     }
   }, [selectedUser]);
+
+  
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const response = await fetch(`${AppEnv.baseUrl}/api/admin/user/list`);
+            const result = await response.json();
+            console.log(result , "Filtered Data");
+
+            if (result) {
+
+              // console.log(result , "kkkkkkkkkkkkkkkkkkkkkk")
+              //   const filteredData = result.map(item => ({
+              //       Product_name: item.product_name,
+              //       Logo: item.marketing_defaultImage_content,
+              //       Type: item.type,
+              //       Price: item.amount,
+              //       CreatedAt: formatDate(item.createdAt),
+              //     }));
+              //   setData(filteredData);
+              setUser(result.data);
+
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+    fetchData();
+}, []);
 
   const handleCloseAlert = () => {
     setIsAlertOpen(false);
