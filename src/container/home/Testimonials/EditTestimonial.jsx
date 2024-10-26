@@ -89,8 +89,8 @@ const EditTestimonial = ({ row, onCancel }) => {
       "image":  logo,
       "designation": editData.designation,
       "isActive": editData.isActive
-  }
-  // console.log("data to send", dataToSend);
+      }
+      // console.log("data to send", dataToSend);
   
     
     try {
