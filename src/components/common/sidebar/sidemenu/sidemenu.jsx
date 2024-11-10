@@ -1,8 +1,7 @@
 export const combinedMenu = [
   {
     MenuId: 2,
-    MenuName: 'MarketPlace',
-    subMenu: ['Products']
+    MenuName: 'Products'
   },
   { 
     MenuId: 3,
@@ -14,38 +13,18 @@ export const combinedMenu = [
   },
   {
     MenuId: 5,
-    MenuName: 'Reports'
-  },
-  {
-    MenuId: 7,
-    MenuName: 'Featured Products'
-  },
-  {
-    MenuId: 8,
     MenuName: 'Testimonials'
   },
   {
-    MenuId: 9,
+    MenuId: 7,
     MenuName: 'Blogs'
-  },
-  {
-    MenuId: 10,
-    MenuName: 'Admin User'
-  },
-  {
-    MenuId: 11,
-    MenuName: 'Permission'
-  },
-  {
-    MenuId: 6,
-    MenuName: 'Contact Query'
   },
 ];
 
 // Icon mapping for different menus
 const menuIcons = {
   'Home': 'bx bx-home',
-  'MarketPlace': 'bx bx-store',
+  'Products': 'bx bx-store',
   'Customers': 'bx bx-user',
   'Orders': 'bx bx-cart',
   'Reports': 'bx bx-line-chart',
@@ -58,11 +37,11 @@ const menuIcons = {
   'Permission': 'bx bx-shield'        // Icon for Permission
 };
 
-const directMenuItems = ['Dashboards', 'Customers', 'Orders', 'Reports', 'Contact Query', 'Featured Products', 'Testimonials', 'Blogs', 'Admin User', 'Permission'];
+const directMenuItems = ['Dashboards', 'Products', 'Customers', 'Orders', 'Testimonials', 'Blogs'];
 
 export const MENUITEMS = [
   {
-    icon: (<i className="side-menu__icon bx bx-home"></i>),
+    icon: (<i className="side-menu__icon bx bx-home !text-[#F6FFFA]"></i>),
     type: 'link',  // Direct navigation for Dashboard
     Name: '',
     active: false,
@@ -82,7 +61,7 @@ export const MENUITEMS = [
     const isDirectMenu = directMenuItems.includes(menu.MenuName);
     
     return {
-      icon: (<i className={`side-menu__icon ${menuIcons[menu.MenuName] || 'bx bx-folder'}`}></i>),  // Default icon if not found
+      icon: (<i className={`side-menu__icon ${menuIcons[menu.MenuName] || 'bx bx-folder'} !text-[#F6FFFA]`}></i>),  // Default icon if not found
       type: isDirectMenu ? 'link' : 'sub',  // Direct navigation for certain menu items
       Name: '',
       active: false,

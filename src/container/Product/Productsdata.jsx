@@ -37,18 +37,18 @@ const generateColumns = (data, onEdit, onDelete, active) => {
     Cell: ({ row }) => (
       active ? (
         <div className="">
-          {/* <button
-            className='px-4 py-1 bg-violet-700 text-white'
-            onClick={() => onEdit(row.original)} // Use the onEdit prop
-          >
-            Edit
-          </button> */}
-          <button
-            className='px-4 ti-btn ti-btn-outline-danger !py-1 !mx-2'
-            onClick={() => onDelete(row.original,{add: false})} // Use the onDelete prop
-          >
-            Inactive
-          </button>
+        <button
+          className='px-4 py-1 bg-[#046E3D] text-white'
+          onClick={() => onEdit(row.original)} // Use the onEdit prop
+        >
+          Edit
+        </button>
+        <button
+          className='px-4 ti-btn ti-btn-outline-danger !py-1 !mx-2'
+          onClick={() => onDelete(row.original,{add: false})} // Use the onDelete prop
+        >
+          Delete
+        </button>
         </div>
       ) : (
         <div className="">
@@ -116,7 +116,7 @@ export const ResponsiveProductsDataTable = ({ data = [], onEdit, onDelete, activ
 
   return (
     <>
-      <div className="e-table pb-5">
+      <div className="e-table pb-5  ">
         <div className="">
         </div>
         <div className="flex">
@@ -136,11 +136,11 @@ export const ResponsiveProductsDataTable = ({ data = [], onEdit, onDelete, activ
             <span>entities</span>
           </div>
           <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
-          {/* <div className="">
-            <button className='px-[1vw] py-[1.5vh] bg-violet-700 text-white ml-[1vw] rounded-md ' onClick={() => {onEdit({ newProducts: true }) }} >+ NEW BRANCH</button>
-          </div> */}
+          <div className="">
+            <button className='px-[1vw] py-[1.5vh] bg-[#046E3D] text-white ml-[1vw] rounded-md ' onClick={() => {onEdit({ newProducts: true }) }} >+ NEW PRODUCT</button>
+          </div>
         </div>
-        <div className="table-responsive table-bordered text-center">
+        <div className="table-responsive table-bordered text-center ">
           <table
             {...getTableProps()}
             className="!border-t-0 !border-x-0 table-bordered text-nowrap !border-b-0 w-full"

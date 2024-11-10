@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import noImage from '../../../assets/images/no-images/no-image.png';
-import { AppEnv } from '../../../../config';
+import noImage from '../../assets/images/no-images/no-image.png';
+import { AppEnv } from '../../../config';
 
 const EditTestimonial = ({ row, onCancel }) => {
   const [editData, setEditData] = useState({});
@@ -119,8 +119,8 @@ const EditTestimonial = ({ row, onCancel }) => {
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-4">
           <div className="flex items-center justify-start">
-            <label htmlFor="name" className="w-[15%] font-medium">Name*</label>
-            <div className="w-[85%]">
+            <label htmlFor="name" className="w-[20%] font-medium">Customer</label>
+            <div className="w-[80%]">
               <input
                 type="text"
                 className="form-control"
@@ -133,44 +133,40 @@ const EditTestimonial = ({ row, onCancel }) => {
           </div>
 
             
-          <div className="flex items-center justify-start">
-            <label htmlFor="name" className="w-[15%] font-medium">Image*</label>
-            <div className="w-[10vw]">
-              <img
-                src={logo || noImage}
-                className="form-control cursor-pointer"
-                id="Logo"
-                alt="logo"
-                onClick={handleImageClick}
-              />
-              <input
-                type="file"
-                accept="image/*"
-                style={{ display: 'none' }}
-                ref={fileInputRef}
-                onChange={handleFileChange}
-              />
-            </div>
-          </div>
         
 
           <div className="flex items-center justify-start">
-            <label htmlFor="message" className="w-[15%] font-medium">Message*</label>
-            <div className="w-[85%]">
-              <textarea
+            <label htmlFor="message" className="w-[20%] font-medium">Order Id</label>
+            <div className="w-[80%]">
+              <input
                 className="form-control"
                 id="message"
                 rows="4"
                 required
-                value={editData?.message || ''}
+                value={ ''}
                 onChange={handleChange}
-              ></textarea>
+              ></input>
             </div>
           </div>
+          <div className="flex items-center justify-start">
+          <label htmlFor="designation" className="w-[20%] font-medium">Order Type</label>
+          <div className="w-[80%]">
+              <select
+                className="form-control"
+                id="CountryId"
+                // defaultValue={editData.CountryId || ''}
+                // onChange={handleCountryChange}
+              >
+                  <option value="" >Online</option>
+                  <option value="" >Cash On Delivery</option>
+                
+              </select>
+              </div>
+            </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="designation" className="w-[15%] font-medium">Designation*</label>
-            <div className="w-[85%]">
+            <label htmlFor="designation" className="w-[20%] font-medium">Payment Id</label>
+            <div className="w-[80%]">
               <input
                 type="text"
                 className="form-control"
@@ -181,9 +177,60 @@ const EditTestimonial = ({ row, onCancel }) => {
               />
             </div>
           </div>
+          
+          <div className="flex items-center justify-start">
+          <label htmlFor="designation" className="w-[20%] font-medium">Order Status</label>
+          <div className="w-[80%]">
+              <select
+                className="form-control"
+                id="CountryId"
+                // defaultValue={editData.CountryId || ''}
+                // onChange={handleCountryChange}
+              >
+                  <option value="" >Shipped</option>
+                  <option value="" >Delivered</option>
+                
+              </select>
+              </div>
+            </div>
+          <div className="flex items-center justify-start">
+            <label htmlFor="designation" className="w-[20%] font-medium">Total Amount</label>
+            <div className="w-[80%]">
+              <input
+                type="text"
+                className="form-control"
+                id="designation"
+                required
+                value={editData?.designation || ''}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          <div className="flex items-center justify-start">
+            <label htmlFor="designation" className="w-[20%] font-medium">Ordered Date</label>
+            <div className="w-[80%]">
+              <input
+                type="date"
+                className="form-control"
+                id="designation"
+                required
+                value={editData?.designation || ''}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          <div className="flex items-center justify-start">
+            
+          <button
+            type="submit"
+            className="ti-btn bg-[#046E3D] text-white !px-[20px] !py-[2px] !text-[18px]"
+          >
+            Download Invoice
+          </button>
+          </div>
         </div>
 
-        <div className="w-full sm:w-[70%] flex justify-between my-[4vh]">
+        {/* <div className="w-full sm:w-[70%] flex justify-between my-[4vh]">
           <div className="flex items-center justify-start">
             <label htmlFor="isActive" className="font-medium mr-[1vw]">Is Active</label>
             <label className="switch">
@@ -198,7 +245,7 @@ const EditTestimonial = ({ row, onCancel }) => {
               <span className="slider round"></span>
             </label>
           </div>
-        </div>
+        </div> */}
 
         <div className="fixed bottom-0 right-0 bg-white w-full py-4 px-6 flex justify-end mt-8">
           <button

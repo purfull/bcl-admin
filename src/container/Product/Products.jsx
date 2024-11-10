@@ -12,7 +12,28 @@ const Products = () => {
   const [rowToAdd, setRowToAdd] = useState(null);
 
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([
+    {
+      "Product id" : 1,
+      "Product Name": "200ml mini bottle",
+      "Stock Quantity": 400,
+      "Selling Price": "₹400",
+
+    },
+    {
+      "Product id" : 2,
+      "Product Name": "500ml regular bottle",
+      "Stock Quantity": 300,
+      "Selling Price": "₹700",
+
+    },
+    {
+      "Product id" : 3,
+      "Product Name": "1Lt large bottle",
+      "Stock Quantity": 200,
+      "Selling Price": "₹1100",
+
+    },]);
 
 
   const formatDate = (dateString) => {
@@ -24,30 +45,30 @@ const Products = () => {
 };
 
 
-  useEffect(() => {
-      const fetchData = async () => {
-          try {
-              const response = await fetch('http://luxcycs.com:3000/api/admin/products');
-              const result = await response.json();
-              console.log(result , "Filtered Data");
+  // useEffect(() => {
+  //     const fetchData = async () => {
+  //         try {
+  //             const response = await fetch('http://luxcycs.com:3000/api/admin/products');
+  //             const result = await response.json();
+  //             console.log(result , "Filtered Data");
 
-              if (result) {
-                  // Filter the data to only include the specified fields
-                  const filteredData = result.map(item => ({
-                      Product_name: item.product_name,
-                      Type: item.type,
-                      Logo: item.marketing_defaultImage_content,
-                      CreatedAt: formatDate(item.createdAt),
-                    }));
-                  setData(filteredData);
-              }
-          } catch (error) {
-              console.error('Error fetching data:', error);
-          }
-      };
+  //             if (result) {
+  //                 // Filter the data to only include the specified fields
+  //                 const filteredData = result.map(item => ({
+  //                     Product_name: item.product_name,
+  //                     Type: item.type,
+  //                     Logo: item.marketing_defaultImage_content,
+  //                     CreatedAt: formatDate(item.createdAt),
+  //                   }));
+  //                 setData(filteredData);
+  //             }
+  //         } catch (error) {
+  //             console.error('Error fetching data:', error);
+  //         }
+  //     };
 
-      fetchData();
-  }, []);
+  //     fetchData();
+  // }, []);
 
 
   useEffect(() => {
@@ -152,7 +173,7 @@ const Products = () => {
               <span className="slider round"></span>
             </label>
           </div>
-          <div className="box">
+          <div className="box ">
             <div className="box-body space-y-3">
               
               <div className="overflow-hidden">

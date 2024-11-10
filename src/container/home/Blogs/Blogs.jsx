@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import Pageheader from '../../../components/common/pageheader/pageheader';
-// import EditBlogs from './EditBlogs';
+import EditBlogs from './EditBlog';
 // import '../org/org.css';
 import { ResponsiveFeaturedDataTable } from "./BlogsData";
 import Alert from '../../dashboards/alert/Alert';
@@ -131,12 +131,11 @@ const Blogs = () => {
                 <div id="reactivity-table" className="ti-custom-table ti-striped-table ti-custom-table-hover">
                 
                   {editingRow ? (
-                    // <EditBlogs 
-                    //   row={editingRow} 
-                    //   onCancel={handleCancelEdit} 
-                    //   active={isActive}
-                    // />
-                    <h1>Hiiiiiiiiii</h1>
+                     <EditBlogs 
+                       row={editingRow} 
+                       onCancel={handleCancelEdit} 
+                       active={isActive}
+                     />
                   ) : (
                     <ResponsiveFeaturedDataTable
                       data={listData}

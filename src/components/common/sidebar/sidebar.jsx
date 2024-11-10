@@ -4,9 +4,10 @@ import { Link, useLocation } from 'react-router-dom';
 import { MENUITEMS } from './sidemenu/sidemenu';
 import { ThemeChanger } from '../../../redux/action';
 import store from '../../../redux/store';
+import logo from '../../../assets/images/brand/logo.svg'
 import logo1 from "../../../assets/images/brand-logos/desktop-logo.png";
 import logo2 from "../../../assets/images/brand-logos/toggle-logo.png";
-import logo3 from "../../../assets/images/brand-logos/desktop-dark.png";
+import logo3 from "../../../assets/images/brand/white-logo.png";
 import logo4 from "../../../assets/images/brand-logos/toggle-dark.png";
 import logo5 from "../../../assets/images/brand-logos/desktop-white.png";
 import logo6 from "../../../assets/images/brand-logos/toggle-white.png";
@@ -608,41 +609,40 @@ const handleClick = (event) => {
       <aside className="app-sidebar" id="sidebar" onMouseEnter={() => Onhover()}
         onMouseLeave={() => Outhover()}>
 
-        <div className="main-sidebar-header">
-          <a href={`${import.meta.env.BASE_URL}dashboards/crm/`} className="header-logo">
-            <img src={logo1} alt="logo" className="desktop-logo" />
-            <img src={logo2} alt="logo" className="toggle-logo" />
-            <img src={logo3} alt="logo" className="desktop-dark" />
-            <img src={logo4} alt="logo" className="toggle-dark" />
-            <img src={logo5} alt="logo" className="desktop-white" />
-            <img src={logo6} alt="logo" className="toggle-white" />
+        <div className="main-sidebar-header !bg-[#046E3D] !text-center ">
+          <a href={`${import.meta.env.BASE_URL}dashboards/crm/`} className="header-logo w-[100%] !text-center rounded-sm">
+            {/* <img src={logo1} alt="logo" className="desktop-logo" />
+            <img src={logo2} alt="logo" className="toggle-logo" /> */}
+            <img src={logo3} alt="logo" className="desktop-dark mx-auto w-[70%]" />
+            {/* <img src={logo4} alt="logo" className="toggle-dark" /> */}
+            {/* <img src={logo5} alt="logo" className="desktop-white" />
+            <img src={logo6} alt="logo" className="toggle-white" /> */}
           </a>
         </div>
-        <SimpleBar className="main-sidebar" id="sidebar-scroll">
+        <SimpleBar className="main-sidebar !bg-[#046E3D] " id="sidebar-scroll">
 
           <nav className="main-menu-container nav nav-pills flex-column sub-open">
-            <div className="slide-left" id="slide-left" onClick={() => { slideLeft(); }}><svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24"
-              height="24" viewBox="0 0 24 24">
-              <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path>
-            </svg></div>
+            <div className="slide-left" id="slide-left" onClick={() => { slideLeft(); }}>
+              <img src={logo} />
+            </div>
 
             <ul className="main-menu" onClick={() => Sideclick()}>
               {MENUITEMS.map((levelone) => (
                 <Fragment key={Math.random()}>
                   <li className={`${levelone.menutitle ? 'slide__category' : ''} ${levelone.type === 'link' ? 'slide' : ''}
-                       ${levelone.type === 'sub' ? 'slide has-sub' : ''} ${levelone?.active ? 'open' : ''} ${levelone?.selected ? 'active' : ''}`}>
+                       ${levelone.type === 'sub' ? 'slide has-sub' : ''} ${levelone?.active ? 'open' : ''} ${levelone?.selected ? 'active' : ''} `}>
                     {levelone.menutitle ?
-                      <span className='category-name'>
+                      <span className='category-name !text-[#F6FFFA]'>
                         {levelone.menutitle}
                       </span>
                       : ""}
                     {levelone.type === "link" ?
-                      <Link to={levelone.path + "/"} className={`side-menu__item ${levelone.selected ? 'active' : ''}`} >
+                      <Link to={levelone.path + "/"} className={`side-menu__item ${levelone.selected ? 'active' : ''} !text-[#F6FFFA] hover:bg-black`} >
                         {levelone.icon}
-                        <span className="side-menu__label">
+                        <span className="side-menu__label !text-[#F6FFFA] ">
                           {levelone.title}
                           {levelone.badgetxt ? (
-                            <span className={levelone.class}>
+                            <span className={`${levelone.class} !text-[#F6FFFA]`}>
                               {levelone.badgetxt}
                             </span>
                           ) : (
@@ -652,12 +652,12 @@ const handleClick = (event) => {
                       </Link>
                       : ""}
                     {levelone.type === "empty" ?
-                      <Link to="#" className='side-menu__item' onClick={handleClick}>
+                      <Link to="#" className='side-menu__item ' onClick={handleClick}>
                         {levelone.icon}
                         <span className="">
                           {levelone.title}
                           {levelone.badgetxt ? (
-                            <span className={levelone.class}>
+                            <span className={`${levelone.class} !text-[#046E3D]`}>
                               {levelone.badgetxt}
                             </span>
                           ) : (

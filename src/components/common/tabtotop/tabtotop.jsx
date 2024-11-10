@@ -23,7 +23,7 @@ function Tabtotop() {
 	}, []);
   return (
     <Fragment>
-    <div className="scrollToTop" onClick={screenup}>
+    <div className="scrollToTop !bg-[#046E3D]" onClick={screenup}>
      <span className="arrow"><i className="ri-arrow-up-s-fill text-xl"></i></span>
       </div>
     </Fragment>

@@ -45,11 +45,11 @@ function App() {
             }}
           />
           <Switcher />
-          <div className='page'>
+          <div className='page '>
             <Header />
             <Sidebar/>
-            <div className='content main-index'>
-              <div className='main-content'
+            <div className='content main-index '>
+              <div className='main-content '
               >
                 <Outlet />
               </div>

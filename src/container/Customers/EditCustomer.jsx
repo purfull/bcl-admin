@@ -115,13 +115,13 @@ const EditCustomer = ({ row, onCancel }) => {
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-4">
           <div className="flex items-center justify-start">
-            <label htmlFor="customerOrganization" className="w-[30%] font-medium">Customer Organization</label>
+            <label htmlFor="customerOrganization" className="w-[30%] font-medium">First Name</label>
             <div className="w-[70%]">
               <input type="text" className="form-control" id="customerOrganization" value={editData.customerOrganization} onChange={handleChange} />
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="customerName" className="w-[30%] font-medium">Name</label>
+            <label htmlFor="customerName" className="w-[30%] font-medium">Last Name</label>
             <div className="w-[70%]">
               <input type="text" className="form-control" id="customerName" value={editData.customerName} onChange={handleChange} />
             </div>
@@ -175,13 +175,19 @@ const EditCustomer = ({ row, onCancel }) => {
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="customerTitle" className="w-[30%] font-medium">Title</label>
+            <label htmlFor="customerTitle" className="w-[30%] font-medium">Age</label>
             <div className="w-[70%]">
               <input type="text" className="form-control" id="customerTitle" value={editData.customerTitle} onChange={handleChange} />
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="customerDomain" className="w-[30%] font-medium">Domain</label>
+            <label htmlFor="customerDomain" className="w-[30%] font-medium">Gender</label>
+            <div className="w-[70%]">
+              <input type="text" className="form-control" id="customerDomain" value={editData.customerDomain} onChange={handleChange} />
+            </div>
+          </div>
+          <div className="flex items-center justify-start">
+            <label htmlFor="customerDomain" className="w-[30%] font-medium">GST</label>
             <div className="w-[70%]">
               <input type="text" className="form-control" id="customerDomain" value={editData.customerDomain} onChange={handleChange} />
             </div>
@@ -197,16 +203,16 @@ const EditCustomer = ({ row, onCancel }) => {
           </div>
         </div> */}
         <div className="fixed bottom-0 right-0 bg-white w-full py-4 px-6 flex justify-end mt-8">
-          <button
+        <button
             type="button"
             onClick={onCancel}
-            className="ti-btn ti-btn-outline-primary !px-[20px] !py-[2px] !mr-[2vw] !text-[18px]"
+            className="ti-btn !border !border-[#046E3D] text-[#046E3D] !px-[20px] !py-[2px] !mr-[2vw] !text-[18px]"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="ti-btn ti-btn-primary-full !px-[20px] !py-[2px] !text-[18px]"
+            className="ti-btn bg-[#046E3D] text-white !px-[20px] !py-[2px] !text-[18px]"
           >
             Save
           </button>

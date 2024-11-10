@@ -184,13 +184,14 @@ import Dashboard from './container/dashboard/dashboard.jsx';
 import FeaturedProducts from './container/home/FeaturedProducts/FeaturedProducts.jsx';
 import Testimonials from './container/home/Testimonials/Testimonials.jsx'
 import Blogs from './container/home/Blogs/Blogs.jsx';
-import Products from './container/Marketplace/Products.jsx';
+import Products from './container/Product/Products.jsx';
 import Customer from './container/Customers/Customer.jsx'
 import AdminUser from './container/AdminUser/AdminUser.jsx';
 import Permission from './container/Permissions/Permissions.jsx';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Order from './container/orders/Order.jsx'
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -208,10 +209,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path={``} element={<App />}>
 
             <Route path={`Dashboard`} element={<Dashboard />} />
-            <Route path={`featured-products`} element={<FeaturedProducts />} />
+            <Route path={`products`} element={<Products />} />
             <Route path={`testimonials`} element={<Testimonials />} />
             <Route path={`blogs`} element={<Blogs />} />
-            <Route path={`Marketplace/products`} element={<Products />} />
+            <Route path={`orders`} element={<Order />} />
             <Route path={`customers`} element={<Customer />} />
             <Route path={`admin-user`} element={<AdminUser />} />
             <Route path={`permission`} element={<Permission />} />

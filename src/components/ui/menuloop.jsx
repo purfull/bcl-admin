@@ -10,12 +10,12 @@ function Menuloop({ MENUITEMS, toggleSidemenu, HoverToggleInnerMenuFn, level}) {
   };
     return (
         <Fragment>
-            <Link to="#!" className={`side-menu__item ${MENUITEMS?.selected ? 'active' : ''}`} onClick={(event) => {event.preventDefault();toggleSidemenu(event, MENUITEMS); }} onMouseEnter={ (event) =>HoverToggleInnerMenuFn(event, MENUITEMS)}>
+            <Link to="#!" className={`side-menu__item ${MENUITEMS?.selected ? 'active' : ''} !text-[#046E3D]`} onClick={(event) => {event.preventDefault();toggleSidemenu(event, MENUITEMS); }} onMouseEnter={ (event) =>HoverToggleInnerMenuFn(event, MENUITEMS)}>
                 {MENUITEMS.icon}
-                <span className={`${level == 1 ? "side-menu__label" :"" }`}>
+                <span className={`${level == 1 ? "side-menu__label" :"" } !text-[#046E3D]`}>
                     {MENUITEMS.title}
                     {MENUITEMS.badgetxt ? (
-                        <span className={MENUITEMS.class}>
+                        <span className={`${MENUITEMS.class} !text-[#046E3D]`}>
                             {MENUITEMS.badgetxt}
                         </span>
                     ) : (
@@ -29,7 +29,7 @@ function Menuloop({ MENUITEMS, toggleSidemenu, HoverToggleInnerMenuFn, level}) {
                     ? { display: "block" }
                     : { display: "none" }
             }>
-               {level <= 1 ? <li className='slide side-menu__label1'>
+               {level <= 1 ? <li className='slide side-menu__label1 !text-[#046E3D]'>
                    <Link to="#">{MENUITEMS.title}</Link> 
                 </li> :""}
                 {MENUITEMS.children.map((firstlevel)=>
