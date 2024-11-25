@@ -1,7 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Buffer } from 'buffer';
+import { AppEnv } from '../../../config';
 // import "./org.css";
 import noImage from '../../assets/images/no-images/no-image.png';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { json } from 'react-router-dom';
 
 const EditProducts = ({row,  onCancel }) => {
   const [editData, setEditData] = useState({});
@@ -14,11 +18,11 @@ const EditProducts = ({row,  onCancel }) => {
 
   useEffect(() => {
     const abortController = new AbortController();
-    // console.log(row);
+    console.log(row);
     
     
-    fetch(`${import.meta.env.VITE_URL}/branch/edit`, {
-      method: 'POST',
+    fetch(`${AppEnv.baseUrl}/admin/products`, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -60,7 +64,7 @@ const EditProducts = ({row,  onCancel }) => {
 
   const handleChange = (event) => {
     const { id, value } = event.target;
-    setEditData(prevData => ({
+    setEditData((prevData) => ({
       ...prevData,
       [id]: value,
     }));
@@ -92,7 +96,7 @@ const EditProducts = ({row,  onCancel }) => {
 
   const handleAddress = (event) => {
     event.preventDefault();
-    fetch(`${import.meta.env.VITE_URL}/address`,{
+    fetch(`${AppEnv.baseUrl}/address`,{
       method: 'GET',
     })
     .then(res => res.json())
@@ -103,11 +107,14 @@ const EditProducts = ({row,  onCancel }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const dataToSend = {
-      ...editData
+      ...editData,
+      image: logo,
     };
     console.log(req);
+    console.log("dataaa ", dataToSend);
     
-    fetch(`${import.meta.env.VITE_URL}/branch/update`, {
+    
+    fetch(`${AppEnv.baseUrl}/admin/products`, {
       method: `${req}`,
       headers: {
         'Content-Type': 'application/json',
@@ -115,7 +122,18 @@ const EditProducts = ({row,  onCancel }) => {
       body: JSON.stringify(dataToSend),
     })
       .then(response => response.json())
-      .then(data => console.log('Success:', data))
+      .then(data => {
+        console.log('Success:', data)
+        if(data.success) {
+          toast.success(data.message);
+
+        }
+        else {
+          
+          toast.error(data.message);
+        }
+      }
+      )
       .catch(error => console.error('Error:', error));
   };
 
@@ -123,33 +141,25 @@ const EditProducts = ({row,  onCancel }) => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
+      <ToastContainer />
         <div className="grid grid-cols-2 gap-4 mb-[4vh]">
           <div className="flex items-center justify-start">
-            <label htmlFor="OrgId" className="w-[30%] font-medium">Products Name</label>
+            <label htmlFor="productName" className="w-[30%] font-medium">Products Name</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="OrgId" defaultValue={editData.ProductsCode || ''} onChange={handleChange} />
+              <input type="text" className="form-control" id="name" defaultValue={editData.ProductsCode || ''} onChange={handleChange} />
             </div>
           </div>
          
           <div className="flex items-center justify-start">
-            <label htmlFor="CountryId" className="w-[30%] font-medium ">Bottle Size</label>
+            <label htmlFor="size" className="w-[30%] font-medium ">Bottle Size</label>
             <div className="w-[70%]">
-              <select
-                className="form-control"
-                id="CountryId"
-                // defaultValue={editData.CountryId || ''}
-                // onChange={handleCountryChange}
-              >
-                  <option value="" >200 ml</option>
-                  <option value="" >300 ml</option>
-                
-              </select>
+            <input type="number" className="form-control" id="bottle_size" defaultValue={editData.ProductsCode || ''} onChange={handleChange} />
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="PostalCode" className="w-[30%] font-medium ">Description</label>
+            <label htmlFor="description" className="w-[30%] font-medium ">Description</label>
             <div className="w-[70%] flex">
-              <input type="text" className="form-control" id="PostalCode" defaultValue={editData.PostalCode || ''} onChange={handleChange} />
+              <input type="text" className="form-control" id="description" defaultValue={editData.PostalCode || ''} onChange={handleChange} />
                 {
                   editData.CountryId === 'SINGAPORE' ? <button className='px-[2vw] py-[1vh] bg-violet-700 text-white ml-[1vw] rounded-md' onClick={handleAddress}>Address</button> : ''
                 }
@@ -159,21 +169,21 @@ const EditProducts = ({row,  onCancel }) => {
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="Phone" className="w-[30%] font-medium ">Actual Price</label>
+            <label htmlFor="actual_price" className="w-[30%] font-medium ">Actual Price</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="Phone" defaultValue={editData.Phone || ''} onChange={handleChange} />
+              <input type="text" className="form-control" id="actual_price" defaultValue={editData.Phone || ''} onChange={handleChange} />
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="Mobile" className="w-[30%] font-medium ">Offer Price</label>
+            <label htmlFor="offer_price" className="w-[30%] font-medium ">Offer Price</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="Mobile" defaultValue={editData.Mobile || ''} onChange={handleChange} />
+              <input type="text" className="form-control" id="offer_price" defaultValue={editData.Mobile || ''} onChange={handleChange} />
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="Fax" className="w-[30%] font-medium ">Stock Quantity</label>
+            <label htmlFor="stock_quantity" className="w-[30%] font-medium ">Stock Quantity</label>
             <div className="w-[70%]">
-              <input type="number" className="form-control" id="Fax" defaultValue={editData.Fax || ''} onChange={handleChange} />
+              <input type="number" className="form-control" id="stock_quantity" defaultValue={editData.Fax || ''} onChange={handleChange} />
             </div>
           </div>
           <div className="flex items-start justify-start">
@@ -182,7 +192,7 @@ const EditProducts = ({row,  onCancel }) => {
               <img
                 src={logo || noImage}
                 className="form-control cursor-pointer"
-                id="Logo"
+                name="image"
                 alt="logo"
                 onClick={handleImageClick}
               />
@@ -200,11 +210,18 @@ const EditProducts = ({row,  onCancel }) => {
           
         </div>
         
-        <div className="w-1/2 flex justify-between my-[4vh]">
+        <div className="w-full sm:w-[70%] flex justify-between my-[4vh]">
           <div className="flex items-center justify-start">
-            <label htmlFor="ERP" className="font-medium  mr-[1vw]">Is Active</label>
+            <label htmlFor="isActive" className="font-medium mr-[1vw]">Is Active</label>
             <label className="switch">
-              <input type="checkbox" id="ERP" checked={editData.IsActive || true} onChange={handleChange} />
+              <input
+                type="checkbox"
+                id="isActive"
+                checked={editData?.isActive || false}
+                onChange={(e) =>
+                  setEditData({ ...editData, isActive: e.target.checked })
+                }
+              />
               <span className="slider round"></span>
             </label>
           </div>

@@ -1,4 +1,4 @@
 
 export const AppEnv = {
-    baseUrl: "http://luxcycs.com:3000",
+    baseUrl: "http://localhost:3300",
 }
