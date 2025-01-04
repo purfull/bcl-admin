@@ -11,6 +11,7 @@ const Customer = () => {
   const [isAlertOpen, setIsAlertOpen] = useState(false); // State to control alert visibility
   const [rowToDelete, setRowToDelete] = useState(null); // State to keep track of the row to delete
   const [rowToAdd, setRowToAdd] = useState(null);
+  const [createMessage, setCreateMessage] = useState(null);
 
 
   const [data, setData] = useState([]);
@@ -22,33 +23,42 @@ const Customer = () => {
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
-};
+  };
 
+  const customerApi = async () => {
+    try {
+      // const response = await fetch(`${AppEnv.baseUrl}/api/admin/customer/list`);
+      const response = await fetch(`${AppEnv.baseUrl}/customer/get-all-customer`);
+      const result = await response.json();
+      console.log(result, "Filtered Data");
+
+      if (result.data) {
+        const filteredData = result?.data?.length && result.data.map(item => ({
+          Id: item.id,
+          Name: item.first_name + " " + item.last_name,
+          Email: item.email,
+          Phone: item.phone,
+          CreatedAt: formatDate(item.createdAt),
+        }));
+        setData(filteredData);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  useEffect(() => {
+    customerApi();
+  }, []);
 
   useEffect(() => {
-      const fetchData = async () => {
-          try {
-              const response = await fetch(`${AppEnv.baseUrl}/api/admin/customer/list`);
-              const result = await response.json();
-              console.log(result , "Filtered Data");
+    if (createMessage == "Customer created successfully") {
+      console.log("inside hooks Customer created successfully");
 
-              if (result.data) {
-                  const filteredData = result?.data?.length && result.data.map(item => ({
-                      Id: item.id,
-                      Name: item.customerName,
-                      Email: item.customerEmail,
-                      Phone: item.customerPhone,
-                      CreatedAt: formatDate(item.createTime),
-                    }));
-                  setData(filteredData);
-              }
-          } catch (error) {
-              console.error('Error fetching data:', error);
-          }
-      };
-
-      fetchData();
-  }, []);
+      customerApi();
+      setEditingRow(null);
+      setCreateMessage(null);
+    }
+  }, [createMessage]);
 
 
   useEffect(() => {
@@ -71,12 +81,14 @@ const Customer = () => {
   }, [isActive]);
 
   const handleEdit = (row) => {
+    console.log("row==>",row);
     setEditingRow(row); // Set the row to be edited
-    
+
   };
 
   const handleCancelEdit = () => {
     setEditingRow(null); // Cancel edit and return to view mode
+    setCreateMessage(null);
   };
 
   const handleCheckboxChange = () => {
@@ -84,8 +96,10 @@ const Customer = () => {
   };
 
   const handleDeleteClick = (row, add) => {
-    const deleteData = {row : row, add : add.add}
+    console.log("row==>",row,"add",add);
     
+    const deleteData = { row: row, add: add.add }
+
     setRowToDelete(deleteData);
     setIsAlertOpen(true);
   };
@@ -98,17 +112,18 @@ const Customer = () => {
   const handleConfirmDelete = () => {
     // Create a new AbortController instance
     const abortController = new AbortController();
-    
+
     const path = rowToDelete.add ? 'add' : 'delete'
     // Perform the delete action here, e.g., call an API to delete the row
 
     fetch(`${import.meta.env.VITE_URL}/branch/${path}`, {
+      // fetch(`${AppEnv.baseUrl}/customer/get-customer-detial/${rowToDelete?.row?.Id}`, {
       method: 'PUT', // Ensure this is the correct method for your API
       headers: {
         'Content-Type': 'application/json',
       },
       signal: abortController.signal,
-      body: JSON.stringify({ CustomerCode: rowToDelete.row.CustomerCode }) // Ensure the payload is correctly formatted
+      // body: JSON.stringify({ CustomerCode: rowToDelete.row.CustomerCode }) // Ensure the payload is correctly formatted
     })
       .then(result => result.json())
       .then(response => {
@@ -127,7 +142,7 @@ const Customer = () => {
         setRowToDelete(null); // Reset the rowToDelete state
       });
   };
-  
+
 
   const handleCloseAlert = () => {
     setIsAlertOpen(false);
@@ -144,26 +159,28 @@ const Customer = () => {
           <div className={`${editingRow ? 'hidden' : 'flex'} items-center justify-start mb-[2vh]`}>
             <label htmlFor="B2B" className="font-medium mr-[1vw]">Is Active</label>
             <label className="switch">
-              <input 
-                type="checkbox" 
-                id="B2B" 
-                checked={isActive} 
-                onChange={handleCheckboxChange} 
+              <input
+                type="checkbox"
+                id="B2B"
+                checked={isActive}
+                onChange={handleCheckboxChange}
               />
               <span className="slider round"></span>
             </label>
           </div>
           <div className="box">
             <div className="box-body space-y-3">
-              
+
               <div className="overflow-hidden">
                 <div id="reactivity-table" className="ti-custom-table ti-striped-table ti-custom-table-hover">
-                
+
                   {editingRow ? (
-                    <EditCustomer 
-                      row={editingRow} 
-                      onCancel={handleCancelEdit} 
+                    <EditCustomer
+                      row={editingRow}
+                      onCancel={handleCancelEdit}
                       active={isActive}
+                      createMessage={createMessage}
+                      setCreateMessage={setCreateMessage}
                     />
                   ) : (
                     <ResponsiveCustomerDataTable
@@ -181,9 +198,9 @@ const Customer = () => {
         </div>
       </div>
 
-      <Alert 
-        isOpen={isAlertOpen} 
-        onClose={handleCloseAlert} 
+      <Alert
+        isOpen={isAlertOpen}
+        onClose={handleCloseAlert}
         onConfirm={handleConfirmDelete}
       />
     </Fragment>

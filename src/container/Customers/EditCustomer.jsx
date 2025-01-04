@@ -2,50 +2,68 @@ import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import countryList from 'react-select-country-list';
 import { AppEnv } from '../../../config';
+import { CleaningServices } from '@mui/icons-material';
+import { Navigate } from 'react-router-dom';
 
-const EditCustomer = ({ row, onCancel }) => {
+const EditCustomer = ({ row, onCancel,createMessage,setCreateMessage }) => {
   console.log(row, "ooooooooooo");
 
   const [editData, setEditData] = useState({
-    customerOrganization: "",
-    customerAddress: {
-      street: "",
-      city: "",
-      state: "",
-      zip: "",
-      country: ""
-    },
-    customerName: "",
-    customerEmail: "",
-    customerTitle: "",
-    customerPhone: "",
-    customerDomain: "",
+    // customerOrganization: "",
+    // customerAddress: {
+    //   street: "",
+    //   city: "",
+    //   state: "",
+    //   zip: "",
+    //   country: ""
+    // },
+    // customerName: "",
+    // customerEmail: "",
+    // customerTitle: "",
+    // customerPhone: "",
+    // customerDomain: "",
+    first_name: "",
+    last_name: "",
+    address: "",
+    city: "",
+    state: "",
+    postal_code: "",
+    country: "",
+    phone: "",
+    email: "",
+    gst: ""
   });
 
 
-  const [custId , setCustId] = useState(null);
+  console.log(editData);
 
-  useEffect(()=>{
-    if(row?.newCustomer){
-    }else{
-      setCustId('572724')
+
+  const [custId, setCustId] = useState(null);
+ 
+
+  useEffect(() => {
+    if (row?.newCustomer) {
+    } else {
+      setCustId(row.Id);
     }
-  },[row])
+  }, [row])
 
   useEffect(() => {
     const fetchCustomerData = async () => {
       if (custId) {
         try {
-          const response = await fetch(`http://luxcycs.com:3000/api/admin/customer/get_customer/${custId}`);
-          
+          // const response = await fetch(`http://luxcycs.com:3000/api/admin/customer/get_customer/${custId}`);
+          const response = await fetch(`${AppEnv.baseUrl}/customer/get-customer-detial/${row.Id}`);
+
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
 
           const data = await response.json();
 
-          if(data){
-            console.log(data , "pppppppppppppppppppppp")
+          if (data) {
+            console.log(data, "pppppppppppppppppppppp")
+            setEditData(data?.data);
           }
         } catch (error) {
           console.error('Error fetching customer data:', error);
@@ -61,6 +79,8 @@ const EditCustomer = ({ row, onCancel }) => {
 
   const handleChange = (event) => {
     const { id, value } = event.target;
+
+    console.log(id, value);
 
     // Check if id is for customerAddress
     if (id.startsWith('customerAddress.')) {
@@ -96,9 +116,8 @@ const EditCustomer = ({ row, onCancel }) => {
       ...editData,
       languageCode: "EN"
     };
-    console.log(req);
 
-    fetch(`${AppEnv.baseUrl}/api/admin/customer/create`, {
+    fetch(`${AppEnv.baseUrl}/customer/create-customer`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -106,75 +125,83 @@ const EditCustomer = ({ row, onCancel }) => {
       body: JSON.stringify(dataToSend),
     })
       .then(response => response.json())
-      .then(data => console.log('Success:', data))
+      .then(data => setCreateMessage(data.message))
       .catch(error => console.error('Error:', error));
   };
 
+  useEffect(() => {
+    if(createMessage) {
+      console.log(createMessage);
+      alert(createMessage);
+    }
+  }, [createMessage]);
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-4">
           <div className="flex items-center justify-start">
-            <label htmlFor="customerOrganization" className="w-[30%] font-medium">First Name</label>
+            <label htmlFor="first_name" className="w-[30%] font-medium">First Name</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="customerOrganization" value={editData.customerOrganization} onChange={handleChange} />
+              <input type="text" className="form-control" id="first_name" value={editData.first_name} onChange={handleChange} disabled={row?.newCustomer != true ? true : false}/>
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="customerName" className="w-[30%] font-medium">Last Name</label>
+            <label htmlFor="last_name" className="w-[30%] font-medium">Last Name</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="customerName" value={editData.customerName} onChange={handleChange} />
+              <input type="text" className="form-control" id="last_name" value={editData.last_name} onChange={handleChange} disabled={row?.newCustomer != true ? true : false}/>
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="customerAddress.street" className="w-[30%] font-medium">Address Line/Street</label>
+            <label htmlFor="address" className="w-[30%] font-medium">Address Line/Street</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="customerAddress.street" value={editData.customerAddress.street} onChange={handleChange} />
+              <input type="text" className="form-control" id="address" value={editData.address} onChange={handleChange} disabled={row?.newCustomer != true ? true : false}/>
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="customerAddress.city" className="w-[30%] font-medium">City</label>
+            <label htmlFor="city" className="w-[30%] font-medium">City</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="customerAddress.city" value={editData.customerAddress.city} onChange={handleChange} />
+              <input type="text" className="form-control" id="city" value={editData.city} onChange={handleChange} disabled={row?.newCustomer != true ? true : false}/>
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="customerAddress.state" className="w-[30%] font-medium">State</label>
+            <label htmlFor="state" className="w-[30%] font-medium">State</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="customerAddress.state" value={editData.customerAddress.state} onChange={handleChange} />
+              <input type="text" className="form-control" id="state" value={editData.state} onChange={handleChange} disabled={row?.newCustomer != true ? true : false}/>
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="customerAddress.zip" className="w-[30%] font-medium">Postal Code</label>
+            <label htmlFor="postal_code" className="w-[30%] font-medium">Postal Code</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="customerAddress.zip" value={editData.customerAddress.zip} onChange={handleChange} />
+              <input type="text" className="form-control" id="postal_code" value={editData.postal_code} onChange={handleChange} disabled={row?.newCustomer != true ? true : false}/>
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="customerAddress.country" className="w-[30%] font-medium">Country</label>
+            <label htmlFor="country" className="w-[30%] font-medium">Country</label>
             <div className="w-[70%]">
               <Select
-                id="customerAddress.country"
-                value={countryOptions.find(option => option.value === editData.customerAddress.country)}
+                id="country"
+                value={countryOptions.find(option => option.value === editData.country)}
+                // value={editData.country}
                 onChange={handleCountryChange}
                 options={countryOptions}
                 isClearable
+                disabled={row?.newCustomer != true ? true : false}
               />
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="customerPhone" className="w-[30%] font-medium">Phone</label>
+            <label htmlFor="phone" className="w-[30%] font-medium">Phone</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="customerPhone" value={editData.customerPhone} onChange={handleChange} />
+              <input type="text" className="form-control" id="phone" value={editData.phone} onChange={handleChange} disabled={row?.newCustomer != true ? true : false}/>
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="customerEmail" className="w-[30%] font-medium">Email</label>
+            <label htmlFor="email" className="w-[30%] font-medium">Email</label>
             <div className="w-[70%]">
-              <input type="email" className="form-control" id="customerEmail" value={editData.customerEmail} onChange={handleChange} />
+              <input type="email" className="form-control" id="email" value={editData.email} onChange={handleChange} disabled={row?.newCustomer != true ? true : false}/>
             </div>
           </div>
-          <div className="flex items-center justify-start">
+          {/* <div className="flex items-center justify-start">
             <label htmlFor="customerTitle" className="w-[30%] font-medium">Age</label>
             <div className="w-[70%]">
               <input type="text" className="form-control" id="customerTitle" value={editData.customerTitle} onChange={handleChange} />
@@ -185,11 +212,11 @@ const EditCustomer = ({ row, onCancel }) => {
             <div className="w-[70%]">
               <input type="text" className="form-control" id="customerDomain" value={editData.customerDomain} onChange={handleChange} />
             </div>
-          </div>
+          </div> */}
           <div className="flex items-center justify-start">
-            <label htmlFor="customerDomain" className="w-[30%] font-medium">GST</label>
+            <label htmlFor="gst" className="w-[30%] font-medium">GST</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="customerDomain" value={editData.customerDomain} onChange={handleChange} />
+              <input type="text" className="form-control" id="gst" value={editData.gst} onChange={handleChange} disabled={row?.newCustomer != true ? true : false}/>
             </div>
           </div>
         </div>
@@ -203,7 +230,7 @@ const EditCustomer = ({ row, onCancel }) => {
           </div>
         </div> */}
         <div className="fixed bottom-0 right-0 bg-white w-full py-4 px-6 flex justify-end mt-8">
-        <button
+          <button
             type="button"
             onClick={onCancel}
             className="ti-btn !border !border-[#046E3D] text-[#046E3D] !px-[20px] !py-[2px] !mr-[2vw] !text-[18px]"
