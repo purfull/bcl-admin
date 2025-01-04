@@ -35,6 +35,8 @@ import ecommerce36 from "../../assets/images/ecommerce/png/36.png";
 import ecommerce38 from "../../assets/images/ecommerce/png/38.png";
 import ecommerce39 from "../../assets/images/ecommerce/png/39.png";
 import ecommerce40 from "../../assets/images/ecommerce/png/40.png";
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 
 
@@ -60,6 +62,98 @@ const Dashboard = () => {
         }
         setData(userdata);
     };
+    const handleDownload = (type) => {
+        // Example data
+        const bbData =  [
+            {
+              invoiceNumber: "INV-1001",
+              invoiceDate: "2024-11-01",
+              transactionType: "Online Purchase",
+              orderId: "ORD12345",
+              quantity: 2,
+              sku: "SKU1234",
+              shipToCity: "Mumbai",
+              shipToState: "Maharashtra",
+              invoiceAmount: 5000.0,
+              taxExclusiveGross: 4500.0,
+              totalTaxAmount: 450,
+              cgstTax: 225.0,
+              sgstTax: 225.0,
+              utgstTax: 0.0,
+              igstTax: 0.0,
+              customerBillToGST: "27ABCDE1234FZ1",
+              buyerName: "John Doe",
+            },
+            {
+              invoiceNumber: "INV-1002",
+              invoiceDate: "2024-11-05",
+              transactionType: "Retail",
+              orderId: "ORD67890",
+              quantity: 1,
+              sku: "SKU5678",
+              shipToCity: "Bangalore",
+              shipToState: "Karnataka",
+              invoiceAmount: 3000.0,
+              taxExclusiveGross: 2700.0,
+              totalTaxAmount: 270,
+              cgstTax: 135.0,
+              sgstTax: 135.0,
+              utgstTax: 0.0,
+              igstTax: 0.0,
+              customerBillToGST: "29XYZAB5678N1Z",
+              buyerName: "Jane Smith",
+            },
+            {
+              invoiceNumber: "INV-1003",
+              invoiceDate: "2024-11-10",
+              transactionType: "Wholesale",
+              orderId: "ORD24680",
+              quantity: 5,
+              sku: "SKU8910",
+              shipToCity: "Chennai",
+              shipToState: "Tamil Nadu",
+              invoiceAmount: 15000.0,
+              taxExclusiveGross: 13500.0,
+              totalTaxAmount: 1350,
+              cgstTax: 675.0,
+              sgstTax: 675.0,
+              utgstTax: 0.0,
+              igstTax: 0.0,
+              customerBillToGST: "33PQRLM5678A9Z",
+              buyerName: "Ravi Kumar",
+            },
+          ];
+
+          const bcData = [
+            {
+                InvoiceNumber: "INV12345",
+                InvoiceDate: "2023-10-01",
+                TransactionType: "Sale",
+                OrderId: "ORD67890",
+                Quantity: 5,
+                Sku: "SKU123",
+                ShipToCity: "Mumbai",
+                ShipToState: "Maharashtra",
+                InvoiceAmount: 1000.00,
+                TaxExclusiveGross: 900.00,
+                TotalTaxAmount: 100.00,
+                CgstTax: 50.00,
+                SgstTax: 50.00,
+                IgstTax: 0.00,
+                UtgstTax: 0.00
+            }
+        ];
+    
+        const worksheet = XLSX.utils.json_to_sheet(type ? bbData : bcData);
+    
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+    
+        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+        const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+    
+        saveAs(blob, type ? 'B2B-report.xlsx' : 'B2C-report.xlsx');
+      };
     return (
         <Fragment>
             <Pageheader currentpage="Dashboard" activepage="Dashboard" mainpage="Dasboard" />
@@ -162,8 +256,59 @@ const Dashboard = () => {
                                 </div>
                             </div>
                         </div>
+                        <div className="lg:col-span-6 md:col-span-6 xl:col-span-6 col-span-12">
+                            <div className="box">
+                                <div className="box-body">
+                                    <div className="grid grid-cols-12">
+                                        <div className="xxxl:col-span-9 col-span-8 ps-0">
+                                                <span className="font-semibold text-[1.25rem] leading-none text-defaulttextcolor vertical-bottom">
+                                                    Download B2C Report
+                                                </span>
+                                            <div className="my-4 text-[0.75rem] flex justify-between items-center ">
+                                                <span className="text-[0.90rem] mb-0 font-semibold">From </span>
+                                                <input type="date" />
+                                            </div>
+                                            <div className="my-4 text-[0.75rem] flex justify-between items-center ">
+                                                <span className="text-[0.90rem] mb-0 font-semibold">To </span>
+                                                <input type="date" />
+                                            </div>
+                                            <div>
+                                                {/* <span className="text-[0.75rem] mb-0">Increase by <span className="badge bg-success/10 text-success mx-1">+12.0%</span> this month</span> */}
+                                                <button className="ti-btn bg-[#046E3D] text-white !px-[20px] !py-[2px] !text-[18px]" onClick={() => handleDownload(false)}>download</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="lg:col-span-6 md:col-span-6 xl:col-span-6 col-span-12">
+                            <div className="box">
+                                <div className="box-body">
+                                    <div className="grid grid-cols-12">
+                                        <div className="xxxl:col-span-9 col-span-8 ps-0">
+                                                <span className="font-semibold text-[1.25rem] leading-none text-defaulttextcolor vertical-bottom">
+                                                    Download B2B Report
+                                                </span>
+                                            <div className="my-4 text-[0.75rem] flex justify-between items-center ">
+                                                <span className="text-[0.90rem] mb-0 font-semibold">From </span>
+                                                <input type="date" />
+                                            </div>
+                                            <div className="my-4 text-[0.75rem] flex justify-between items-center ">
+                                                <span className="text-[0.90rem] mb-0 font-semibold">To </span>
+                                                <input type="date" />
+                                            </div>
+                                            <div>
+                                                {/* <span className="text-[0.75rem] mb-0">Increase by <span className="badge bg-success/10 text-success mx-1">+12.0%</span> this month</span> */}
+                                                <button className="ti-btn bg-[#046E3D] text-white !px-[20px] !py-[2px] !text-[18px]" onClick={() => handleDownload(true)}>download</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+              
                 <div className="xxl:col-span-6 col-span-12">
                     <div className="grid grid-cols-12 gap-x-6">
                         <div className="xl:col-span-12 col-span-12">

@@ -93,7 +93,7 @@ const handlePrint = useReactToPrint({
     event.preventDefault();
     console.log("dataaa ",editData);
     const dataToSend = {
-      "name": editData.name,
+      // "name",
       "message": editData.message,
       "image":  logo,
       "designation": editData.designation,
@@ -273,79 +273,112 @@ const handlePrint = useReactToPrint({
         </div>
       </form>
       <div className="mx-auto my-[10vh] w-full">
-        <div className=""  ref={componentRef}>
-
-          <div className="text-center w-[60%] mx-auto border">
+      <div className="w-[60%] mx-auto" ref={componentRef}>
+          <div className="text-center w-full border">
             <h1 className="text-3xl font-bold">Thailash</h1>
             <p className="text-lg">THAILASH ORIGINAL THENNAMARAKUDI OIL</p>
-            <p className="text-sm text-gray-500">Address Line 1, Address Line 2, City, State, ZIP</p>
-            <p className="text-sm text-gray-500 mb-2 ">Phone: +123-456-7890 | Email: info@company.com</p>
+            <p className="text-sm text-gray-500">3/127, Madhura Nagar, Plot No. 144, Sirangudi Puliyur, <br /> Nagapattinam - 611 104</p>
+            <p className="text-sm text-gray-500 mb-2">Phone: 9597266083, 9003857938 | Email: thailashoil@gmail.com</p>
           </div>
-          <table className="table-auto border-collapse border border-gray-300 w-[60%] text-left mx-auto">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="border border-gray-300 px-4 py-2">S.No</th>
-                <th className="border border-gray-300 px-4 py-2">Particulars</th>
-                <th className="border border-gray-300 px-4 py-2">Qty</th>
-                <th className="border border-gray-300 px-4 py-2">Rate</th>
-                <th className="border border-gray-300 px-4 py-2">Amount</th>
-                <th className="border border-gray-300 px-4 py-2">Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">1</td>
-                <td className="border border-gray-300 px-4 py-2">500ml bottle</td>
-                <td className="border border-gray-300 px-4 py-2">10</td>
-                <td className="border border-gray-300 px-4 py-2">120</td>
-                <td className="border border-gray-300 px-4 py-2">1200</td>
-                <td className="border border-gray-300 px-4 py-2" rowSpan="2">2200</td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">2</td>
-                <td className="border border-gray-300 px-4 py-2">1L bottle</td>
-                <td className="border border-gray-300 px-4 py-2">5</td>
-                <td className="border border-gray-300 px-4 py-2">200</td>
-                <td className="border border-gray-300 px-4 py-2">1000</td>
-              </tr>
-              <tr>
-                <td colSpan="4" className="border border-gray-300 px-4 py-2 text-right font-bold">
-                  Tax 1 (10%):
-                </td>
-                <td colSpan="2" className="border border-gray-300 px-4 py-2">220</td>
-              </tr>
-              <tr>
-                <td colSpan="4" className="border border-gray-300 px-4 py-2 text-right font-bold">
-                  Tax 2 (5%):
-                </td>
-                <td colSpan="2" className="border border-gray-300 px-4 py-2">110</td>
-              </tr>
-              <tr>
-                <td colSpan="4" className="border border-gray-300 px-4 py-2 text-right font-bold">
-                  Tax 3 (2%):
-                </td>
-                <td colSpan="2" className="border border-gray-300 px-4 py-2">44</td>
-              </tr>
-              <tr>
-                <td colSpan="4" className="border border-gray-300 px-4 py-2 text-right font-bold">
-                  Tax 4 (1%):
-                </td>
-                <td colSpan="2" className="border border-gray-300 px-4 py-2">22</td>
-              </tr>
-              <tr>
-                <td colSpan="2" className="border border-gray-300 px-4 py-2 text-right font-bold">
-                  HSN Code: 30049011 
-                </td>
-                <td colSpan="2" className="border border-gray-300 px-4 py-2 text-right font-bold">
-                  Total Amount:
-                </td>
-                <td colSpan="4" className="border border-gray-300 px-4 py-2 font-bold">2596</td>
-              </tr>
-            </tbody>
-          </table>
+          <table className="table-fixed border-collapse border border-gray-300 w-full text-left">
+  <tbody>
+    <tr>
+      <td colSpan="6" className="border border-gray-300 px-4 py-2 break-words">
+        <span className="font-bold">Invoice Number:</span>
+      </td>
+      <td colSpan="6" className="border border-gray-300 px-4 py-2 break-words">
+        <span className="font-bold">Invoice Date:</span>
+      </td>
+    </tr>
+    <tr>
+      <td colSpan="6" className="border border-gray-300 px-4 py-2 !break-words" style={{wordWrap: 'break-word !important'}}>
+        <span className="font-bold">Billing Address:</span> <br /><br />
+        <p className="font-medium !break-words">Address Line 1, Address Line 2, <br />City, State, ZIP</p>
+      </td>
+      <td colSpan="6" className="border border-gray-300 px-4 py-2 !break-words">
+        <span className="font-bold">Place Of Supply:</span> <br /><br />
+        <p className="font-medium !break-words">Address Line 1, Address Line 2, <br /> City, State, ZIP</p>
+      </td>
+    </tr>
+    <tr>
+      <td colSpan="12" className="border border-gray-300 px-4 py-2 !break-words">
+        <span className="font-bold">GSTIN: 33AAACFXXXXX1Z</span>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 
-        </div>
+  <div className=" w-full">
+  
+    <table className="table-auto border-collapse border border-gray-300 w-full text-left max-w-full">
+      <thead>
+        <tr className="bg-gray-200">
+          <th className="border border-gray-300 px-4 py-2">S.No</th>
+          <th className="border border-gray-300 px-4 py-2">Particulars</th>
+          <th className="border border-gray-300 px-4 py-2">Qty</th>
+          <th className="border border-gray-300 px-4 py-2">Rate</th>
+          <th className="border border-gray-300 px-4 py-2">Amount</th>
+          <th className="border border-gray-300 px-4 py-2">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td className="border border-gray-300 px-4 py-2">1</td>
+          <td className="border border-gray-300 px-4 py-2">500ml bottle</td>
+          <td className="border border-gray-300 px-4 py-2">10</td>
+          <td className="border border-gray-300 px-4 py-2">120</td>
+          <td className="border border-gray-300 px-4 py-2">1200</td>
+          <td className="border border-gray-300 px-4 py-2" rowSpan="2">
+            2200
+          </td>
+        </tr>
+        <tr>
+          <td className="border border-gray-300 px-4 py-2">2</td>
+          <td className="border border-gray-300 px-4 py-2">1L bottle</td>
+          <td className="border border-gray-300 px-4 py-2">5</td>
+          <td className="border border-gray-300 px-4 py-2">200</td>
+          <td className="border border-gray-300 px-4 py-2">1000</td>
+        </tr>
+        <tr>
+          <td colSpan="4" className="border border-gray-300 px-4 py-2 text-right font-bold">
+            Tax 1 (10%):
+          </td>
+          <td colSpan="2" className="border border-gray-300 px-4 py-2">220</td>
+        </tr>
+        <tr>
+          <td colSpan="4" className="border border-gray-300 px-4 py-2 text-right font-bold">
+            Tax 2 (5%):
+          </td>
+          <td colSpan="2" className="border border-gray-300 px-4 py-2">110</td>
+        </tr>
+        <tr>
+          <td colSpan="4" className="border border-gray-300 px-4 py-2 text-right font-bold">
+            Tax 3 (2%):
+          </td>
+          <td colSpan="2" className="border border-gray-300 px-4 py-2">44</td>
+        </tr>
+        <tr>
+          <td colSpan="4" className="border border-gray-300 px-4 py-2 text-right font-bold">
+            Tax 4 (1%):
+          </td>
+          <td colSpan="2" className="border border-gray-300 px-4 py-2">22</td>
+        </tr>
+        <tr>
+          <td colSpan="2" className="border border-gray-300 px-4 py-2 text-right font-bold">
+            HSN Code: 30049011
+          </td>
+          <td colSpan="2" className="border border-gray-300 px-4 py-2 text-right font-bold">
+            Total Amount:
+          </td>
+          <td colSpan="4" className="border border-gray-300 px-4 py-2 font-bold">2596</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import Pageheader from '../../components/common/pageheader/pageheader';
 import EditProducts from "./EditProducts";
 import { ResponsiveProductsDataTable } from "./Productsdata";
 import Alert from '../dashboards/alert/Alert';
+import { AppEnv } from '../../../config';
 
 const Products = () => {
   const [editingRow, setEditingRow] = useState(null); // State to keep track of the row being edited
@@ -10,31 +11,33 @@ const Products = () => {
   const [isAlertOpen, setIsAlertOpen] = useState(false); // State to control alert visibility
   const [rowToDelete, setRowToDelete] = useState(null); // State to keep track of the row to delete
   const [rowToAdd, setRowToAdd] = useState(null);
+  const [listData, setListData] = useState([]); 
+  const [run, setRun] = useState(true)
 
+  const [data, setData] = useState([]);
 
-  const [data, setData] = useState([
-    {
-      "Product id" : 1,
-      "Product Name": "200ml mini bottle",
-      "Stock Quantity": 400,
-      "Selling Price": "₹400",
+  
+  // {
+  //   "Product id" : 1,
+  //   "Product Name": "200ml mini bottle",
+  //   "Stock Quantity": 400,
+  //   "Selling Price": "₹400",
 
-    },
-    {
-      "Product id" : 2,
-      "Product Name": "500ml regular bottle",
-      "Stock Quantity": 300,
-      "Selling Price": "₹700",
+  // },
+  // {
+  //   "Product id" : 2,
+  //   "Product Name": "500ml regular bottle",
+  //   "Stock Quantity": 300,
+  //   "Selling Price": "₹700",
 
-    },
-    {
-      "Product id" : 3,
-      "Product Name": "1Lt large bottle",
-      "Stock Quantity": 200,
-      "Selling Price": "₹1100",
+  // },
+  // {
+  //   "Product id" : 3,
+  //   "Product Name": "1Lt large bottle",
+  //   "Stock Quantity": 200,
+  //   "Selling Price": "₹1100",
 
-    },]);
-
+  // },
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -74,7 +77,7 @@ const Products = () => {
   useEffect(() => {
     const abortController = new AbortController();
 
-    fetch(`${import.meta.env.VITE_URL}/dashboards/branch?isActive=${isActive}`, {
+    fetch(`${AppEnv.baseUrl}/admin/products`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -82,21 +85,35 @@ const Products = () => {
       signal: abortController.signal,
     })
       .then(result => result.json())
-      .then(data => setData(data))
+      .then(data => setData(data.data))
       .catch(err => console.log(err));
 
     return () => {
       abortController.abort();
     };
-  }, [isActive]);
+  }, [run]);
+
+  useEffect(() => {
+    if (data.length > 0) {
+      setListData(data.map(el => ({
+        id: el.id,
+        size: el.bottle_size,
+        name: el.name,
+        "Offer Price": el.offer_price,
+        "Actual Price": el.actual_price,
+        "Created At": el.createdAt.split('T')[0],
+      })));
+    }
+  }, [data]);
 
   const handleEdit = (row) => {
-    setEditingRow(row); // Set the row to be edited
+    setEditingRow(row); 
     
   };
 
   const handleCancelEdit = () => {
     setEditingRow(null); // Cancel edit and return to view mode
+    setRun(!run)
   };
 
   const handleCheckboxChange = () => {
@@ -187,7 +204,7 @@ const Products = () => {
                     />
                   ) : (
                     <ResponsiveProductsDataTable
-                      data={data}
+                      data={listData}
                       onEdit={handleEdit}
                       onDelete={handleDeleteClick} // Pass the delete handler
                       // onAdd={handleAddClick}

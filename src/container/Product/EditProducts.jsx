@@ -17,22 +17,23 @@ const EditProducts = ({row,  onCancel }) => {
   const req = row.newProducts ? 'POST' : 'PUT'
 
   useEffect(() => {
+    if (row.newProducts) return
     const abortController = new AbortController();
     console.log(row);
     
     
-    fetch(`${AppEnv.baseUrl}/admin/products`, {
+    fetch(`${AppEnv.baseUrl}/admin/products-detial/${row.id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
       signal: abortController.signal,
-      body: JSON.stringify({ ProductsCode: row.ProductsCode })
     })
       .then(result => result.json())
       .then(data => {
-        setCountry(data.countries);
-        setEditData(data.branch[0]);
+        // setCountry(data.countries);
+        setEditData(data.data);
+        setLogo(data.data.image)
         // Check if images are present in the response and set them
       })
       
@@ -146,44 +147,54 @@ const EditProducts = ({row,  onCancel }) => {
           <div className="flex items-center justify-start">
             <label htmlFor="productName" className="w-[30%] font-medium">Products Name</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="name" defaultValue={editData.ProductsCode || ''} onChange={handleChange} />
+              <input type="text" className="form-control" id="name" defaultValue={editData.name || ''} onChange={handleChange} />
             </div>
           </div>
          
           <div className="flex items-center justify-start">
             <label htmlFor="size" className="w-[30%] font-medium ">Bottle Size</label>
             <div className="w-[70%]">
-            <input type="number" className="form-control" id="bottle_size" defaultValue={editData.ProductsCode || ''} onChange={handleChange} />
+            <input type="number" className="form-control" id="bottle_size" defaultValue={editData.bottle_size || ''} onChange={handleChange} />
             </div>
           </div>
           <div className="flex items-center justify-start">
             <label htmlFor="description" className="w-[30%] font-medium ">Description</label>
             <div className="w-[70%] flex">
-              <input type="text" className="form-control" id="description" defaultValue={editData.PostalCode || ''} onChange={handleChange} />
+              <input type="text" className="form-control" id="description" defaultValue={editData.description || ''} onChange={handleChange} />
                 {
                   editData.CountryId === 'SINGAPORE' ? <button className='px-[2vw] py-[1vh] bg-violet-700 text-white ml-[1vw] rounded-md' onClick={handleAddress}>Address</button> : ''
                 }
                   
 
+                {/* 
+                
+          name: editData.name,
+          bottle_size,
+          description,
+          actual_price,
+          offer_price,
+          stock_quantity,
+          image,
+          isActive, */}
                 
             </div>
           </div>
           <div className="flex items-center justify-start">
             <label htmlFor="actual_price" className="w-[30%] font-medium ">Actual Price</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="actual_price" defaultValue={editData.Phone || ''} onChange={handleChange} />
+              <input type="text" className="form-control" id="actual_price" defaultValue={editData.actual_price || ''} onChange={handleChange} />
             </div>
           </div>
           <div className="flex items-center justify-start">
             <label htmlFor="offer_price" className="w-[30%] font-medium ">Offer Price</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="offer_price" defaultValue={editData.Mobile || ''} onChange={handleChange} />
+              <input type="text" className="form-control" id="offer_price" defaultValue={editData.offer_price || ''} onChange={handleChange} />
             </div>
           </div>
           <div className="flex items-center justify-start">
             <label htmlFor="stock_quantity" className="w-[30%] font-medium ">Stock Quantity</label>
             <div className="w-[70%]">
-              <input type="number" className="form-control" id="stock_quantity" defaultValue={editData.Fax || ''} onChange={handleChange} />
+              <input type="number" className="form-control" id="stock_quantity" defaultValue={editData.stock_quantity || ''} onChange={handleChange} />
             </div>
           </div>
           <div className="flex items-start justify-start">

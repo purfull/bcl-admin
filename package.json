@@ -34,6 +34,7 @@
     "dragula": "^3.7.3",
     "echarts": "^5.5.0",
     "echarts-for-react": "^3.0.2",
+    "file-saver": "^2.0.5",
     "filepond": "^4.30.6",
     "filepond-plugin-image-exif-orientation": "^1.0.11",
     "filepond-plugin-image-preview": "^4.6.12",
@@ -82,6 +83,7 @@
     "swiper": "^11.0.7",
     "tailwind-clip-path": "^1.0.0",
     "uploader": "^3.48.3",
+    "xlsx": "^0.18.5",
     "yet-another-react-lightbox": "^3.17.0"
   },
   "devDependencies": {
