@@ -5,7 +5,7 @@ import { AppEnv } from '../../../config';
 import { CleaningServices } from '@mui/icons-material';
 import { Navigate } from 'react-router-dom';
 
-const EditCustomer = ({ row, onCancel,createMessage,setCreateMessage }) => {
+const EditCustomer = ({ row, onCancel, createMessage, setCreateMessage }) => {
   console.log(row, "ooooooooooo");
 
   const [editData, setEditData] = useState({
@@ -39,7 +39,7 @@ const EditCustomer = ({ row, onCancel,createMessage,setCreateMessage }) => {
 
 
   const [custId, setCustId] = useState(null);
- 
+
 
   useEffect(() => {
     if (row?.newCustomer) {
@@ -74,8 +74,9 @@ const EditCustomer = ({ row, onCancel,createMessage,setCreateMessage }) => {
     fetchCustomerData();
   }, [custId]);
 
-  const [countryOptions] = useState(countryList().getData());
+  // const [countryOptions] = useState(countryList().getData());
 
+  const [countryOptions] = useState("India");
 
   const handleChange = (event) => {
     const { id, value } = event.target;
@@ -130,7 +131,7 @@ const EditCustomer = ({ row, onCancel,createMessage,setCreateMessage }) => {
   };
 
   useEffect(() => {
-    if(createMessage) {
+    if (createMessage) {
       console.log(createMessage);
       alert(createMessage);
     }
@@ -142,63 +143,73 @@ const EditCustomer = ({ row, onCancel,createMessage,setCreateMessage }) => {
           <div className="flex items-center justify-start">
             <label htmlFor="first_name" className="w-[30%] font-medium">First Name</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="first_name" value={editData.first_name} onChange={handleChange} disabled={row?.newCustomer != true ? true : false}/>
+              <input type="text" className="form-control" id="first_name" value={editData.first_name} onChange={handleChange} disabled={row?.newCustomer != true ? true : false} />
             </div>
           </div>
           <div className="flex items-center justify-start">
             <label htmlFor="last_name" className="w-[30%] font-medium">Last Name</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="last_name" value={editData.last_name} onChange={handleChange} disabled={row?.newCustomer != true ? true : false}/>
+              <input type="text" className="form-control" id="last_name" value={editData.last_name} onChange={handleChange} disabled={row?.newCustomer != true ? true : false} />
             </div>
           </div>
           <div className="flex items-center justify-start">
             <label htmlFor="address" className="w-[30%] font-medium">Address Line/Street</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="address" value={editData.address} onChange={handleChange} disabled={row?.newCustomer != true ? true : false}/>
+              <input type="text" className="form-control" id="address" value={editData.address} onChange={handleChange} disabled={row?.newCustomer != true ? true : false} />
             </div>
           </div>
           <div className="flex items-center justify-start">
             <label htmlFor="city" className="w-[30%] font-medium">City</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="city" value={editData.city} onChange={handleChange} disabled={row?.newCustomer != true ? true : false}/>
+              <input type="text" className="form-control" id="city" value={editData.city} onChange={handleChange} disabled={row?.newCustomer != true ? true : false} />
             </div>
           </div>
           <div className="flex items-center justify-start">
             <label htmlFor="state" className="w-[30%] font-medium">State</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="state" value={editData.state} onChange={handleChange} disabled={row?.newCustomer != true ? true : false}/>
+              <input type="text" className="form-control" id="state" value={editData.state} onChange={handleChange} disabled={row?.newCustomer != true ? true : false} />
             </div>
           </div>
           <div className="flex items-center justify-start">
             <label htmlFor="postal_code" className="w-[30%] font-medium">Postal Code</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="postal_code" value={editData.postal_code} onChange={handleChange} disabled={row?.newCustomer != true ? true : false}/>
+              <input type="text" className="form-control" id="postal_code" value={editData.postal_code} onChange={handleChange} disabled={row?.newCustomer != true ? true : false} />
             </div>
           </div>
           <div className="flex items-center justify-start">
             <label htmlFor="country" className="w-[30%] font-medium">Country</label>
             <div className="w-[70%]">
-              <Select
+              {/* <Select
                 id="country"
-                value={countryOptions.find(option => option.value === editData.country)}
-                // value={editData.country}
+                // value={countryOptions.find(option => option.value === editData.country)}
+                value={"India"}
                 onChange={handleCountryChange}
                 options={countryOptions}
                 isClearable
                 disabled={row?.newCustomer != true ? true : false}
-              />
+              /> */}
+              <select disabled={row?.newCustomer != true ? true : false}
+                className="form-control"
+                id="country"
+                // value={editData.CountryId || ''}
+                onChange={handleChange}
+              >
+                <option value={"India"}>
+                  {"India"}
+                </option>
+              </select>
             </div>
           </div>
           <div className="flex items-center justify-start">
             <label htmlFor="phone" className="w-[30%] font-medium">Phone</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="phone" value={editData.phone} onChange={handleChange} disabled={row?.newCustomer != true ? true : false}/>
+              <input type="text" className="form-control" id="phone" value={editData.phone} onChange={handleChange} disabled={row?.newCustomer != true ? true : false} />
             </div>
           </div>
           <div className="flex items-center justify-start">
             <label htmlFor="email" className="w-[30%] font-medium">Email</label>
             <div className="w-[70%]">
-              <input type="email" className="form-control" id="email" value={editData.email} onChange={handleChange} disabled={row?.newCustomer != true ? true : false}/>
+              <input type="email" className="form-control" id="email" value={editData.email} onChange={handleChange} disabled={row?.newCustomer != true ? true : false} />
             </div>
           </div>
           {/* <div className="flex items-center justify-start">
@@ -216,7 +227,7 @@ const EditCustomer = ({ row, onCancel,createMessage,setCreateMessage }) => {
           <div className="flex items-center justify-start">
             <label htmlFor="gst" className="w-[30%] font-medium">GST</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="gst" value={editData.gst} onChange={handleChange} disabled={row?.newCustomer != true ? true : false}/>
+              <input type="text" className="form-control" id="gst" value={editData.gst} onChange={handleChange} disabled={row?.newCustomer != true ? true : false} />
             </div>
           </div>
         </div>
@@ -237,12 +248,12 @@ const EditCustomer = ({ row, onCancel,createMessage,setCreateMessage }) => {
           >
             Cancel
           </button>
-          <button
+          {row?.newCustomer && <button
             type="submit"
             className="ti-btn bg-[#046E3D] text-white !px-[20px] !py-[2px] !text-[18px]"
           >
             Save
-          </button>
+          </button>}
         </div>
       </form>
     </div>
