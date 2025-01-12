@@ -178,7 +178,7 @@ const Products = () => {
 
       <div id="a1" className="grid grid-cols-12 gap-6">
         <div className="col-span-12">
-          <div className={`${editingRow ? 'hidden' : 'flex'} items-center justify-start mb-[2vh]`}>
+          {/* <div className={`${editingRow ? 'hidden' : 'flex'} items-center justify-start mb-[2vh]`}>
             <label htmlFor="B2B" className="font-medium mr-[1vw]">Is Active</label>
             <label className="switch">
               <input 
@@ -189,7 +189,7 @@ const Products = () => {
               />
               <span className="slider round"></span>
             </label>
-          </div>
+          </div> */}
           <div className="box ">
             <div className="box-body space-y-3">
               

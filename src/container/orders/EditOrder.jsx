@@ -21,41 +21,41 @@ const EditTestimonial = ({ row, onCancel }) => {
   useEffect(() => {
     const fetchData = async () => {
       console.log("rowww ", row);
-      
-        try {
-            const response = await fetch(`${AppEnv.baseUrl}/testimonial/${row.Id}`);
-            const result = await response.json();
-            console.log(result , "Filtered Data");
 
-            if (result) {
+      try {
+        const response = await fetch(`${AppEnv.baseUrl}/testimonial/${row.Id}`);
+        const result = await response.json();
+        console.log(result, "Filtered Data");
 
-              // console.log(result , "kkkkkkkkkkkkkkkkkkkkkk")
-              //   const filteredData = result.map(item => ({
-              //       Product_name: item.product_name,
-              //       Logo: item.marketing_defaultImage_content,
-              //       Type: item.type,
-              //       Price: item.amount,
-              //       CreatedAt: formatDate(item.createdAt),
-              //     }));
-              //   setData(filteredData);
-              // setListData(result.data);
-              setEditData(result.data);
-              setLogo(result?.data?.image);
+        if (result) {
 
-            }
-        } catch (error) {
-            console.error('Error fetching data:', error);
+          // console.log(result , "kkkkkkkkkkkkkkkkkkkkkk")
+          //   const filteredData = result.map(item => ({
+          //       Product_name: item.product_name,
+          //       Logo: item.marketing_defaultImage_content,
+          //       Type: item.type,
+          //       Price: item.amount,
+          //       CreatedAt: formatDate(item.createdAt),
+          //     }));
+          //   setData(filteredData);
+          // setListData(result.data);
+          setEditData(result.data);
+          setLogo(result?.data?.image);
+
         }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     };
 
     fetchData();
-}, []);
+  }, []);
 
 
-const componentRef = useRef(null);
-const handlePrint = useReactToPrint({
-  contentRef: componentRef,  
-});
+  const componentRef = useRef(null);
+  const handlePrint = useReactToPrint({
+    contentRef: componentRef,
+  });
 
   const handleImageChange = (event) => {
     const logoFile = event.target.files[0];
@@ -91,19 +91,19 @@ const handlePrint = useReactToPrint({
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("dataaa ",editData);
+    console.log("dataaa ", editData);
     const dataToSend = {
       // "name",
       "message": editData.message,
-      "image":  logo,
+      "image": logo,
       "designation": editData.designation,
       "isActive": editData.isActive
-      }
-      // console.log("data to send", dataToSend);
-  
-    
+    }
+    // console.log("data to send", dataToSend);
+
+
     try {
-      const response = await fetch(`${req ? 'http://luxcycs.com:3000/testimonial/create-testimonial' :  'http://luxcycs.com:3000/testimonial/update-testimonial'}`, {
+      const response = await fetch(`${req ? 'http://luxcycs.com:3000/testimonial/create-testimonial' : 'http://luxcycs.com:3000/testimonial/update-testimonial'}`, {
         method: req ? 'POST' : 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -124,7 +124,7 @@ const handlePrint = useReactToPrint({
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={{ marginBottom: "30px" }}>
         <div className="grid grid-cols-2 gap-4">
           <div className="flex items-center justify-start">
             <label htmlFor="name" className="w-[20%] font-medium">Customer</label>
@@ -140,8 +140,8 @@ const handlePrint = useReactToPrint({
             </div>
           </div>
 
-            
-        
+
+
 
           <div className="flex items-center justify-start">
             <label htmlFor="message" className="w-[20%] font-medium">Order Id</label>
@@ -151,26 +151,26 @@ const handlePrint = useReactToPrint({
                 id="message"
                 rows="4"
                 required
-                value={ ''}
+                value={''}
                 onChange={handleChange}
               ></input>
             </div>
           </div>
           <div className="flex items-center justify-start">
-          <label htmlFor="designation" className="w-[20%] font-medium">Order Type</label>
-          <div className="w-[80%]">
+            <label htmlFor="designation" className="w-[20%] font-medium">Order Type</label>
+            <div className="w-[80%]">
               <select
                 className="form-control"
                 id="CountryId"
-                // defaultValue={editData.CountryId || ''}
-                // onChange={handleCountryChange}
+              // defaultValue={editData.CountryId || ''}
+              // onChange={handleCountryChange}
               >
-                  <option value="" >Online</option>
-                  <option value="" >Cash On Delivery</option>
-                
+                <option value="" >Online</option>
+                <option value="" >Cash On Delivery</option>
+
               </select>
-              </div>
             </div>
+          </div>
 
           <div className="flex items-center justify-start">
             <label htmlFor="designation" className="w-[20%] font-medium">Payment Id</label>
@@ -185,22 +185,22 @@ const handlePrint = useReactToPrint({
               />
             </div>
           </div>
-          
+
           <div className="flex items-center justify-start">
-          <label htmlFor="designation" className="w-[20%] font-medium">Order Status</label>
-          <div className="w-[80%]">
+            <label htmlFor="designation" className="w-[20%] font-medium">Order Status</label>
+            <div className="w-[80%]">
               <select
                 className="form-control"
                 id="CountryId"
-                // defaultValue={editData.CountryId || ''}
-                // onChange={handleCountryChange}
+              // defaultValue={editData.CountryId || ''}
+              // onChange={handleCountryChange}
               >
-                  <option value="" >Shipped</option>
-                  <option value="" >Delivered</option>
-                
+                <option value="" >Shipped</option>
+                <option value="" >Delivered</option>
+
               </select>
-              </div>
             </div>
+          </div>
           <div className="flex items-center justify-start">
             <label htmlFor="designation" className="w-[20%] font-medium">Total Amount</label>
             <div className="w-[80%]">
@@ -228,14 +228,14 @@ const handlePrint = useReactToPrint({
             </div>
           </div>
           <div className="flex items-center justify-start">
-            
-          <button
-            type="button"
-        onClick={handlePrint}
-            className="ti-btn bg-[#046E3D] text-white !px-[20px] !py-[2px] !text-[18px]"
-          >
-            Download Invoice
-          </button>
+
+            <button
+              type="button"
+              onClick={handlePrint}
+              className="ti-btn bg-[#046E3D] text-white !px-[20px] !py-[2px] !text-[18px]"
+            >
+              Download Invoice
+            </button>
           </div>
         </div>
 
@@ -272,7 +272,8 @@ const handlePrint = useReactToPrint({
           </button>
         </div>
       </form>
-      <div className="mx-auto my-[10vh] w-full">
+      {/* invoice container  */}
+      {/* <div className="mx-auto my-[10vh] w-full">
       <div className="w-[60%] mx-auto" ref={componentRef}>
           <div className="text-center w-full border">
             <h1 className="text-3xl font-bold">Thailash</h1>
@@ -379,7 +380,70 @@ const handlePrint = useReactToPrint({
 </div>
 
 
+      </div> */}
+      <div className="print-container" ref={componentRef}>
+        <div className="invoice-header text-center w-full border">
+          <h1 className="text-3xl font-bold">Thailash</h1>
+          <p className="text-lg">THAILASH ORIGINAL THENNAMARAKUDI OIL</p>
+          <p className="text-sm text-gray-500">3/127, Madhura Nagar, Plot No. 144, Sirangudi Puliyur, <br /> Nagapattinam - 611 104</p>
+        </div>
+
+        <table className="table-fixed border-collapse border border-gray-300 w-full text-left">
+          <tbody>
+            <tr>
+              <td colSpan="6" className="border border-gray-300 px-4 py-2">Invoice Number: </td>
+              <td colSpan="6" className="border border-gray-300 px-4 py-2">Invoice Date:</td>
+            </tr>
+            <tr>
+              <td colSpan="12" className="border border-gray-300 px-4 py-2">Billing Address:</td>
+            </tr>
+            <tr>
+              <td colSpan="12" className="border border-gray-300 px-4 py-2">GSTIN: 33AAACFXXXXX1Z</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div className="w-full">
+          <table className="table-auto border-collapse border border-gray-300 w-full text-left">
+            <thead>
+              <tr className="bg-gray-200">
+                <th className="border border-gray-300 px-4 py-2">S.No</th>
+                <th className="border border-gray-300 px-4 py-2">Particulars</th>
+                <th className="border border-gray-300 px-4 py-2">Qty</th>
+                <th className="border border-gray-300 px-4 py-2">Rate</th>
+                <th className="border border-gray-300 px-4 py-2">Amount</th>
+                <th className="border border-gray-300 px-4 py-2">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="border border-gray-300 px-4 py-2">1</td>
+                <td className="border border-gray-300 px-4 py-2">500ml bottle</td>
+                <td className="border border-gray-300 px-4 py-2">10</td>
+                <td className="border border-gray-300 px-4 py-2">120</td>
+                <td className="border border-gray-300 px-4 py-2">1200</td>
+                <td className="border border-gray-300 px-4 py-2" rowSpan="2">2200</td>
+              </tr>
+              <tr>
+                <td className="border border-gray-300 px-4 py-2">2</td>
+                <td className="border border-gray-300 px-4 py-2">1L bottle</td>
+                <td className="border border-gray-300 px-4 py-2">5</td>
+                <td className="border border-gray-300 px-4 py-2">200</td>
+                <td className="border border-gray-300 px-4 py-2">1000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
+
+      {/* <button
+        type="button"
+        onClick={handlePrint}
+        className="ti-btn bg-[#046E3D] text-white !px-[20px] !py-[2px] !text-[18px]"
+      >
+        Download Invoice
+      </button> */}
+
     </div>
   );
 };

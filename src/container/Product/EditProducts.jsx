@@ -197,6 +197,18 @@ const EditProducts = ({row,  onCancel }) => {
               <input type="number" className="form-control" id="stock_quantity" defaultValue={editData.stock_quantity || ''} onChange={handleChange} />
             </div>
           </div>
+          <div className="flex items-center justify-start">
+            <label htmlFor="title" className="w-[30%] font-medium ">Title</label>
+            <div className="w-[70%]">
+              <input type="text" className="form-control" id="title" defaultValue={editData.title || ''} onChange={handleChange} />
+            </div>
+          </div>
+          <div className="flex items-center justify-start">
+            <label htmlFor="sku" className="w-[30%] font-medium ">Sku</label>
+            <div className="w-[70%]">
+              <input type="text" className="form-control" id="sku" defaultValue={editData.sku || ''} onChange={handleChange} />
+            </div>
+          </div>
           <div className="flex items-start justify-start">
             <label htmlFor="name" className="w-[30%] font-medium mt-4">Product Image</label>
             <div className="w-[15vw] mt-4">
@@ -223,7 +235,7 @@ const EditProducts = ({row,  onCancel }) => {
         
         <div className="w-full sm:w-[70%] flex justify-between my-[4vh]">
           <div className="flex items-center justify-start">
-            <label htmlFor="isActive" className="font-medium mr-[1vw]">Is Active</label>
+            <label htmlFor="isActive" className="font-medium mr-[1vw]">Is Featured</label>
             <label className="switch">
               <input
                 type="checkbox"
