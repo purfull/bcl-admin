@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Buffer } from 'buffer';
 // import "./org.css";
 import noImage from '../../../assets/images/no-images/no-image.png';
+import { AppEnv } from '../../../config';
 
 const EditBranch = ({ onCancel }) => {
   const [editData, setEditData] = useState({});
@@ -11,7 +12,7 @@ const EditBranch = ({ onCancel }) => {
   useEffect(() => {
     const abortController = new AbortController();
 
-    fetch('http://localhost:3000/branch/edit', {
+    fetch(`${AppEnv.baseUrl}/branch/edit`, {
       method: 'GET',
       signal: abortController.signal,
     })
@@ -66,7 +67,7 @@ const EditBranch = ({ onCancel }) => {
 
   const handleAddress = (event) => {
     event.preventDefault();
-    fetch('http://localhost:3000/address',{
+    fetch(`${AppEnv.baseUrl}/address`,{
       method: 'GET',
     })
     .then(res => res.json())
@@ -82,7 +83,7 @@ const EditBranch = ({ onCancel }) => {
       QR: qrCode, // Include base64 image
     };
 
-    fetch('http://localhost:3000/org/update', {
+    fetch(`${AppEnv.baseUrl}/org/update`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

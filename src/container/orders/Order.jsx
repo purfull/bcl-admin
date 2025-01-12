@@ -75,6 +75,7 @@ const Order = () => {
   
 
   const handleEdit = (row) => {
+    console.log(row);
     setEditingRow(row); // Set the row to be edited
   };
 
@@ -148,6 +149,7 @@ const Order = () => {
                       onDelete={handleDeleteClick} // Pass the delete handler
                       // onAdd={handleAddClick}
                       active={isActive}
+                      
                     />
                   )}
                 </div>
