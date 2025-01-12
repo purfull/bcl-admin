@@ -114,7 +114,7 @@ export const ResponsiveTestimonialDataTable = ({ data = [], onEdit, onDelete, ac
           </div>
           <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
           <div className="">
-            <button className='px-[1vw] py-[1.5vh] bg-[#046E3D] text-white ml-[1vw] rounded-md ' onClick={() => {onEdit({ newTestimonial: true }) }} >+ ADD NEW</button>
+            <button className='px-[1vw] py-[1.5vh] bg-[#046E3D] text-white ml-[1vw] rounded-md ' onClick={() => {onEdit({ newOrder: true }) }} >+ ADD NEW</button>
           </div>
         </div>
         <div className="table-responsive table-bordered text-center">

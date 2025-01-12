@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import noImage from '../../assets/images/no-images/no-image.png';
 import { AppEnv } from '../../../config';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { useReactToPrint } from "react-to-print";
 
@@ -8,7 +10,7 @@ const EditTestimonial = ({ row, onCancel }) => {
   const [editData, setEditData] = useState({});
   const [logo, setLogo] = useState(noImage);
   const fileInputRef = useRef(null);
-  // const req = row.newTestimonial ? true : false;
+  const req = row.newOrder ? true : false;
 
   const handleChange = (event) => {
     const { id, value } = event.target;
@@ -103,8 +105,8 @@ const EditTestimonial = ({ row, onCancel }) => {
 
 
     try {
-      const response = await fetch(`${req ? 'http://luxcycs.com:3000/testimonial/create-testimonial' : 'http://luxcycs.com:3000/testimonial/update-testimonial'}`, {
-        method: req ? 'POST' : 'PUT',
+      const response = await fetch(`${AppEnv.baseUrl}/order/create-order'`, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -125,6 +127,7 @@ const EditTestimonial = ({ row, onCancel }) => {
   return (
     <div className='pb-[10vh]'>
       <form onSubmit={handleSubmit} style={{ marginBottom: "30px" }}>
+      <ToastContainer />
         <div className="grid grid-cols-2 gap-4">
           <div className="flex items-center justify-start">
             <label htmlFor="name" className="w-[20%] font-medium">Customer</label>
@@ -395,7 +398,16 @@ const EditTestimonial = ({ row, onCancel }) => {
               <td colSpan="6" className="border border-gray-300 px-4 py-2">Invoice Date:</td>
             </tr>
             <tr>
-              <td colSpan="12" className="border border-gray-300 px-4 py-2">Billing Address:</td>
+              <td colSpan="6" className="border border-gray-300 px-4 py-2 !break-words">
+                
+                <span className="font-bold">Billing Address:</span> <br />
+                  <p className="font-medium !break-words">Address Line 1, Address Line 2, <br /> City, State, ZIP</p>
+              </td>
+              
+              <td colSpan="6" className="border border-gray-300 px-4 py-2 !break-words">
+                <span className="font-bold">Place Of Supply:</span> <br />
+                <p className="font-medium !break-words">Address Line 1, Address Line 2, <br /> City, State, ZIP</p>
+              </td>
             </tr>
             <tr>
               <td colSpan="12" className="border border-gray-300 px-4 py-2">GSTIN: 33AAACFXXXXX1Z</td>
@@ -431,35 +443,35 @@ const EditTestimonial = ({ row, onCancel }) => {
                 <td className="border border-gray-300 px-4 py-2">200</td>
                 <td className="border border-gray-300 px-4 py-2">1000</td>
               </tr><tr>
-          <td colSpan="4" className="border border-gray-300 px-4 py-2 text-right font-bold">
-            Tax 1 (10%):
+          <td colSpan="5" className="border border-gray-300 px-5 py-2 text-right font-bold">
+            SGST :
           </td>
           <td colSpan="2" className="border border-gray-300 px-4 py-2">220</td>
         </tr>
         <tr>
-          <td colSpan="4" className="border border-gray-300 px-4 py-2 text-right font-bold">
-            Tax 2 (5%):
+          <td colSpan="5" className="border border-gray-300 px-5 py-2 text-right font-bold">
+            CGST :
           </td>
           <td colSpan="2" className="border border-gray-300 px-4 py-2">110</td>
         </tr>
         <tr>
-          <td colSpan="4" className="border border-gray-300 px-4 py-2 text-right font-bold">
-            Tax 3 (2%):
+          <td colSpan="5" className="border border-gray-300 px-5 py-2 text-right font-bold">
+            IGST:
           </td>
           <td colSpan="2" className="border border-gray-300 px-4 py-2">44</td>
         </tr>
         <tr>
-          <td colSpan="4" className="border border-gray-300 px-4 py-2 text-right font-bold">
-            Tax 4 (1%):
+          <td colSpan="5" className="border border-gray-300 px-5 py-2 text-right font-bold">
+            UTGST:
           </td>
           <td colSpan="2" className="border border-gray-300 px-4 py-2">22</td>
         </tr>
         <tr>
-          <td colSpan="2" className="border border-gray-300 px-4 py-2 text-right font-bold">
-            HSN Code: 30049011
+          <td colSpan="3" className="border border-gray-300 px-4 py-2 text-center font-bold">
+            HSN Code: 30049011 GST: 12%
           </td>
-          <td colSpan="2" className="border border-gray-300 px-4 py-2 text-right font-bold">
-            Total Amount:
+          <td colSpan="2" className="border border-gray-300 px-4 py-2 text-center font-bold">
+            Total Invoice Amount:
           </td>
           <td colSpan="4" className="border border-gray-300 px-4 py-2 font-bold">2596</td>
         </tr>

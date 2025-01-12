@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import noImage from '../../../assets/images/no-images/no-image.png';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { AppEnv } from '../../../../config';
 
 const EditTestimonial = ({ row, onCancel }) => {
   const [editData, setEditData] = useState({});
   const [logo, setLogo] = useState(noImage);
   const fileInputRef = useRef(null);
-  // const req = row.newTestimonial ? true : false;
+  const req = row.newTestimonial ? true : false;
 
   const handleChange = (event) => {
     const { id, value } = event.target;
@@ -21,7 +23,7 @@ const EditTestimonial = ({ row, onCancel }) => {
       console.log("rowww ", row);
       
         try {
-            const response = await fetch(`${AppEnv.baseUrl}/testimonial/${row.Id}`);
+            const response = await fetch(`${AppEnv.baseUrl}/testimonial/get-testimonial/${row.Id}`);
             const result = await response.json();
             console.log(result , "Filtered Data");
 
@@ -85,13 +87,14 @@ const EditTestimonial = ({ row, onCancel }) => {
     event.preventDefault();
     console.log("dataaa ",editData);
     const dataToSend = {
+      "id": editData.id,
       "name": editData.name,
       "message": editData.message,
       "image":  logo,
-      "designation": editData.designation,
+      "retting": editData.retting,
       "isActive": editData.isActive
       }
-      // console.log("data to send", dataToSend);
+      console.log("data to send", dataToSend);
   
     
     try {
@@ -107,16 +110,20 @@ const EditTestimonial = ({ row, onCancel }) => {
         throw new Error('Network response was not ok');
       }
 
+
       const data = await response.json();
       console.log('Success:', data);
+      toast.success("Testimonial updated successfully");
     } catch (error) {
       console.error('Error:', error);
+      toast.error("Failed to updated testimonial");
     }
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
+      <ToastContainer />
         <div className="grid grid-cols-2 gap-4">
           <div className="flex items-center justify-start">
             <label htmlFor="name" className="w-[15%] font-medium">Name*</label>
@@ -132,7 +139,35 @@ const EditTestimonial = ({ row, onCancel }) => {
             </div>
           </div>
 
+          <div className="flex items-center justify-start">
+            <label htmlFor="retting" className="w-[15%] font-medium">retting</label>
+            <div className="w-[85%]">
+              <input
+                type="text" 
+                className="form-control"
+                id="retting"
+                required
+                value={editData?.retting || ''}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
             
+        
+
+          <div className="flex items-center justify-start">
+            <label htmlFor="message" className="w-[15%] font-medium">Message*</label>
+            <div className="w-[85%]">
+              <textarea
+                className="form-control"
+                id="message"
+                rows="4"
+                required
+                value={editData?.message || ''}
+                onChange={handleChange}
+              ></textarea>
+            </div>
+          </div>
           <div className="flex items-center justify-start">
             <label htmlFor="name" className="w-[15%] font-medium">Image*</label>
             <div className="w-[10vw]">
@@ -152,47 +187,19 @@ const EditTestimonial = ({ row, onCancel }) => {
               />
             </div>
           </div>
-        
 
-          <div className="flex items-center justify-start">
-            <label htmlFor="message" className="w-[15%] font-medium">Message*</label>
-            <div className="w-[85%]">
-              <textarea
-                className="form-control"
-                id="message"
-                rows="4"
-                required
-                value={editData?.message || ''}
-                onChange={handleChange}
-              ></textarea>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-start">
-            <label htmlFor="designation" className="w-[15%] font-medium">Designation*</label>
-            <div className="w-[85%]">
-              <input
-                type="text"
-                className="form-control"
-                id="designation"
-                required
-                value={editData?.designation || ''}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
         </div>
 
         <div className="w-full sm:w-[70%] flex justify-between my-[4vh]">
           <div className="flex items-center justify-start">
-            <label htmlFor="isActive" className="font-medium mr-[1vw]">Is Active</label>
+            <label htmlFor="is_active" className="font-medium mr-[1vw]">Is Active</label>
             <label className="switch">
               <input
                 type="checkbox"
-                id="isActive"
-                checked={editData?.isActive || false}
+                id="is_active"
+                checked={editData?.is_active || false}
                 onChange={(e) =>
-                  setEditData({ ...editData, isActive: e.target.checked })
+                  setEditData({ ...editData, is_active: e.target.checked })
                 }
               />
               <span className="slider round"></span>

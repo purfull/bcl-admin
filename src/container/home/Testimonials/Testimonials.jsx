@@ -12,7 +12,7 @@ const Testimonials = () => {
   const [isActive, setIsActive] = useState(true); // State to track the checkbox
   const [isAlertOpen, setIsAlertOpen] = useState(false); // State to control alert visibility
   const [rowToDelete, setRowToDelete] = useState(null); // State to keep track of the row to delete
-  const [rowToAdd, setRowToAdd] = useState(null);
+  const [reRun, setReRun] = useState(false);
   // const [listData, setListData] = useState([]);
 
 
@@ -45,7 +45,7 @@ const Testimonials = () => {
         }
     };
     fetchData();
-}, []);
+}, [reRun]);
 
   
 
@@ -55,6 +55,7 @@ const Testimonials = () => {
 
   const handleCancelEdit = () => {
     setEditingRow(null); // Cancel edit and return to view mode
+    setReRun(!reRun)
   };
 
   const handleCheckboxChange = () => {
@@ -83,7 +84,7 @@ const Testimonials = () => {
   };
 
   useEffect(() => {
-    if (listData.length > 0) {
+    if (listData?.length > 0) {
       setData(listData.map(el => ({
         Id: el.id,
         Name: el.name,

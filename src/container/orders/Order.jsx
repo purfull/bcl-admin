@@ -44,33 +44,33 @@ const Order = () => {
   ]);
 
 
-//   useEffect(() => {
-//     const fetchData = async () => {
-//         try {
-//             const response = await fetch(`${AppEnv.baseUrl}/testimonial`);
-//             const result = await response.json();
-//             console.log(result , "Filtered Data");
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const response = await fetch(`${AppEnv.baseUrl}/order/get-all-orders`);
+            const result = await response.json();
+            console.log(result , "Filtered Data");
 
-//             if (result) {
+            if (result) {
 
-//               // console.log(result , "kkkkkkkkkkkkkkkkkkkkkk")
-//               //   const filteredData = result.map(item => ({
-//               //       Product_name: item.product_name,
-//               //       Logo: item.marketing_defaultImage_content,
-//               //       Type: item.type,
-//               //       Price: item.amount,
-//               //       CreatedAt: formatDate(item.createdAt),
-//               //     }));
-//               //   setData(filteredData);
-//               setListData(result.data);
+              // console.log(result , "kkkkkkkkkkkkkkkkkkkkkk")
+              //   const filteredData = result.map(item => ({
+              //       Product_name: item.product_name,
+              //       Logo: item.marketing_defaultImage_content,
+              //       Type: item.type,
+              //       Price: item.amount,
+              //       CreatedAt: formatDate(item.createdAt),
+              //     }));
+              //   setData(filteredData);
+              setListData(result.data);
 
-//             }
-//         } catch (error) {
-//             console.error('Error fetching data:', error);
-//         }
-//     };
-//     fetchData();
-// }, []);
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+    fetchData();
+}, []);
 
   
 
@@ -107,15 +107,18 @@ const Order = () => {
     setRowToDelete(null);
   };
 
-  // useEffect(() => {
-  //   if (listData.length > 0) {
-  //     setData(listData.map(el => ({
-  //       Id: el.id,
-  //       Name: el.name,
-  //       Message: el.message
-  //     })));
-  //   }
-  // }, [listData]);
+  useEffect(() => {
+    if (listData.length > 0) {
+      setData(listData.map(el => ({
+        Id: el.id,
+        "AWB": el.waybill,
+        "Customer Name": el.name,
+        "payment  method": el.transactionType,
+        "Order date": el.createdAt?.split("T")[0],
+        
+      })));
+    }
+  }, [listData]);
 
   
   return (
