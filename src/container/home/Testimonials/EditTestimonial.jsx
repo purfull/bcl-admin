@@ -95,7 +95,7 @@ const EditTestimonial = ({ row, onCancel }) => {
   
     
     try {
-      const response = await fetch(`${req ? 'http://luxcycs.com:3000/testimonial/create-testimonial' :  'http://luxcycs.com:3000/testimonial/update-testimonial'}`, {
+      const response = await fetch(`${AppEnv.baseUrl}${req ? '/testimonial/create-testimonial' :  '/testimonial/update-testimonial'}`, {
         method: req ? 'POST' : 'PUT',
         headers: {
           'Content-Type': 'application/json',

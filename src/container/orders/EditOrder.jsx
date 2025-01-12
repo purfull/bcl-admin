@@ -123,7 +123,7 @@ const EditTestimonial = ({ row, onCancel }) => {
   };
 
   return (
-    <div>
+    <div className='pb-[10vh]'>
       <form onSubmit={handleSubmit} style={{ marginBottom: "30px" }}>
         <div className="grid grid-cols-2 gap-4">
           <div className="flex items-center justify-start">
@@ -382,13 +382,13 @@ const EditTestimonial = ({ row, onCancel }) => {
 
       </div> */}
       <div className="print-container" ref={componentRef}>
-        <div className="invoice-header text-center w-full border">
+        <div className="invoice-header text-center w-full border py-2">
           <h1 className="text-3xl font-bold">Thailash</h1>
           <p className="text-lg">THAILASH ORIGINAL THENNAMARAKUDI OIL</p>
           <p className="text-sm text-gray-500">3/127, Madhura Nagar, Plot No. 144, Sirangudi Puliyur, <br /> Nagapattinam - 611 104</p>
         </div>
 
-        <table className="table-fixed border-collapse border border-gray-300 w-full text-left">
+        <table className="table-fixed border-collapse border border-gray-300 w-full text-left ">
           <tbody>
             <tr>
               <td colSpan="6" className="border border-gray-300 px-4 py-2">Invoice Number: </td>
@@ -430,7 +430,39 @@ const EditTestimonial = ({ row, onCancel }) => {
                 <td className="border border-gray-300 px-4 py-2">5</td>
                 <td className="border border-gray-300 px-4 py-2">200</td>
                 <td className="border border-gray-300 px-4 py-2">1000</td>
-              </tr>
+              </tr><tr>
+          <td colSpan="4" className="border border-gray-300 px-4 py-2 text-right font-bold">
+            Tax 1 (10%):
+          </td>
+          <td colSpan="2" className="border border-gray-300 px-4 py-2">220</td>
+        </tr>
+        <tr>
+          <td colSpan="4" className="border border-gray-300 px-4 py-2 text-right font-bold">
+            Tax 2 (5%):
+          </td>
+          <td colSpan="2" className="border border-gray-300 px-4 py-2">110</td>
+        </tr>
+        <tr>
+          <td colSpan="4" className="border border-gray-300 px-4 py-2 text-right font-bold">
+            Tax 3 (2%):
+          </td>
+          <td colSpan="2" className="border border-gray-300 px-4 py-2">44</td>
+        </tr>
+        <tr>
+          <td colSpan="4" className="border border-gray-300 px-4 py-2 text-right font-bold">
+            Tax 4 (1%):
+          </td>
+          <td colSpan="2" className="border border-gray-300 px-4 py-2">22</td>
+        </tr>
+        <tr>
+          <td colSpan="2" className="border border-gray-300 px-4 py-2 text-right font-bold">
+            HSN Code: 30049011
+          </td>
+          <td colSpan="2" className="border border-gray-300 px-4 py-2 text-right font-bold">
+            Total Amount:
+          </td>
+          <td colSpan="4" className="border border-gray-300 px-4 py-2 font-bold">2596</td>
+        </tr>
             </tbody>
           </table>
         </div>
