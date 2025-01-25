@@ -6,11 +6,12 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { useReactToPrint } from "react-to-print";
 
-const EditTestimonial = ({ row, onCancel }) => {
+const EditTestimonial = ({ data, onCancel }) => {
   const [editData, setEditData] = useState({});
   const [logo, setLogo] = useState(noImage);
+  const [row, setRow] = useState()
   const fileInputRef = useRef(null);
-  const req = row.newOrder ? true : false;
+  const req = data.newOrder ? true : false;
 
   const handleChange = (event) => {
     const { id, value } = event.target;
@@ -22,10 +23,10 @@ const EditTestimonial = ({ row, onCancel }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log("rowww ", row);
-
+      console.log("rowww ", data);
+      setRow(data[0])
       try {
-        const response = await fetch(`${AppEnv.baseUrl}/testimonial/${row.Id}`);
+        const response = await fetch(`${AppEnv.baseUrl}/admin/products-by-sku/${data[0].sku}`);
         const result = await response.json();
         console.log(result, "Filtered Data");
 
@@ -42,7 +43,6 @@ const EditTestimonial = ({ row, onCancel }) => {
           //   setData(filteredData);
           // setListData(result.data);
           setEditData(result.data);
-          setLogo(result?.data?.image);
 
         }
       } catch (error) {
@@ -619,16 +619,6 @@ const EditTestimonial = ({ row, onCancel }) => {
             </div>
           </div> */}
 
-          <div className="flex items-center justify-start">
-
-            <button
-              type="button"
-              onClick={handlePrint}
-              className="ti-btn bg-[#046E3D] text-white !px-[20px] !py-[2px] !text-[18px]"
-            >
-              Download Invoice
-            </button>
-          </div>
         </div>
 
         {/* <div className="w-full sm:w-[70%] flex justify-between my-[4vh]">
@@ -773,101 +763,169 @@ const EditTestimonial = ({ row, onCancel }) => {
 
 
       </div> */}
-      <div className="print-container" ref={componentRef}>
-        <div className="invoice-header text-center w-full border py-2">
-          <h1 className="text-3xl font-bold">Thailash</h1>
-          <p className="text-lg">THAILASH ORIGINAL THENNAMARAKUDI OIL</p>
-          <p className="text-sm text-gray-500">3/127, Madhura Nagar, Plot No. 144, Sirangudi Puliyur, <br /> Nagapattinam - 611 104</p>
-        </div>
+      {/* 
+      {
+    "id": 1,
+    "address": "54",
+    "address_type": "home",
+    "phone": "9360389903",
+    "name": "s.n. sanjay",
+    "pin": 629002,
+    "order": "CUST_ORDER_202501193909",
+    "country": "India",
+    "shipping_mode": "Surface",
+    "invoiceNumber": "202501193909",
+    "invoiceDate": "2025-01-19",
+    "transactionType": "Pre-paid",
+    "orderId": "CUST_ORDER_202501193909",
+    "quantity": 1,
+    "sku": "id123",
+    "city": "Nagercoil",
+    "state": "Tamil Nadu",
+    "invoiceAmount": "200",
+    "taxExclusiveGross": "132",
+    "totalTaxAmount": "18",
+    "cgstTax": "9",
+    "sgstTax": "9",
+    "utgstTax": "0",
+    "igstTax": "0",
+    "customerBillToGST": "",
+    "buyerName": "s.n. sanjay",
+    "total_product_cost": "150",
+    "total_shipment_cost": "50",
+    "waybill": "34202610000383",
+    "payment": "Pre-paid",
+    "remarks": "",
+    "status": "Success",
+    "createdAt": "2025-01-19T07:06:00.000Z",
+    "updatedAt": "2025-01-19T07:06:00.000Z"
+}
+       */}
+       <div ref={componentRef} style={{ width: "100%" }}>
+  <div style={{ textAlign: "center", width: "100%", border: "1px solid #ccc", padding: "0.5rem" }}>
+    <h1 style={{ fontSize: "1.875rem", fontWeight: "bold" }}>Thailash</h1>
+    <p style={{ fontSize: "1.125rem" }}>THAILASH ORIGINAL THENNAMARAKUDI OIL</p>
+    <p style={{ fontSize: "0.875rem", color: "#6b7280" }}>
+      3/127, Madhura Nagar, Plot No. 144, Sirangudi Puliyur, <br /> Nagapattinam - 611 104
+    </p>
+  </div>
 
-        <table className="table-fixed border-collapse border border-gray-300 w-full text-left ">
-          <tbody>
-            <tr>
-              <td colSpan="6" className="border border-gray-300 px-4 py-2">Invoice Number: </td>
-              <td colSpan="6" className="border border-gray-300 px-4 py-2">Invoice Date:</td>
-            </tr>
-            <tr>
-              <td colSpan="6" className="border border-gray-300 px-4 py-2 !break-words">
+  <table style={{ borderCollapse: "collapse", border: "1px solid #d1d5db", width: "100%", textAlign: "left" }}>
+    <tbody>
+      <tr>
+        <td colSpan="6" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
+          Invoice Number: {row?.invoiceNumber}
+        </td>
+        <td colSpan="6" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
+          Invoice Date: {row?.invoiceDate}
+        </td>
+      </tr>
+      <tr>
+        <td colSpan="6" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
+          <span style={{ fontWeight: "bold" }}>Billing Address:</span> <br />
+          <p style={{ fontWeight: "500" }}>
+            {row?.address} <br /> {row?.city}, {row?.state}, {row?.country}
+          </p>
+        </td>
 
-                <span className="font-bold">Billing Address:</span> <br />
-                <p className="font-medium !break-words">Address Line 1, Address Line 2, <br /> City, State, ZIP</p>
-              </td>
+        <td colSpan="6" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
+          <span style={{ fontWeight: "bold" }}>Place Of Supply:</span> <br />
+          <p style={{ fontWeight: "500" }}>
+          {row?.address} <br /> {row?.city}, {row?.state}, {row?.country}
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td colSpan="12" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
+          GSTIN: {row?.customerBillToGST}
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-              <td colSpan="6" className="border border-gray-300 px-4 py-2 !break-words">
-                <span className="font-bold">Place Of Supply:</span> <br />
-                <p className="font-medium !break-words">Address Line 1, Address Line 2, <br /> City, State, ZIP</p>
-              </td>
-            </tr>
-            <tr>
-              <td colSpan="12" className="border border-gray-300 px-4 py-2">GSTIN: 33AAACFXXXXX1Z</td>
-            </tr>
-          </tbody>
-        </table>
+  <div style={{ width: "100%" }}>
+    <table style={{ borderCollapse: "collapse", border: "1px solid #d1d5db", width: "100%", textAlign: "left" }}>
+      <thead>
+        <tr style={{ backgroundColor: "#e5e7eb" }}>
+          <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>S.No</th>
+          <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Particulars</th>
+          <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Qty</th>
+          <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Rate</th>
+          <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Amount</th>
+          <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>1</td>
+          <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>{editData?.name}</td>
+          <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>{row?.quantity}</td>
+          <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
+            {parseInt(editData?.offer_price || 0) - parseInt(row?.totalTaxAmount || 0)}
+          </td>
 
-        <div className="w-full">
-          <table className="table-auto border-collapse border border-gray-300 w-full text-left">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="border border-gray-300 px-4 py-2">S.No</th>
-                <th className="border border-gray-300 px-4 py-2">Particulars</th>
-                <th className="border border-gray-300 px-4 py-2">Qty</th>
-                <th className="border border-gray-300 px-4 py-2">Rate</th>
-                <th className="border border-gray-300 px-4 py-2">Amount</th>
-                <th className="border border-gray-300 px-4 py-2">Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">1</td>
-                <td className="border border-gray-300 px-4 py-2">500ml bottle</td>
-                <td className="border border-gray-300 px-4 py-2">10</td>
-                <td className="border border-gray-300 px-4 py-2">120</td>
-                <td className="border border-gray-300 px-4 py-2">1200</td>
-                <td className="border border-gray-300 px-4 py-2" rowSpan="2">2200</td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">2</td>
-                <td className="border border-gray-300 px-4 py-2">1L bottle</td>
-                <td className="border border-gray-300 px-4 py-2">5</td>
-                <td className="border border-gray-300 px-4 py-2">200</td>
-                <td className="border border-gray-300 px-4 py-2">1000</td>
-              </tr><tr>
-                <td colSpan="5" className="border border-gray-300 px-5 py-2 text-right font-bold">
-                  SGST :
-                </td>
-                <td colSpan="2" className="border border-gray-300 px-4 py-2">220</td>
-              </tr>
-              <tr>
-                <td colSpan="5" className="border border-gray-300 px-5 py-2 text-right font-bold">
-                  CGST :
-                </td>
-                <td colSpan="2" className="border border-gray-300 px-4 py-2">110</td>
-              </tr>
-              <tr>
-                <td colSpan="5" className="border border-gray-300 px-5 py-2 text-right font-bold">
-                  IGST:
-                </td>
-                <td colSpan="2" className="border border-gray-300 px-4 py-2">44</td>
-              </tr>
-              <tr>
-                <td colSpan="5" className="border border-gray-300 px-5 py-2 text-right font-bold">
-                  UTGST:
-                </td>
-                <td colSpan="2" className="border border-gray-300 px-4 py-2">22</td>
-              </tr>
-              <tr>
-                <td colSpan="3" className="border border-gray-300 px-4 py-2 text-center font-bold">
-                  HSN Code: 30049011 GST: 12%
-                </td>
-                <td colSpan="2" className="border border-gray-300 px-4 py-2 text-center font-bold">
-                  Total Invoice Amount:
-                </td>
-                <td colSpan="4" className="border border-gray-300 px-4 py-2 font-bold">2596</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+          <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>{row?.taxExclusiveGross}</td>
+          <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>{row?.taxExclusiveGross}</td>
+        </tr>
+        <tr>
+          <td colSpan="5" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "right", fontWeight: "bold" }}>
+            SGST :
+          </td>
+          <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
+            {row?.sgstTax}
+          </td>
+        </tr>
+        <tr>
+          <td colSpan="5" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "right", fontWeight: "bold" }}>
+            CGST :
+          </td>
+          <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
+            {row?.cgstTax}
+          </td>
+        </tr>
+        <tr>
+          <td colSpan="5" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "right", fontWeight: "bold" }}>
+            IGST:
+          </td>
+          <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
+            {row?.igstTax}
+          </td>
+        </tr>
+        <tr>
+          <td colSpan="5" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "right", fontWeight: "bold" }}>
+            UTGST:
+          </td>
+          <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
+            {row?.utgstTax}
+          </td>
+        </tr>
+        <tr>
+          <td colSpan="3" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "center", fontWeight: "bold" }}>
+            HSN Code: 30049011 GST: 12%
+          </td>
+          <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "center", fontWeight: "bold" }}>
+            Total Invoice Amount:
+          </td>
+          <td colSpan="4" style={{ border: "1px solid #d1d5db", padding: "0.5rem", fontWeight: "bold" }}>
+            {row?.invoiceAmount}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+</div>
+
+<div className="flex items-center justify-center mt-5">
+
+<button
+  type="button"
+  onClick={handlePrint}
+  className="ti-btn bg-[#046E3D] text-white !px-[20px] !py-[2px] !text-[18px]"
+>
+  Download Invoice
+</button>
+</div>
 
       {/* <button
         type="button"

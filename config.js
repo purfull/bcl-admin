@@ -1,4 +1,4 @@
 
 export const AppEnv = {
-    baseUrl: "http://localhost:3300",
+    baseUrl: "https://api.thailash.com",
 }

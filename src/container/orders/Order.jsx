@@ -16,32 +16,7 @@ const Order = () => {
   // const [listData, setListData] = useState([]);
 
 
-  const [listData, setListData] = useState([
-    {
-      "Order id" : 1,
-      "Customer id": 2,
-      "payment  method": "Online",
-      "Order date": "2020-01-01",
-      "Order Status": "Shipped",
-
-    },
-    {
-      "Order id" : 2,
-      "Customer id": 4,
-      "payment  method": "Cash On Delivery",
-      "Order date": "2020-01-23",
-      "Order Status": "Shipped",
-
-    },
-    {
-      "Order id" : 3,
-      "Customer id": 1,
-      "payment  method": "Online",
-      "Order date": "2020-02-02",
-      "Order Status": "Shipped",
-
-    },
-  ]);
+  const [listData, setListData] = useState([]);
 
 
   useEffect(() => {
@@ -75,8 +50,9 @@ const Order = () => {
   
 
   const handleEdit = (row) => {
-    console.log(row);
-    setEditingRow(row); // Set the row to be edited
+    console.log("qqqqqqqqq",row, listData);
+    const data = listData.filter(el => el.id === row.Id);
+    setEditingRow(data); // Set the row to be edited
   };
 
   const handleCancelEdit = () => {
@@ -138,13 +114,13 @@ const Order = () => {
                 
                   {editingRow ? (
                     <EditTestimonial 
-                      row={editingRow} 
+                      data={editingRow} 
                       onCancel={handleCancelEdit} 
                       active={isActive}
                     />
                   ) : (
                     <ResponsiveTestimonialDataTable
-                      data={listData}
+                      data={data}
                       onEdit={handleEdit}
                       onDelete={handleDeleteClick} // Pass the delete handler
                       // onAdd={handleAddClick}

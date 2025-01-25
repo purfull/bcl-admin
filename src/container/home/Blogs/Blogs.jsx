@@ -15,58 +15,7 @@ const Blogs = () => {
   // const [listData, setListData] = useState([]);
 
 
-  const [listData, setListData] = useState([
-    {
-      id: '101',
-      title: 'How to Brew Perfect Coffee',
-      author: 'John Doe',
-    },
-    {
-      id: '102',
-      title: 'Top 10 Morning Workouts',
-      author: 'Jane Smith',
-    },
-    {
-      id: '103',
-      title: 'Best Practices for Yoga',
-      author: 'Sam Wilson',
-    },
-    {
-      id: '104',
-      title: 'Healthy Breakfast Ideas',
-      author: 'Emily Johnson',
-    },
-    {
-      id: '105',
-      title: 'The Art of Meditation',
-      author: 'Michael Brown',
-    },
-    {
-      id: '106',
-      title: 'Exploring the Outdoors',
-      author: 'Sarah Wilson',
-    },
-    {
-      id: '107',
-      title: 'Home Workout Tips',
-      author: 'Chris Evans',
-    },
-    {
-      id: '108',
-      title: 'Cooking with Herbs',
-      author: 'Jessica Lee',
-    },
-    {
-      id: '109',
-      title: 'Mindfulness Practices',
-      author: 'David Garcia',
-    },
-    {
-      id: '110',
-      title: 'Benefits of Journaling',
-      author: 'Laura Martinez',
-    }
-  ]);
+  const [listData, setListData] = useState([]);
   
 
   const handleEdit = (row) => {

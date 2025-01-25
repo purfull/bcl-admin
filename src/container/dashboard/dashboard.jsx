@@ -37,6 +37,8 @@ import ecommerce39 from "../../assets/images/ecommerce/png/39.png";
 import ecommerce40 from "../../assets/images/ecommerce/png/40.png";
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import { AppEnv } from '../../../config';
+
 
 
 
@@ -44,6 +46,7 @@ import { saveAs } from 'file-saver';
 const Dashboard = () => {
     //    for User search function
     const [Data, setData] = useState(ProductsOverview);
+    const [editData, setEditData] = useState();
 
     const userdata = [];
 
@@ -62,89 +65,23 @@ const Dashboard = () => {
         }
         setData(userdata);
     };
-    const handleDownload = (type) => {
-        // Example data
-        const bbData =  [
-            {
-              invoiceNumber: "INV-1001",
-              invoiceDate: "2024-11-01",
-              transactionType: "Online Purchase",
-              orderId: "ORD12345",
-              quantity: 2,
-              sku: "SKU1234",
-              shipToCity: "Mumbai",
-              shipToState: "Maharashtra",
-              invoiceAmount: 5000.0,
-              taxExclusiveGross: 4500.0,
-              totalTaxAmount: 450,
-              cgstTax: 225.0,
-              sgstTax: 225.0,
-              utgstTax: 0.0,
-              igstTax: 0.0,
-              customerBillToGST: "27ABCDE1234FZ1",
-              buyerName: "John Doe",
-            },
-            {
-              invoiceNumber: "INV-1002",
-              invoiceDate: "2024-11-05",
-              transactionType: "Retail",
-              orderId: "ORD67890",
-              quantity: 1,
-              sku: "SKU5678",
-              shipToCity: "Bangalore",
-              shipToState: "Karnataka",
-              invoiceAmount: 3000.0,
-              taxExclusiveGross: 2700.0,
-              totalTaxAmount: 270,
-              cgstTax: 135.0,
-              sgstTax: 135.0,
-              utgstTax: 0.0,
-              igstTax: 0.0,
-              customerBillToGST: "29XYZAB5678N1Z",
-              buyerName: "Jane Smith",
-            },
-            {
-              invoiceNumber: "INV-1003",
-              invoiceDate: "2024-11-10",
-              transactionType: "Wholesale",
-              orderId: "ORD24680",
-              quantity: 5,
-              sku: "SKU8910",
-              shipToCity: "Chennai",
-              shipToState: "Tamil Nadu",
-              invoiceAmount: 15000.0,
-              taxExclusiveGross: 13500.0,
-              totalTaxAmount: 1350,
-              cgstTax: 675.0,
-              sgstTax: 675.0,
-              utgstTax: 0.0,
-              igstTax: 0.0,
-              customerBillToGST: "33PQRLM5678A9Z",
-              buyerName: "Ravi Kumar",
-            },
-          ];
+    const handleChange = (event) => {
+        const { id, value } = event.target;
+        setEditData((prevData) => ({
+          ...prevData,
+          [id]: value,
+        }));
+      };
 
-          const bcData = [
-            {
-                InvoiceNumber: "INV12345",
-                InvoiceDate: "2023-10-01",
-                TransactionType: "Sale",
-                OrderId: "ORD67890",
-                Quantity: 5,
-                Sku: "SKU123",
-                ShipToCity: "Mumbai",
-                ShipToState: "Maharashtra",
-                InvoiceAmount: 1000.00,
-                TaxExclusiveGross: 900.00,
-                TotalTaxAmount: 100.00,
-                CgstTax: 50.00,
-                SgstTax: 50.00,
-                IgstTax: 0.00,
-                UtgstTax: 0.00
-            }
-        ];
+      
+    const handleDownload = async (type) => {
+            try {
+                const response = await fetch(`${AppEnv.baseUrl}/order/reports?startDate=${editData.startDate}&endDate=${editData.endDate}&type=${type ? "B2B" : "B2C"}`);
+                const result = await response.json();
+                console.log(result , "Filtered Data");
     
-        const worksheet = XLSX.utils.json_to_sheet(type ? bbData : bcData);
+                if (result) {
+                  const worksheet = XLSX.utils.json_to_sheet(result.data);
     
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
@@ -153,6 +90,93 @@ const Dashboard = () => {
         const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
     
         saveAs(blob, type ? 'B2B-report.xlsx' : 'B2C-report.xlsx');
+    
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        
+        // const bbData =  [
+        //     {
+        //       invoiceNumber: "INV-1001",
+        //       invoiceDate: "2024-11-01",
+        //       transactionType: "Online Purchase",
+        //       orderId: "ORD12345",
+        //       quantity: 2,
+        //       sku: "SKU1234",
+        //       shipToCity: "Mumbai",
+        //       shipToState: "Maharashtra",
+        //       invoiceAmount: 5000.0,
+        //       taxExclusiveGross: 4500.0,
+        //       totalTaxAmount: 450,
+        //       cgstTax: 225.0,
+        //       sgstTax: 225.0,
+        //       utgstTax: 0.0,
+        //       igstTax: 0.0,
+        //       customerBillToGST: "27ABCDE1234FZ1",
+        //       buyerName: "John Doe",
+        //     },
+        //     {
+        //       invoiceNumber: "INV-1002",
+        //       invoiceDate: "2024-11-05",
+        //       transactionType: "Retail",
+        //       orderId: "ORD67890",
+        //       quantity: 1,
+        //       sku: "SKU5678",
+        //       shipToCity: "Bangalore",
+        //       shipToState: "Karnataka",
+        //       invoiceAmount: 3000.0,
+        //       taxExclusiveGross: 2700.0,
+        //       totalTaxAmount: 270,
+        //       cgstTax: 135.0,
+        //       sgstTax: 135.0,
+        //       utgstTax: 0.0,
+        //       igstTax: 0.0,
+        //       customerBillToGST: "29XYZAB5678N1Z",
+        //       buyerName: "Jane Smith",
+        //     },
+        //     {
+        //       invoiceNumber: "INV-1003",
+        //       invoiceDate: "2024-11-10",
+        //       transactionType: "Wholesale",
+        //       orderId: "ORD24680",
+        //       quantity: 5,
+        //       sku: "SKU8910",
+        //       shipToCity: "Chennai",
+        //       shipToState: "Tamil Nadu",
+        //       invoiceAmount: 15000.0,
+        //       taxExclusiveGross: 13500.0,
+        //       totalTaxAmount: 1350,
+        //       cgstTax: 675.0,
+        //       sgstTax: 675.0,
+        //       utgstTax: 0.0,
+        //       igstTax: 0.0,
+        //       customerBillToGST: "33PQRLM5678A9Z",
+        //       buyerName: "Ravi Kumar",
+        //     },
+        //   ];
+
+        //   const bcData = [
+        //     {
+        //         InvoiceNumber: "INV12345",
+        //         InvoiceDate: "2023-10-01",
+        //         TransactionType: "Sale",
+        //         OrderId: "ORD67890",
+        //         Quantity: 5,
+        //         Sku: "SKU123",
+        //         ShipToCity: "Mumbai",
+        //         ShipToState: "Maharashtra",
+        //         InvoiceAmount: 1000.00,
+        //         TaxExclusiveGross: 900.00,
+        //         TotalTaxAmount: 100.00,
+        //         CgstTax: 50.00,
+        //         SgstTax: 50.00,
+        //         IgstTax: 0.00,
+        //         UtgstTax: 0.00
+        //     }
+        // ];
+    
+        
       };
     return (
         <Fragment>
@@ -266,11 +290,11 @@ const Dashboard = () => {
                                                 </span>
                                             <div className="my-4 text-[0.75rem] flex justify-between items-center ">
                                                 <span className="text-[0.90rem] mb-0 font-semibold">From </span>
-                                                <input type="date" />
+                                                <input type="date" id='startDate' onChange={handleChange}/>
                                             </div>
                                             <div className="my-4 text-[0.75rem] flex justify-between items-center ">
                                                 <span className="text-[0.90rem] mb-0 font-semibold">To </span>
-                                                <input type="date" />
+                                                <input type="date" id='endDate' onChange={handleChange} />
                                             </div>
                                             <div>
                                                 {/* <span className="text-[0.75rem] mb-0">Increase by <span className="badge bg-success/10 text-success mx-1">+12.0%</span> this month</span> */}
@@ -291,11 +315,11 @@ const Dashboard = () => {
                                                 </span>
                                             <div className="my-4 text-[0.75rem] flex justify-between items-center ">
                                                 <span className="text-[0.90rem] mb-0 font-semibold">From </span>
-                                                <input type="date" />
+                                                <input type="date" id='startDate' onChange={handleChange}/>
                                             </div>
                                             <div className="my-4 text-[0.75rem] flex justify-between items-center ">
                                                 <span className="text-[0.90rem] mb-0 font-semibold">To </span>
-                                                <input type="date" />
+                                                <input type="date" id='endDate' onChange={handleChange}/>
                                             </div>
                                             <div>
                                                 {/* <span className="text-[0.75rem] mb-0">Increase by <span className="badge bg-success/10 text-success mx-1">+12.0%</span> this month</span> */}
