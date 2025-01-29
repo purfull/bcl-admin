@@ -73,6 +73,7 @@ const Order = () => {
   const handleConfirmDelete = () => {
     // setRowToAdd(row);
     // setIsAlertOpen(true);
+    console.log("ddddddddd", rowToDelete);
   };
 
 
@@ -92,6 +93,7 @@ const Order = () => {
         "Customer Name": el.name,
         "payment  method": el.transactionType,
         "Order date": el.createdAt?.split("T")[0],
+        "Status" : el.status
         
       })));
     }

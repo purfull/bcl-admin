@@ -884,6 +884,7 @@ ba
 
 .svg-primary {
   @apply fill-primary;
+  
 }
 
 .nft-auction-time {

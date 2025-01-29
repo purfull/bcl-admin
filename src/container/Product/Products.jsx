@@ -135,12 +135,13 @@ const Products = () => {
   const handleConfirmDelete = () => {
     // Create a new AbortController instance
     const abortController = new AbortController();
+    console.log("ddddddddd", rowToDelete);
     
     const path = rowToDelete.add ? 'add' : 'delete'
     // Perform the delete action here, e.g., call an API to delete the row
 
-    fetch(`${import.meta.env.VITE_URL}/branch/${path}`, {
-      method: 'PUT', // Ensure this is the correct method for your API
+    fetch(`${AppEnv.baseUrl}/admin/products/${rowToDelete.row.id}`, {
+      method: 'DELETE', // Ensure this is the correct method for your API
       headers: {
         'Content-Type': 'application/json',
       },
@@ -151,7 +152,7 @@ const Products = () => {
       .then(response => {
         if (response.success) { // Check if the response indicates a successful deletion
           // Remove the row from the data
-          setData(prevData => prevData.filter(item => item.ProductsCode !== rowToDelete.row.ProductsCode));
+          setRun(!run)
         } else {
           console.error('Failed to delete the row:', response.message);
         }

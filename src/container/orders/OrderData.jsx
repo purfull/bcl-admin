@@ -24,14 +24,14 @@ const generateColumns = (data, onEdit, onDelete, active) => {
             className='px-4 py-1 bg-[#046E3D] text-white'
             onClick={() => onEdit(row.original)} // Use the onEdit prop
           >
-            Edit
+            View
           </button>
-          <button
+          {/* <button
             className='px-4 ti-btn ti-btn-outline-danger !py-1 !mx-2'
             onClick={() => onDelete(row.original,{add: false})} // Use the onDelete prop
           >
             Delete
-          </button>
+          </button> */}
         </div>
 
     ),

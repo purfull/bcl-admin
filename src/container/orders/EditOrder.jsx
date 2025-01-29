@@ -903,7 +903,7 @@ const EditTestimonial = ({ data, onCancel }) => {
           <td colSpan="3" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "center", fontWeight: "bold" }}>
             HSN Code: 30049011 GST: 12%
           </td>
-          <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "center", fontWeight: "bold" }}>
+          <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "right", fontWeight: "bold" }}>
             Total Invoice Amount:
           </td>
           <td colSpan="4" style={{ border: "1px solid #d1d5db", padding: "0.5rem", fontWeight: "bold" }}>
