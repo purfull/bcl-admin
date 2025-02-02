@@ -96,16 +96,19 @@ const EditTestimonial = ({ data, onCancel }) => {
     console.log("dataaa ", editData);
     const dataToSend = {
       // "name",
-      "message": editData.message,
-      "image": logo,
-      "designation": editData.designation,
-      "isActive": editData.isActive
+      // "message": editData.message,
+      // "image": logo,
+      // "designation": editData.designation,
+      // "isActive": editData.isActive,
+      "status": data[0]?.status,
+      "orderId": data[0]?.orderId
     }
-    // console.log("data to send", dataToSend);
+    console.log("data to send", dataToSend);
 
 
     try {
-      const response = await fetch(`${AppEnv.baseUrl}/order/create-order'`, {
+      // const response = await fetch(`${AppEnv.baseUrl}/order/create-order'`, {
+      const response = await fetch(`${AppEnv.baseUrl}/order/update-status`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -801,131 +804,139 @@ const EditTestimonial = ({ data, onCancel }) => {
     "updatedAt": "2025-01-19T07:06:00.000Z"
 }
        */}
-       <div ref={componentRef} style={{ width: "100%" }}>
-  <div style={{ textAlign: "center", width: "100%", border: "1px solid #ccc", padding: "0.5rem" }}>
-    <h1 style={{ fontSize: "1.875rem", fontWeight: "bold" }}>Thailash</h1>
-    <p style={{ fontSize: "1.125rem" }}>THAILASH ORIGINAL THENNAMARAKUDI OIL</p>
-    <p style={{ fontSize: "0.875rem", color: "#6b7280" }}>
-      3/127, Madhura Nagar, Plot No. 144, Sirangudi Puliyur, <br /> Nagapattinam - 611 104
-    </p>
-  </div>
-
-  <table style={{ borderCollapse: "collapse", border: "1px solid #d1d5db", width: "100%", textAlign: "left" }}>
-    <tbody>
-      <tr>
-        <td colSpan="6" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
-          Invoice Number: {row?.invoiceNumber}
-        </td>
-        <td colSpan="6" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
-          Invoice Date: {row?.invoiceDate}
-        </td>
-      </tr>
-      <tr>
-        <td colSpan="6" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
-          <span style={{ fontWeight: "bold" }}>Billing Address:</span> <br />
-          <p style={{ fontWeight: "500" }}>
-            {row?.address} <br /> {row?.city}, {row?.state}, {row?.country}
+      <div ref={componentRef} style={{ width: "100%" }}>
+        <div style={{ textAlign: "center", width: "100%", border: "1px solid #ccc", padding: "0.5rem" }}>
+          <h1 style={{ fontSize: "1.875rem", fontWeight: "bold" }}>Thailash</h1>
+          <p style={{ fontSize: "1.125rem" }}>THAILASH ORIGINAL THENNAMARAKUDI OIL</p>
+          <p style={{ fontSize: "0.875rem", color: "#6b7280" }}>
+            3/127, Madhura Nagar, Plot No. 144, Sirangudi Puliyur, <br /> Nagapattinam - 611 104
           </p>
-        </td>
+        </div>
 
-        <td colSpan="6" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
-          <span style={{ fontWeight: "bold" }}>Place Of Supply:</span> <br />
-          <p style={{ fontWeight: "500" }}>
-          {row?.address} <br /> {row?.city}, {row?.state}, {row?.country}
-          </p>
-        </td>
-      </tr>
-      <tr>
-        <td colSpan="12" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
-          GSTIN: {row?.customerBillToGST}
-        </td>
-      </tr>
-    </tbody>
-  </table>
+        <table style={{ borderCollapse: "collapse", border: "1px solid #d1d5db", width: "100%", textAlign: "left" }}>
+          <tbody>
+            <tr>
+              <td colSpan="6" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
+                Invoice Number: {row?.invoiceNumber}
+              </td>
+              <td colSpan="6" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
+                Invoice Date: {row?.invoiceDate}
+              </td>
+            </tr>
+            <tr>
+              <td colSpan="6" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
+                <span style={{ fontWeight: "bold" }}>Billing Address:</span> <br />
+                <p style={{ fontWeight: "500" }}>
+                  {row?.address} <br /> {row?.city}, {row?.state}, {row?.country}
+                </p>
+              </td>
 
-  <div style={{ width: "100%" }}>
-    <table style={{ borderCollapse: "collapse", border: "1px solid #d1d5db", width: "100%", textAlign: "left" }}>
-      <thead>
-        <tr style={{ backgroundColor: "#e5e7eb" }}>
-          <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>S.No</th>
-          <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Particulars</th>
-          <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Qty</th>
-          <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Rate</th>
-          <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Amount</th>
-          <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>1</td>
-          <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>{editData?.name}</td>
-          <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>{row?.quantity}</td>
-          <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
-            {parseInt(editData?.offer_price || 0) - parseInt(row?.totalTaxAmount || 0)}
-          </td>
+              <td colSpan="6" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
+                <span style={{ fontWeight: "bold" }}>Place Of Supply:</span> <br />
+                <p style={{ fontWeight: "500" }}>
+                  {row?.address} <br /> {row?.city}, {row?.state}, {row?.country}
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td colSpan="12" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
+                GSTIN: {row?.customerBillToGST}
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-          <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>{row?.taxExclusiveGross}</td>
-          <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>{row?.taxExclusiveGross}</td>
-        </tr>
-        <tr>
-          <td colSpan="5" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "right", fontWeight: "bold" }}>
-            SGST :
-          </td>
-          <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
-            {row?.sgstTax}
-          </td>
-        </tr>
-        <tr>
-          <td colSpan="5" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "right", fontWeight: "bold" }}>
-            CGST :
-          </td>
-          <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
-            {row?.cgstTax}
-          </td>
-        </tr>
-        <tr>
-          <td colSpan="5" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "right", fontWeight: "bold" }}>
-            IGST:
-          </td>
-          <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
-            {row?.igstTax}
-          </td>
-        </tr>
-        <tr>
-          <td colSpan="5" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "right", fontWeight: "bold" }}>
-            UTGST:
-          </td>
-          <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
-            {row?.utgstTax}
-          </td>
-        </tr>
-        <tr>
-          <td colSpan="3" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "center", fontWeight: "bold" }}>
-            HSN Code: 30049011 GST: 12%
-          </td>
-          <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "right", fontWeight: "bold" }}>
-            Total Invoice Amount:
-          </td>
-          <td colSpan="4" style={{ border: "1px solid #d1d5db", padding: "0.5rem", fontWeight: "bold" }}>
-            {row?.invoiceAmount}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  
-</div>
+        <div style={{ width: "100%" }}>
+          <table style={{ borderCollapse: "collapse", border: "1px solid #d1d5db", width: "100%", textAlign: "left" }}>
+            <thead>
+              <tr style={{ backgroundColor: "#e5e7eb" }}>
+                <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>S.No</th>
+                <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Particulars</th>
+                <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Qty</th>
+                <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Rate</th>
+                <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Discount</th>
+                <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Amount</th>
+                <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>1</td>
+                <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>{editData?.name}</td>
+                <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>{row?.quantity}</td>
+                <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
+                  {/* {parseInt(row?.offer_price || 0) - parseInt(row?.totalTaxAmount || 0)} */}
+                  {parseInt(row?.total_product_cost || 0)}
+                </td>
+                <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>{row?.transactionType == "Pre-paid" ? "10%":"-"}</td>
+                <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
+                  {/* {row?.taxExclusiveGross} */}
+                  {(parseInt(row?.total_product_cost)*parseInt(row?.quantity)) * 0.90}
+                  </td>
+                <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
+                  {/* {row?.taxExclusiveGross} */}
+                  {(parseInt(row?.total_product_cost)*parseInt(row?.quantity)) * 0.90}
+                  </td>
+              </tr>
+              <tr>
+                <td colSpan="5" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "right", fontWeight: "bold" }}>
+                  SGST :
+                </td>
+                <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
+                  {row?.sgstTax}
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="5" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "right", fontWeight: "bold" }}>
+                  CGST :
+                </td>
+                <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
+                  {row?.cgstTax}
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="5" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "right", fontWeight: "bold" }}>
+                  IGST:
+                </td>
+                <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
+                  {row?.igstTax}
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="5" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "right", fontWeight: "bold" }}>
+                  UTGST:
+                </td>
+                <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
+                  {row?.utgstTax}
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="3" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "center", fontWeight: "bold" }}>
+                  HSN Code: 30049011 GST: 12%
+                </td>
+                <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "right", fontWeight: "bold" }}>
+                  Total Invoice Amount:
+                </td>
+                <td colSpan="4" style={{ border: "1px solid #d1d5db", padding: "0.5rem", fontWeight: "bold" }}>
+                  {row?.invoiceAmount}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-<div className="flex items-center justify-center mt-5">
+      </div>
 
-<button
-  type="button"
-  onClick={handlePrint}
-  className="ti-btn bg-[#046E3D] text-white !px-[20px] !py-[2px] !text-[18px]"
->
-  Download Invoice
-</button>
-</div>
+      <div className="flex items-center justify-center mt-5">
+
+        <button
+          type="button"
+          onClick={handlePrint}
+          className="ti-btn bg-[#046E3D] text-white !px-[20px] !py-[2px] !text-[18px]"
+        >
+          Download Invoice
+        </button>
+      </div>
 
       {/* <button
         type="button"

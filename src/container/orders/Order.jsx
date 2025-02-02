@@ -21,36 +21,36 @@ const Order = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-        try {
-            const response = await fetch(`${AppEnv.baseUrl}/order/get-all-orders`);
-            const result = await response.json();
-            console.log(result , "Filtered Data");
+      try {
+        const response = await fetch(`${AppEnv.baseUrl}/order/get-all-orders`);
+        const result = await response.json();
+        console.log(result, "Filtered Data");
 
-            if (result) {
+        if (result) {
 
-              // console.log(result , "kkkkkkkkkkkkkkkkkkkkkk")
-              //   const filteredData = result.map(item => ({
-              //       Product_name: item.product_name,
-              //       Logo: item.marketing_defaultImage_content,
-              //       Type: item.type,
-              //       Price: item.amount,
-              //       CreatedAt: formatDate(item.createdAt),
-              //     }));
-              //   setData(filteredData);
-              setListData(result.data);
+          // console.log(result , "kkkkkkkkkkkkkkkkkkkkkk")
+          //   const filteredData = result.map(item => ({
+          //       Product_name: item.product_name,
+          //       Logo: item.marketing_defaultImage_content,
+          //       Type: item.type,
+          //       Price: item.amount,
+          //       CreatedAt: formatDate(item.createdAt),
+          //     }));
+          //   setData(filteredData);
+          setListData(result.data);
 
-            }
-        } catch (error) {
-            console.error('Error fetching data:', error);
         }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     };
     fetchData();
-}, []);
+  }, []);
 
-  
+
 
   const handleEdit = (row) => {
-    console.log("qqqqqqqqq",row, listData);
+    console.log("qqqqqqqqq", row, listData);
     const data = listData.filter(el => el.id === row.Id);
     setEditingRow(data); // Set the row to be edited
   };
@@ -64,8 +64,8 @@ const Order = () => {
   };
 
   const handleDeleteClick = (row, add) => {
-    const deleteData = {row : row, add : add.add}
-    
+    const deleteData = { row: row, add: add.add }
+
     setRowToDelete(deleteData);
     setIsAlertOpen(true);
   };
@@ -77,7 +77,7 @@ const Order = () => {
   };
 
 
-  
+
 
 
   const handleCloseAlert = () => {
@@ -93,31 +93,41 @@ const Order = () => {
         "Customer Name": el.name,
         "payment  method": el.transactionType,
         "Order date": el.createdAt?.split("T")[0],
-        "Status" : el.status
-        
+        "Status": el.status
+
       })));
     }
   }, [listData]);
 
-  
+  console.log("editingRow==>", editingRow)
   return (
     <Fragment>
       <Pageheader currentpage="Order" activepage="Home" mainpage="Order" />
 
+      {editingRow && <div className="flex items-center justify-start" style={{ marginBottom: '10px' }} >
+        <label htmlFor="ERP" className="font-medium  mr-[1vw]">Refund</label>
+        <label className="switch">
+          <input type="checkbox" id="ERP" onChange={(e) => setEditingRow([{
+            ...editingRow[0],
+            status: e.target.checked ? "Closed" : "Success"
+          }])} checked={editingRow[0]?.status == "Closed" ? true : false} />
+          <span className="slider round"></span>
+        </label>
+      </div>}
 
       <div id="a1" className="grid grid-cols-12 gap-6">
         <div className="col-span-12">
 
           <div className="box">
             <div className="box-body space-y-3">
-              
+
               <div className="overflow-hidden">
                 <div id="reactivity-table" className="ti-custom-table ti-striped-table ti-custom-table-hover">
-                
+
                   {editingRow ? (
-                    <EditTestimonial 
-                      data={editingRow} 
-                      onCancel={handleCancelEdit} 
+                    <EditTestimonial
+                      data={editingRow}
+                      onCancel={handleCancelEdit}
                       active={isActive}
                     />
                   ) : (
@@ -127,7 +137,7 @@ const Order = () => {
                       onDelete={handleDeleteClick} // Pass the delete handler
                       // onAdd={handleAddClick}
                       active={isActive}
-                      
+
                     />
                   )}
                 </div>
@@ -137,9 +147,9 @@ const Order = () => {
         </div>
       </div>
 
-      <Alert 
-        isOpen={isAlertOpen} 
-        onClose={handleCloseAlert} 
+      <Alert
+        isOpen={isAlertOpen}
+        onClose={handleCloseAlert}
         onConfirm={handleConfirmDelete}
       />
     </Fragment>
