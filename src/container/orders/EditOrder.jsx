@@ -866,16 +866,16 @@ const EditTestimonial = ({ data, onCancel }) => {
                 <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>{row?.quantity}</td>
                 <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
                   {/* {parseInt(row?.offer_price || 0) - parseInt(row?.totalTaxAmount || 0)} */}
-                  {parseInt(row?.total_product_cost || 0)}
+                  {parseInt(editData?.offer_price || 0)}
                 </td>
                 <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>{row?.transactionType == "Pre-paid" ? "10%":"-"}</td>
                 <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
                   {/* {row?.taxExclusiveGross} */}
-                  {(parseInt(row?.total_product_cost)*parseInt(row?.quantity)) * 0.90}
+                  {parseInt(editData?.offer_price) * 0.88}
                   </td>
                 <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
                   {/* {row?.taxExclusiveGross} */}
-                  {(parseInt(row?.total_product_cost)*parseInt(row?.quantity)) * 0.90}
+                  {parseInt(row?.invoiceAmount) - parseInt(row?.totalTaxAmount)}
                   </td>
               </tr>
               <tr>

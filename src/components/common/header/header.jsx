@@ -721,7 +721,7 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
                   <p className="font-semibold mb-0 leading-none text-[#536485] text-[0.813rem] ">Venkat</p>
                   <span className="opacity-[0.7] font-normal text-[#536485] block text-[0.6875rem] ">Super Admin</span>
                 </div>
-                <div
+                {/* <div
                   className="hs-dropdown-menu ti-dropdown-menu !-mt-3 border-0 w-[11rem] !p-0 border-defaultborder hidden main-header-dropdown  pt-0 overflow-hidden header-profile-dropdown dropdown-menu-end"
                   aria-labelledby="dropdown-profile">
 
@@ -748,7 +748,7 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
                     <li><Link className="w-full ti-dropdown-item !text-[0.8125rem] !p-[0.65rem] !gap-x-0 !inline-flex" to={`${import.meta.env.BASE_URL}authentication/signin/signincover/`}><i
                       className="ti ti-logout text-[1.125rem] me-2 opacity-[0.7]"></i>Log Out</Link></li>
                   </ul>
-                </div>
+                </div> */}
               </div>
               {/* <div className="header-element md:px-[0.48rem]">
                 <button aria-label="button" type="button"

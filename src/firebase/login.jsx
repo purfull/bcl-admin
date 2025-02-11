@@ -81,7 +81,12 @@ const Login = () => {
           "email": formData.email,
           "password": formData.password
         }
+        if(formData.email == "contact@thailash.com" && formData.password == "Q6M%hJC3g.r|=WLg"){
         setIsLoggedIn(true)
+        }
+        else {
+            toast.error("invalid email or password");
+        }
           // console.log("data to send", dataToSend);
       
         
@@ -121,6 +126,7 @@ const Login = () => {
                 backgroundAttachment: 'fixed',
                 backgroundSize: 'cover'
             }}>
+                  <ToastContainer />
 
             <div className="w-[90%] sm:w-[60%] lg:w-[25%] h-[80vh] sm:h-[80vh] lg:h-[55vh] bg-white p-4 flex flex-col justify-evenly items-center rounded-xl">
 

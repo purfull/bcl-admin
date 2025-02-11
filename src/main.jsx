@@ -181,7 +181,6 @@ import Country from './container/dashboards/country/Country.jsx'
 
 
 import Dashboard from './container/dashboard/dashboard.jsx';
-import FeaturedProducts from './container/home/FeaturedProducts/FeaturedProducts.jsx';
 import Testimonials from './container/home/Testimonials/Testimonials.jsx'
 import Blogs from './container/home/Blogs/Blogs.jsx';
 import Products from './container/Product/Products.jsx';
@@ -223,7 +222,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
 
           </Route>
-          <Route path={``} element={<Authenticationlayout />}>
+          {/* <Route path={``} element={<Authenticationlayout />}>
             <Route path={`authentication/comingsoon`} element={<Comingsoon />} />
             <Route path={`authentication/createpassword/basic`} element={<Createbasic />} />
             <Route path={`authentication/createpassword/cover`} element={<Createcover />} />
@@ -248,11 +247,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path={`error/401error`} element={<Error401 />} />
             <Route path={`error/404error`} element={<Error404 />} />
             <Route path={`error/500error`} element={<Error500 />} />
-          </Route>
-          <Route path={``} element={<Landinglayout />}>
+          </Route> */}
+          {/* <Route path={``} element={<Landinglayout />}>
             <Route path={`pages/landing`} element={<Landing />} />
             <Route path={`pages/jobslanding`} element={<Jobslanding />} />
-          </Route>
+          </Route> */}
         </Routes>
       </React.Suspense>
     </BrowserRouter>
