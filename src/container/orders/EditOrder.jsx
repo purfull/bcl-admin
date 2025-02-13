@@ -105,7 +105,7 @@ const EditTestimonial = ({ data, onCancel }) => {
     }
     console.log("data to send", dataToSend);
 
-
+  
     try {
       // const response = await fetch(`${AppEnv.baseUrl}/order/create-order'`, {
       const response = await fetch(`${AppEnv.baseUrl}/order/update-status`, {
@@ -856,7 +856,7 @@ const EditTestimonial = ({ data, onCancel }) => {
                 <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Rate</th>
                 <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Discount</th>
                 <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Amount</th>
-                <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Total</th>
+                <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Taxable Amount</th>
               </tr>
             </thead>
             <tbody>
@@ -871,11 +871,12 @@ const EditTestimonial = ({ data, onCancel }) => {
                 <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>{row?.transactionType == "Pre-paid" ? "10%":"-"}</td>
                 <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
                   {/* {row?.taxExclusiveGross} */}
-                  {parseInt(editData?.offer_price) * 0.88}
-                  </td>
+                  {((parseInt(editData?.offer_price) / 112 ) * 100).toFixed(2)}
+                </td>
                 <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
                   {/* {row?.taxExclusiveGross} */}
-                  {parseInt(row?.invoiceAmount) - parseInt(row?.totalTaxAmount)}
+                  {(((parseInt(editData?.offer_price) / 112 ) * 100) * row?.quantity).toFixed(2)}
+                  {/* {parseInt(row?.invoiceAmount) - parseInt(row?.totalTaxAmount)} */}
                   </td>
               </tr>
               <tr>
@@ -908,6 +909,27 @@ const EditTestimonial = ({ data, onCancel }) => {
                 </td>
                 <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
                   {row?.utgstTax}
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="5" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "right", fontWeight: "bold" }}>
+                  Total GST Amount:
+                </td>
+                <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
+                  {row?.totalTaxAmount}
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="5" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "right", fontWeight: "bold" }}>
+                  Roundoff:
+                </td>
+                <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
+                 {(Math.abs(parseFloat(row?.invoiceAmount) - (
+  (Number(row?.totalTaxAmount) || 0) + 
+  (((parseInt(editData?.offer_price) || 0) / 112) * 100 * (Number(row?.quantity) || 0))
+))).toFixed(2)}
+
+
                 </td>
               </tr>
               <tr>
