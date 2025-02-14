@@ -871,7 +871,7 @@ const EditTestimonial = ({ data, onCancel }) => {
                 <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>{row?.transactionType == "Pre-paid" ? "10%":"-"}</td>
                 <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
                   {/* {row?.taxExclusiveGross} */}
-                  {((parseInt(editData?.offer_price) / 112 ) * 100).toFixed(2)}
+                  {(((parseInt(editData?.offer_price) / 112 ) * 100) * parseInt(row?.quantity)).toFixed(2)}
                 </td>
                 <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
                   {/* {row?.taxExclusiveGross} */}
