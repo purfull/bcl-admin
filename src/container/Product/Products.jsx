@@ -74,24 +74,24 @@ const Products = () => {
   // }, []);
 
 
-  useEffect(() => {
-    const abortController = new AbortController();
+  // useEffect(() => {
+  //   const abortController = new AbortController();
 
-    fetch(`${AppEnv.baseUrl}/admin/products`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      signal: abortController.signal,
-    })
-      .then(result => result.json())
-      .then(data => setData(data.data))
-      .catch(err => console.log(err));
+  //   fetch(`${AppEnv.baseUrl}/admin/products`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     signal: abortController.signal,
+  //   })
+  //     .then(result => result.json())
+  //     .then(data => setData(data.data))
+  //     .catch(err => console.log(err));
 
-    return () => {
-      abortController.abort();
-    };
-  }, [run]);
+  //   return () => {
+  //     abortController.abort();
+  //   };
+  // }, [run]);
 
   useEffect(() => {
     if (data.length > 0) {

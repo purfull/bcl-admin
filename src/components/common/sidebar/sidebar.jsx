@@ -609,17 +609,18 @@ const handleClick = (event) => {
       <aside className="app-sidebar" id="sidebar" onMouseEnter={() => Onhover()}
         onMouseLeave={() => Outhover()}>
 
-        <div className="main-sidebar-header !bg-[#046E3D] !text-center ">
+        <div className="main-sidebar-header !bg-[#2EAF4B] !text-center ">
           <a href={`${import.meta.env.BASE_URL}dashboards/crm/`} className="header-logo w-[100%] !text-center rounded-sm">
             {/* <img src={logo1} alt="logo" className="desktop-logo" />
             <img src={logo2} alt="logo" className="toggle-logo" /> */}
-            <img src={logo3} alt="logo" className="desktop-dark mx-auto w-[70%]" />
+            {/* <img src={logo3} alt="logo" className="desktop-dark mx-auto w-[70%]" /> */}
+            <h1 className='text-white font-bold text-[18px]'>BCL</h1>
             {/* <img src={logo4} alt="logo" className="toggle-dark" /> */}
             {/* <img src={logo5} alt="logo" className="desktop-white" />
             <img src={logo6} alt="logo" className="toggle-white" /> */}
           </a>
         </div>
-        <SimpleBar className="main-sidebar !bg-[#046E3D] " id="sidebar-scroll">
+        <SimpleBar className="main-sidebar !bg-[#2EAF4B] " id="sidebar-scroll">
 
           <nav className="main-menu-container nav nav-pills flex-column sub-open">
             <div className="slide-left" id="slide-left" onClick={() => { slideLeft(); }}>
@@ -657,7 +658,7 @@ const handleClick = (event) => {
                         <span className="">
                           {levelone.title}
                           {levelone.badgetxt ? (
-                            <span className={`${levelone.class} !text-[#046E3D]`}>
+                            <span className={`${levelone.class} !text-[#2EAF4B]`}>
                               {levelone.badgetxt}
                             </span>
                           ) : (

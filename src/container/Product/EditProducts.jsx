@@ -152,31 +152,9 @@ const EditProducts = ({row,  onCancel }) => {
           </div>
          
           <div className="flex items-center justify-start">
-            <label htmlFor="size" className="w-[30%] font-medium ">Bottle Size</label>
+            <label htmlFor="size" className="w-[30%] font-medium ">Category</label>
             <div className="w-[70%]">
             <input type="number" className="form-control" id="bottle_size" defaultValue={editData.bottle_size || ''} onChange={handleChange} />
-            </div>
-          </div>
-          <div className="flex items-center justify-start">
-            <label htmlFor="description" className="w-[30%] font-medium ">Description</label>
-            <div className="w-[70%] flex">
-              <input type="text" className="form-control" id="description" defaultValue={editData.description || ''} onChange={handleChange} />
-                {
-                  editData.CountryId === 'SINGAPORE' ? <button className='px-[2vw] py-[1vh] bg-violet-700 text-white ml-[1vw] rounded-md' onClick={handleAddress}>Address</button> : ''
-                }
-                  
-
-                {/* 
-                
-          name: editData.name,
-          bottle_size,
-          description,
-          actual_price,
-          offer_price,
-          stock_quantity,
-          image,
-          isActive, */}
-                
             </div>
           </div>
           <div className="flex items-center justify-start">
@@ -198,15 +176,22 @@ const EditProducts = ({row,  onCancel }) => {
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="title" className="w-[30%] font-medium ">Title</label>
+            <label htmlFor="sku" className="w-[30%] font-medium ">Status</label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="title" defaultValue={editData.title || ''} onChange={handleChange} />
-            </div>
-          </div>
-          <div className="flex items-center justify-start">
-            <label htmlFor="sku" className="w-[30%] font-medium ">Sku</label>
-            <div className="w-[70%]">
-              <input type="text" className="form-control" id="sku" defaultValue={editData.sku || ''} onChange={handleChange} />
+              {/* <input type="text" className="form-control" id="sku" defaultValue={editData.sku || ''} onChange={handleChange} /> */}
+              <div className="w-[100%]">
+    <select
+      id="status"
+      name="status"
+      className="form-control"
+      value={editData.status || ''}
+      onChange={handleChange}
+    >
+      <option value="">Select Status</option>
+      <option value="Active">Active</option>
+      <option value="Inactive">Inactive</option>
+    </select>
+  </div>
             </div>
           </div>
           <div className="flex items-start justify-start">
@@ -233,7 +218,47 @@ const EditProducts = ({row,  onCancel }) => {
           
         </div>
         
-        <div className="w-full sm:w-[70%] flex justify-between my-[4vh]">
+        <div className="bg-slate-100 mb-[4vh] py-1 px-4 col-span-full">
+            <h5>English</h5>
+          </div>
+        <div className="grid grid-cols-2 gap-4 mb-[4vh]">
+          
+        <div className="flex items-center justify-start">
+            <label htmlFor="title" className="w-[30%] font-medium ">Title</label>
+            <div className="w-[70%]">
+              <input type="text" className="form-control" id="title" defaultValue={editData.title || ''} onChange={handleChange} />
+            </div>
+          </div>
+          <div className="flex items-center justify-start">
+            <label htmlFor="description" className="w-[30%] font-medium ">Description</label>
+            <div className="w-[70%] flex">
+              <input type="text" className="form-control" id="description" defaultValue={editData.description || ''} onChange={handleChange} />
+                  
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-slate-100 mb-[4vh] py-1 px-4">
+            <h5>Tamil</h5>
+          </div>
+        <div className="grid grid-cols-2 gap-4 mb-[4vh]">
+          
+        <div className="flex items-center justify-start">
+            <label htmlFor="title" className="w-[30%] font-medium ">Title</label>
+            <div className="w-[70%]">
+              <input type="text" className="form-control" id="title" defaultValue={editData.title || ''} onChange={handleChange} />
+            </div>
+          </div>
+          <div className="flex items-center justify-start">
+            <label htmlFor="description" className="w-[30%] font-medium ">Description</label>
+            <div className="w-[70%] flex">
+              <input type="text" className="form-control" id="description" defaultValue={editData.description || ''} onChange={handleChange} />
+                  
+            </div>
+          </div>
+        </div>
+
+        {/* <div className="w-full sm:w-[70%] flex justify-between my-[4vh]">
           <div className="flex items-center justify-start">
             <label htmlFor="isActive" className="font-medium mr-[1vw]">Is Featured</label>
             <label className="switch">
@@ -248,18 +273,18 @@ const EditProducts = ({row,  onCancel }) => {
               <span className="slider round"></span>
             </label>
           </div>
-        </div>
+        </div> */}
         <div className="fixed bottom-0 right-0 bg-white w-full py-4 px-6 flex justify-end mt-8">
           <button
             type="button"
             onClick={onCancel}
-            className="ti-btn !border !border-[#046E3D] text-[#046E3D] !px-[20px] !py-[2px] !mr-[2vw] !text-[18px]"
+            className="ti-btn !border !border-[#2EAF4B] text-[#2EAF4B] !px-[20px] !py-[2px] !mr-[2vw] !text-[18px]"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="ti-btn bg-[#046E3D] text-white !px-[20px] !py-[2px] !text-[18px]"
+            className="ti-btn bg-[#2EAF4B] text-white !px-[20px] !py-[2px] !text-[18px]"
           >
             Save
           </button>

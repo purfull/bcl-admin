@@ -25,36 +25,36 @@ const Customer = () => {
     return `${day}-${month}-${year}`;
   };
 
-  const customerApi = async () => {
-    try {
-      // const response = await fetch(`${AppEnv.baseUrl}/api/admin/customer/list`);
-      const response = await fetch(`${AppEnv.baseUrl}/customer/get-all-customer`);
-      const result = await response.json();
-      console.log(result, "Filtered Data");
+  // const customerApi = async () => {
+  //   try {
+  //     // const response = await fetch(`${AppEnv.baseUrl}/api/admin/customer/list`);
+  //     const response = await fetch(`${AppEnv.baseUrl}/customer/get-all-customer`);
+  //     const result = await response.json();
+  //     console.log(result, "Filtered Data");
 
-      if (result.data) {
-        const filteredData = result?.data?.length && result.data.map(item => ({
-          Id: item.id,
-          Name: item.first_name + " " + item.last_name,
-          Email: item.email,
-          Phone: item.phone,
-          CreatedAt: formatDate(item.createdAt),
-        }));
-        setData(filteredData);
-      }
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-  useEffect(() => {
-    customerApi();
-  }, []);
+  //     if (result.data) {
+  //       const filteredData = result?.data?.length && result.data.map(item => ({
+  //         Id: item.id,
+  //         Name: item.first_name + " " + item.last_name,
+  //         Email: item.email,
+  //         Phone: item.phone,
+  //         CreatedAt: formatDate(item.createdAt),
+  //       }));
+  //       setData(filteredData);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   customerApi();
+  // }, []);
 
   useEffect(() => {
     if (createMessage == "Customer created successfully") {
       console.log("inside hooks Customer created successfully");
 
-      customerApi();
+      // customerApi();
       setEditingRow(null);
       setCreateMessage(null);
     }
@@ -156,7 +156,7 @@ const Customer = () => {
 
       <div id="a1" className="grid grid-cols-12 gap-6">
         <div className="col-span-12">
-          <div className={`${editingRow ? 'hidden' : 'flex'} items-center justify-start mb-[2vh]`}>
+          {/* <div className={`${editingRow ? 'hidden' : 'flex'} items-center justify-start mb-[2vh]`}>
             <label htmlFor="B2B" className="font-medium mr-[1vw]">Is Active</label>
             <label className="switch">
               <input
@@ -167,7 +167,7 @@ const Customer = () => {
               />
               <span className="slider round"></span>
             </label>
-          </div>
+          </div> */}
           <div className="box">
             <div className="box-body space-y-3">
 

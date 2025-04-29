@@ -246,13 +246,13 @@ const EditCustomer = ({ row, onCancel, createMessage, setCreateMessage }) => {
           <button
             type="button"
             onClick={onCancel}
-            className="ti-btn !border !border-[#046E3D] text-[#046E3D] !px-[20px] !py-[2px] !mr-[2vw] !text-[18px]"
+            className="ti-btn !border !border-[#2EAF4B] text-[#2EAF4B] !px-[20px] !py-[2px] !mr-[2vw] !text-[18px]"
           >
             Cancel
           </button>
           {row?.newCustomer && <button
             type="submit"
-            className="ti-btn bg-[#046E3D] text-white !px-[20px] !py-[2px] !text-[18px]"
+            className="ti-btn bg-[#2EAF4B] text-white !px-[20px] !py-[2px] !text-[18px]"
           >
             Save
           </button>}

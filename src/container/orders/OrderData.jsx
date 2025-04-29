@@ -21,7 +21,7 @@ const generateColumns = (data, onEdit, onDelete, active) => {
     Cell: ({ row }) => (
         <div className="">
           <button
-            className='px-4 py-1 bg-[#046E3D] text-white'
+            className='px-4 py-1 bg-[#2EAF4B] text-white'
             onClick={() => onEdit(row.original)} // Use the onEdit prop
           >
             View
@@ -115,7 +115,7 @@ export const ResponsiveTestimonialDataTable = ({ data = [], onEdit, onDelete, ac
           <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
           {/* Add new button  */}
           {/* <div className="">
-            <button className='px-[1vw] py-[1.5vh] bg-[#046E3D] text-white ml-[1vw] rounded-md ' onClick={() => {onEdit({ newOrder: true }) }} >+ ADD NEW</button>
+            <button className='px-[1vw] py-[1.5vh] bg-[#2EAF4B] text-white ml-[1vw] rounded-md ' onClick={() => {onEdit({ newOrder: true }) }} >+ ADD NEW</button>
           </div> */}
         </div>
         <div className="table-responsive table-bordered text-center">

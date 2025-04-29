@@ -38,7 +38,7 @@ const generateColumns = (data, onEdit, onDelete, active) => {
       active ? (
         <div className="">
         <button
-          className='px-4 py-1 bg-[#046E3D] text-white'
+          className='px-4 py-1 bg-[#2EAF4B] text-white'
           onClick={() => onEdit(row.original)} // Use the onEdit prop
         >
           Edit
@@ -137,7 +137,7 @@ export const ResponsiveProductsDataTable = ({ data = [], onEdit, onDelete, activ
           </div>
           <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
           <div className="">
-            <button className='px-[1vw] py-[1.5vh] bg-[#046E3D] text-white ml-[1vw] rounded-md ' onClick={() => {onEdit({ newProducts: true }) }} >+ NEW PRODUCT</button>
+            <button className='px-[1vw] py-[1.5vh] bg-[#2EAF4B] text-white ml-[1vw] rounded-md ' onClick={() => {onEdit({ newProducts: true }) }} >+ NEW PRODUCT</button>
           </div>
         </div>
         <div className="table-responsive table-bordered text-center ">

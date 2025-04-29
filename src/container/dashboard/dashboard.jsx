@@ -181,7 +181,7 @@ const Dashboard = () => {
     return (
         <Fragment>
             <Pageheader currentpage="Dashboard" activepage="Dashboard" mainpage="Dasboard" />
-            <div className="grid grid-cols-12 gap-x-6">
+            {/* <div className="grid grid-cols-12 gap-x-6">
                 <div className="xxl:col-span-6 col-span-12">
                     <div className="grid grid-cols-12 gap-x-6">
                         <div className="lg:col-span-6 md:col-span-6 xl:col-span-6 col-span-12">
@@ -297,7 +297,6 @@ const Dashboard = () => {
                                                 <input type="date" id='endDate' onChange={handleChange} />
                                             </div>
                                             <div>
-                                                {/* <span className="text-[0.75rem] mb-0">Increase by <span className="badge bg-success/10 text-success mx-1">+12.0%</span> this month</span> */}
                                                 <button className="ti-btn bg-[#046E3D] text-white !px-[20px] !py-[2px] !text-[18px]" onClick={() => handleDownload(false)}>download</button>
                                             </div>
                                         </div>
@@ -322,7 +321,6 @@ const Dashboard = () => {
                                                 <input type="date" id='endDate' onChange={handleChange}/>
                                             </div>
                                             <div>
-                                                {/* <span className="text-[0.75rem] mb-0">Increase by <span className="badge bg-success/10 text-success mx-1">+12.0%</span> this month</span> */}
                                                 <button className="ti-btn bg-[#046E3D] text-white !px-[20px] !py-[2px] !text-[18px]" onClick={() => handleDownload(true)}>download</button>
                                             </div>
                                         </div>
@@ -389,7 +387,7 @@ const Dashboard = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </Fragment>
     );
 }

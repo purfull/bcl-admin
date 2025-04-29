@@ -13,11 +13,11 @@ export const combinedMenu = [
   },
   {
     MenuId: 5,
-    MenuName: 'Testimonials'
+    MenuName: 'Delivery'
   },
   {
     MenuId: 7,
-    MenuName: 'Blogs'
+    MenuName: 'Cargo'
   },
 ];
 
@@ -27,17 +27,17 @@ const menuIcons = {
   'Products': 'bx bx-store',
   'Customers': 'bx bx-user',
   'Orders': 'bx bx-cart',
-  'Reports': 'bx bx-line-chart',
+  'Delivery': 'bx bx-line-chart',
   'Contact Query': 'bx bx-phone',
   'Dashboard': 'bx bx-dashboard',
   'Featured Products': 'bx bx-star',
   'Testimonials': 'bx bx-comment',
-  'Blogs': 'bx bx-book',
+  'Cargo': 'bx bx-book',
   'Admin User': 'bx bx-user-circle',  // Icon for Admin User
   'Permission': 'bx bx-shield'        // Icon for Permission
 };
 
-const directMenuItems = ['Dashboards', 'Products', 'Customers', 'Orders', 'Testimonials', 'Blogs'];
+const directMenuItems = ['Dashboards', 'Products', 'Customers', 'Orders', 'Delivery', 'Cargo'];
 
 export const MENUITEMS = [
   {

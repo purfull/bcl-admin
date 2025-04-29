@@ -12,47 +12,61 @@ const Order = () => {
   const [isActive, setIsActive] = useState(true); // State to track the checkbox
   const [isAlertOpen, setIsAlertOpen] = useState(false); // State to control alert visibility
   const [rowToDelete, setRowToDelete] = useState(null); // State to keep track of the row to delete
-  const [rowToAdd, setRowToAdd] = useState(null);
+  const [editingData, setEditData] = useState(null);
   // const [listData, setListData] = useState([]);
 
 
   const [listData, setListData] = useState([]);
 
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${AppEnv.baseUrl}/order/get-all-orders`);
-        const result = await response.json();
-        console.log(result, "Filtered Data");
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch(`${AppEnv.baseUrl}/order/get-all-orders`);
+  //       const result = await response.json();
+  //       console.log(result, "Filtered Data");
 
-        if (result) {
+  //       if (result) {
 
-          // console.log(result , "kkkkkkkkkkkkkkkkkkkkkk")
-          //   const filteredData = result.map(item => ({
-          //       Product_name: item.product_name,
-          //       Logo: item.marketing_defaultImage_content,
-          //       Type: item.type,
-          //       Price: item.amount,
-          //       CreatedAt: formatDate(item.createdAt),
-          //     }));
-          //   setData(filteredData);
-          setListData(result.data);
+  //         // console.log(result , "kkkkkkkkkkkkkkkkkkkkkk")
+  //         //   const filteredData = result.map(item => ({
+  //         //       Product_name: item.product_name,
+  //         //       Logo: item.marketing_defaultImage_content,
+  //         //       Type: item.type,
+  //         //       Price: item.amount,
+  //         //       CreatedAt: formatDate(item.createdAt),
+  //         //     }));
+  //         //   setData(filteredData);
+  //         setListData(result.data);
 
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-    fetchData();
-  }, []);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
 
 
 
-  const handleEdit = (row) => {
+  const handleEdit = async (row) => {
     console.log("qqqqqqqqq", row, listData);
     const data = listData.filter(el => el.id === row.Id);
     setEditingRow(data); // Set the row to be edited
+
+    try {
+            const response = await fetch(`${AppEnv.baseUrl}/admin/products-by-sku/${data[0].sku}`);
+            const result = await response.json();
+            console.log(result, "Filtered Data");
+    
+            if (result) {
+
+              setEditData(result.data);
+    
+            }
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
   };
 
   const handleCancelEdit = () => {
@@ -127,6 +141,7 @@ const Order = () => {
                   {editingRow ? (
                     <EditTestimonial
                       data={editingRow}
+                      editData={editingData}
                       onCancel={handleCancelEdit}
                       active={isActive}
                     />
