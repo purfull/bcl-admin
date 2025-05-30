@@ -1,5 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useTable, useSortBy, useGlobalFilter, usePagination } from 'react-table';
+import React, { useState, useEffect } from "react";
+import {
+  useTable,
+  useSortBy,
+  useGlobalFilter,
+  usePagination,
+} from "react-table";
 
 // Function to dynamically generate columns from data
 const generateColumns = (data, onEdit, onDelete, active) => {
@@ -9,43 +14,40 @@ const generateColumns = (data, onEdit, onDelete, active) => {
   const firstItem = data[0];
   const keys = Object.keys(firstItem);
 
-  const columns = keys.map(key => ({
+  const columns = keys.map((key) => ({
     Header: key,
     accessor: key,
   }));
 
   // Add the "Action" column
   columns.push({
-    Header: 'Action',
-    accessor: 'edit',
+    Header: "Action",
+    accessor: "edit",
     Cell: ({ row }) => (
-        <div className="">
-          <button
-            className='px-4 py-1 bg-[#2EAF4B] text-white'
-            onClick={() => onEdit(row.original)} // Use the onEdit prop
-          >
-            View
-          </button>
-          {/* <button
+      <div className="">
+        <button
+          className="px-4 py-1 bg-[#2EAF4B] text-white"
+          onClick={() => onEdit(row.original)} // Use the onEdit prop
+        >
+          View
+        </button>
+        {/* <button
             className='px-4 ti-btn ti-btn-outline-danger !py-1 !mx-2'
             onClick={() => onDelete(row.original,{add: false})} // Use the onDelete prop
           >
             Delete
           </button> */}
-        </div>
-
+      </div>
     ),
   });
 
   return columns;
 };
 
-
-
 export const GlobalFilter = ({ filter, setFilter }) => (
   <span className="flex ms-auto">
     <input
-      value={filter || ''}
+      value={filter || ""}
       onChange={(e) => setFilter(e.target.value)}
       className="form-control mb-4"
       placeholder="Search..."
@@ -53,15 +55,22 @@ export const GlobalFilter = ({ filter, setFilter }) => (
   </span>
 );
 
-export const ResponsiveTestimonialDataTable = ({ data = [], onEdit, onDelete, active }) => {
+export const ResponsiveTestimonialDataTable = ({
+  data = [],
+  onEdit,
+  onDelete,
+  active,
+}) => {
   // Handle null or undefined data
   useEffect(() => {
     console.log(data);
   }, []);
-  
 
   // Generate columns and table instance based on props.data
-  const columns = React.useMemo(() => generateColumns(data, onEdit, onDelete, active), [data, onEdit, onDelete,  active]);
+  const columns = React.useMemo(
+    () => generateColumns(data, onEdit, onDelete, active),
+    [data, onEdit, onDelete, active]
+  );
 
   const tableInstance = useTable(
     {
@@ -94,8 +103,7 @@ export const ResponsiveTestimonialDataTable = ({ data = [], onEdit, onDelete, ac
   return (
     <>
       <div className="e-table pb-5">
-        <div className="">
-        </div>
+        <div className=""></div>
         <div className="flex">
           <div className="flex items-center justify-between mb-4">
             <span>show</span>
@@ -132,7 +140,9 @@ export const ResponsiveTestimonialDataTable = ({ data = [], onEdit, onDelete, ac
                       key={Math.random()}
                       className={column.className}
                     >
-                      <span className="tabletitle">{column.render('Header')}</span>
+                      <span className="tabletitle">
+                        {column.render("Header")}
+                      </span>
                       <span>
                         {column.isSorted ? (
                           column.isSortedDesc ? (
@@ -141,7 +151,7 @@ export const ResponsiveTestimonialDataTable = ({ data = [], onEdit, onDelete, ac
                             <i className="fa fa-angle-up"></i>
                           )
                         ) : (
-                          ''
+                          ""
                         )}
                       </span>
                     </th>
@@ -155,8 +165,17 @@ export const ResponsiveTestimonialDataTable = ({ data = [], onEdit, onDelete, ac
                 return (
                   <tr {...row.getRowProps()} key={Math.random()}>
                     {row.cells.map((cell) => (
-                      <td {...cell.getCellProps()} key={Math.random()} style={{ textAlign: 'left',maxWidth: '30vw', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {cell.render('Cell')}
+                      <td
+                        {...cell.getCellProps()}
+                        key={Math.random()}
+                        style={{
+                          textAlign: "left",
+                          maxWidth: "30vw",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {cell.render("Cell")}
                       </td>
                     ))}
                   </tr>
@@ -175,28 +194,28 @@ export const ResponsiveTestimonialDataTable = ({ data = [], onEdit, onDelete, ac
               onClick={() => gotoPage(0)}
               disabled={!canNextPage}
             >
-              {' Previous '}
+              {" Previous "}
             </button>
             <button
               className="tablebutton me-2 my-2"
               onClick={previousPage}
               disabled={!canNextPage}
             >
-              {' Previous Page '}
+              {" Previous Page "}
             </button>
             <button
               className="btn-outline-light tablebutton me-2 my-2"
               onClick={nextPage}
               disabled={!canNextPage}
             >
-              {' Next Page '}
+              {" Next Page "}
             </button>
             <button
               className="btn-outline-light tablebutton me-2 my-2"
               onClick={() => gotoPage(pageCount - 1)}
               disabled={!canNextPage}
             >
-              {' Next '}
+              {" Next "}
             </button>
           </span>
         </div>

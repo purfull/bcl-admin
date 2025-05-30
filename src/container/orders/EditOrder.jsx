@@ -1,15 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
-import noImage from '../../assets/images/no-images/no-image.png';
-import { AppEnv } from '../../../config';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
+import React, { useEffect, useRef, useState } from "react";
+import noImage from "../../assets/images/no-images/no-image.png";
+import { AppEnv } from "../../../config";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 
 const EditTestimonial = ({ data, editData, onCancel }) => {
   const [editingData, setEdittingData] = useState({});
   const [logo, setLogo] = useState(noImage);
-  const [row, setRow] = useState()
+  const [row, setRow] = useState();
   const fileInputRef = useRef(null);
   const req = data.newOrder ? true : false;
 
@@ -24,7 +24,7 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
   useEffect(() => {
     const fetchData = async () => {
       console.log("rowww ", editData);
-      setRow(data[0])
+      setRow(data[0]);
       setEdittingData(editData);
       // try {
       //   const response = await fetch(`${AppEnv.baseUrl}/admin/products-by-sku/${data[0].sku}`);
@@ -53,7 +53,6 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
 
     fetchData();
   }, []);
-
 
   const componentRef = useRef(null);
   const handlePrint = useReactToPrint({
@@ -101,40 +100,104 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
       // "image": logo,
       // "designation": editData.designation,
       // "isActive": editData.isActive,
-      "status": data[0]?.status,
-      "orderId": data[0]?.orderId
-    }
+      status: data[0]?.status,
+      orderId: data[0]?.orderId,
+    };
     console.log("data to send", dataToSend);
 
-  
-    try {
-      // const response = await fetch(`${AppEnv.baseUrl}/order/create-order'`, {
-      const response = await fetch(`${AppEnv.baseUrl}/order/update-status`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dataToSend),
-      });
+    //   try {
+    //     // const response = await fetch(`${AppEnv.baseUrl}/order/create-order'`, {
+    //     const response = await fetch(`${AppEnv.baseUrl}/order/update-status`, {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify(dataToSend),
+    //     });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
+    //     if (!response.ok) {
+    //       throw new Error("Network response was not ok");
+    //     }
 
-      const data = await response.json();
-      console.log('Success:', data);
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    //     const data = await response.json();
+    //     console.log("Success:", data);
+    //   } catch (error) {
+    //     console.error("Error:", error);
+    //   }
   };
+  // get by id
+  const { id } = useParams();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${AppEnv.baseUrl}/api/orders/${id}`, {
+          method: "GET",
+        });
+
+        const result = await response.json();
+        console.log(result, "Fetched orders Data using Id");
+
+        if (result) {
+          setListData(result.data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    if (id) {
+      fetchData(); // only fetch when ID exists
+    }
+  }, [id]);
+
+  //post
+  useEffect(() => {
+    if (!row) return;
+    const fetchData = async () => {
+      const payload = {
+        customer_id: row?.orderId || "",
+        shipping_address: row?.address || "",
+        billing_address: row?.address || "",
+        items: [
+          {
+            name: "",
+            quantity: row?.quantity || "",
+            price: "",
+            category: "",
+          },
+        ],
+      };
+      try {
+        const response = await fetch(`${AppEnv.baseUrl}/api/orders`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+        const result = await response.json();
+        console.log(result, "Filtered Data from orders post req");
+        console.log(AppEnv.baseUrl); // check if correct
+
+        if (result) {
+          setListData(result.data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, [row]);
 
   return (
-    <div className='pb-[10vh]'>
+    <div className="pb-[10vh]">
       <form onSubmit={handleSubmit} style={{ marginBottom: "30px" }}>
         <ToastContainer />
         <div className="grid grid-cols-2 gap-4">
           <div className="flex items-center justify-start">
-            <label htmlFor="name" className="w-[20%] font-medium">Customer</label>
+            <label htmlFor="name" className="w-[20%] font-medium">
+              Customer
+            </label>
             <div className="w-[80%]">
               <input
                 type="text"
@@ -142,17 +205,16 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
                 id="name"
                 disabled={row ? true : false}
                 required
-                value={row?.buyerName || ''}
+                value={row?.buyerName || ""}
                 onChange={handleChange}
               />
             </div>
           </div>
 
-
-
-
           <div className="flex items-center justify-start">
-            <label htmlFor="message" className="w-[20%] font-medium">Order Id</label>
+            <label htmlFor="message" className="w-[20%] font-medium">
+              Order Id
+            </label>
             <div className="w-[80%]">
               <input
                 className="form-control"
@@ -160,7 +222,7 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
                 rows="4"
                 required
                 disabled={row ? true : false}
-                value={row?.orderId || ''}
+                value={row?.orderId || ""}
                 onChange={handleChange}
               ></input>
             </div>
@@ -197,7 +259,9 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div> */}
 
           <div className="flex items-center justify-start">
-            <label htmlFor="address" className="w-[20%] font-medium">Address</label>
+            <label htmlFor="address" className="w-[20%] font-medium">
+              Address
+            </label>
             <div className="w-[80%]">
               <input
                 disabled={row ? true : false}
@@ -212,7 +276,9 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="address_type" className="w-[20%] font-medium">Address Type</label>
+            <label htmlFor="address_type" className="w-[20%] font-medium">
+              Address Type
+            </label>
             <div className="w-[80%]">
               <input
                 className="form-control"
@@ -227,7 +293,9 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="phone" className="w-[20%] font-medium">Mobile No</label>
+            <label htmlFor="phone" className="w-[20%] font-medium">
+              Mobile No
+            </label>
             <div className="w-[80%]">
               <input
                 disabled={row ? true : false}
@@ -242,7 +310,9 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="postal_code" className="w-[20%] font-medium">Pin</label>
+            <label htmlFor="postal_code" className="w-[20%] font-medium">
+              Pin
+            </label>
             <div className="w-[80%]">
               <input
                 disabled={row ? true : false}
@@ -257,7 +327,9 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="country" className="w-[20%] font-medium">Country</label>
+            <label htmlFor="country" className="w-[20%] font-medium">
+              Country
+            </label>
             <div className="w-[80%]">
               <select
                 disabled={row ? true : false}
@@ -268,13 +340,15 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
                 // onChange={handleCountryChange}
                 onChange={handleChange}
               >
-                <option >India</option>
+                <option>India</option>
               </select>
             </div>
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="shipping_mode" className="w-[20%] font-medium">Shipping mode</label>
+            <label htmlFor="shipping_mode" className="w-[20%] font-medium">
+              Shipping mode
+            </label>
             <div className="w-[80%]">
               <select
                 disabled={row ? true : false}
@@ -285,13 +359,15 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
                 // onChange={handleCountryChange}
                 onChange={handleChange}
               >
-                <option >Surface</option>
+                <option>Surface</option>
               </select>
             </div>
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="invoice_number" className="w-[20%] font-medium">invoice Number</label>
+            <label htmlFor="invoice_number" className="w-[20%] font-medium">
+              invoice Number
+            </label>
             <div className="w-[80%]">
               <input
                 disabled={row ? true : false}
@@ -306,7 +382,9 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="transactionType" className="w-[20%] font-medium">Transaction type</label>
+            <label htmlFor="transactionType" className="w-[20%] font-medium">
+              Transaction type
+            </label>
             <div className="w-[80%]">
               <input
                 disabled={row ? true : false}
@@ -321,7 +399,9 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="City" className="w-[20%] font-medium">City</label>
+            <label htmlFor="City" className="w-[20%] font-medium">
+              City
+            </label>
             <div className="w-[80%]">
               <input
                 disabled={row ? true : false}
@@ -336,7 +416,9 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="state" className="w-[20%] font-medium">State</label>
+            <label htmlFor="state" className="w-[20%] font-medium">
+              State
+            </label>
             <div className="w-[80%]">
               <input
                 disabled={row ? true : false}
@@ -351,7 +433,9 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="sku" className="w-[20%] font-medium">Sku</label>
+            <label htmlFor="sku" className="w-[20%] font-medium">
+              Sku
+            </label>
             <div className="w-[80%]">
               <input
                 disabled={row ? true : false}
@@ -366,7 +450,9 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="invoice_date" className="w-[20%] font-medium">Invoice Date</label>
+            <label htmlFor="invoice_date" className="w-[20%] font-medium">
+              Invoice Date
+            </label>
             <div className="w-[80%]">
               <input
                 disabled={row ? true : false}
@@ -382,7 +468,9 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="invoice_amount" className="w-[20%] font-medium">Invoice Amount</label>
+            <label htmlFor="invoice_amount" className="w-[20%] font-medium">
+              Invoice Amount
+            </label>
             <div className="w-[80%]">
               <input
                 disabled={row ? true : false}
@@ -397,7 +485,12 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="tax_exclusive_gross" className="w-[20%] font-medium">Tax Exclusive Gross</label>
+            <label
+              htmlFor="tax_exclusive_gross"
+              className="w-[20%] font-medium"
+            >
+              Tax Exclusive Gross
+            </label>
             <div className="w-[80%]">
               <input
                 className="form-control"
@@ -412,7 +505,9 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="total_cost_amount" className="w-[20%] font-medium">Total Tax amount</label>
+            <label htmlFor="total_cost_amount" className="w-[20%] font-medium">
+              Total Tax amount
+            </label>
             <div className="w-[80%]">
               <input
                 className="form-control"
@@ -427,7 +522,9 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="cgs_tax" className="w-[20%] font-medium">Cgs Tax</label>
+            <label htmlFor="cgs_tax" className="w-[20%] font-medium">
+              Cgs Tax
+            </label>
             <div className="w-[80%]">
               <input
                 disabled={row ? true : false}
@@ -442,7 +539,9 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="sgst_tax" className="w-[20%] font-medium">Sgst Tax</label>
+            <label htmlFor="sgst_tax" className="w-[20%] font-medium">
+              Sgst Tax
+            </label>
             <div className="w-[80%]">
               <input
                 disabled={row ? true : false}
@@ -457,7 +556,9 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="utgst_tax" className="w-[20%] font-medium">utgst Tax</label>
+            <label htmlFor="utgst_tax" className="w-[20%] font-medium">
+              utgst Tax
+            </label>
             <div className="w-[80%]">
               <input
                 disabled={row ? true : false}
@@ -472,7 +573,9 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="igst_tax" className="w-[20%] font-medium">igst Tax</label>
+            <label htmlFor="igst_tax" className="w-[20%] font-medium">
+              igst Tax
+            </label>
             <div className="w-[80%]">
               <input
                 disabled={row ? true : false}
@@ -487,7 +590,12 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="customer_bill_to_gst" className="w-[20%] font-medium">Customer Bill To Gst</label>
+            <label
+              htmlFor="customer_bill_to_gst"
+              className="w-[20%] font-medium"
+            >
+              Customer Bill To Gst
+            </label>
             <div className="w-[80%]">
               <input
                 disabled={row ? true : false}
@@ -502,7 +610,9 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="total_product_cost" className="w-[20%] font-medium">Total Product Cost</label>
+            <label htmlFor="total_product_cost" className="w-[20%] font-medium">
+              Total Product Cost
+            </label>
             <div className="w-[80%]">
               <input
                 disabled={row ? true : false}
@@ -517,7 +627,12 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="total_shipment_cost" className="w-[20%] font-medium">Total Shipment Cost</label>
+            <label
+              htmlFor="total_shipment_cost"
+              className="w-[20%] font-medium"
+            >
+              Total Shipment Cost
+            </label>
             <div className="w-[80%]">
               <input
                 disabled={row ? true : false}
@@ -532,7 +647,9 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="way_bill" className="w-[20%] font-medium">Way Bill</label>
+            <label htmlFor="way_bill" className="w-[20%] font-medium">
+              Way Bill
+            </label>
             <div className="w-[80%]">
               <input
                 className="form-control"
@@ -547,7 +664,9 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="payment" className="w-[20%] font-medium">Payment</label>
+            <label htmlFor="payment" className="w-[20%] font-medium">
+              Payment
+            </label>
             <div className="w-[80%]">
               <input
                 disabled={row ? true : false}
@@ -562,7 +681,9 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="remarks" className="w-[20%] font-medium">Remarks</label>
+            <label htmlFor="remarks" className="w-[20%] font-medium">
+              Remarks
+            </label>
             <div className="w-[80%]">
               <input
                 disabled={row ? true : false}
@@ -577,7 +698,9 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="designation" className="w-[20%] font-medium">Total Amount</label>
+            <label htmlFor="designation" className="w-[20%] font-medium">
+              Total Amount
+            </label>
             <div className="w-[80%]">
               <input
                 disabled={row ? true : false}
@@ -590,7 +713,6 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
               />
             </div>
           </div>
-
         </div>
 
         <div className="fixed bottom-0 right-0 bg-white w-full py-4 px-6 flex justify-end mt-8">
@@ -609,154 +731,339 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </button>
         </div>
       </form>
-      {editingData && <div ref={componentRef} style={{ width: "100%" }}>
-        <div style={{ textAlign: "center", width: "100%", border: "1px solid #ccc", padding: "0.5rem" }}>
-          <h1 style={{ fontSize: "1.875rem", fontWeight: "bold" }}>Thailash</h1>
-          <p style={{ fontSize: "1.125rem" }}>THAILASH ORIGINAL THENNAMARAKUDI OIL</p>
-          <p style={{ fontSize: "0.875rem", color: "#6b7280" }}>
-            3/127, Madhura Nagar, Plot No. 144, Sirangudi Puliyur, <br /> Nagapattinam - 611 104
-          </p>
-        </div>
+      {editingData && (
+        <div ref={componentRef} style={{ width: "100%" }}>
+          <div
+            style={{
+              textAlign: "center",
+              width: "100%",
+              border: "1px solid #ccc",
+              padding: "0.5rem",
+            }}
+          >
+            <h1 style={{ fontSize: "1.875rem", fontWeight: "bold" }}>
+              Thailash
+            </h1>
+            <p style={{ fontSize: "1.125rem" }}>
+              THAILASH ORIGINAL THENNAMARAKUDI OIL
+            </p>
+            <p style={{ fontSize: "0.875rem", color: "#6b7280" }}>
+              3/127, Madhura Nagar, Plot No. 144, Sirangudi Puliyur, <br />{" "}
+              Nagapattinam - 611 104
+            </p>
+          </div>
 
-        <table style={{ borderCollapse: "collapse", border: "1px solid #d1d5db", width: "100%", textAlign: "left" }}>
-          <tbody>
-            <tr>
-              <td colSpan="6" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
-                Invoice Number: {row?.invoiceNumber}
-              </td>
-              <td colSpan="6" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
-                Invoice Date: {row?.invoiceDate}
-              </td>
-            </tr>
-            <tr>
-              <td colSpan="6" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
-                <span style={{ fontWeight: "bold" }}>Billing Address:</span> <br />
-                <p style={{ fontWeight: "500" }}>
-                  {row?.address} <br /> {row?.city}, {row?.state}, {row?.country}
-                </p>
-              </td>
-
-              <td colSpan="6" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
-                <span style={{ fontWeight: "bold" }}>Place Of Supply:</span> <br />
-                <p style={{ fontWeight: "500" }}>
-                  {row?.address} <br /> {row?.city}, {row?.state}, {row?.country}
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <td colSpan="12" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
-                GSTIN: {row?.customerBillToGST}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div style={{ width: "100%" }}>
-          <table style={{ borderCollapse: "collapse", border: "1px solid #d1d5db", width: "100%", textAlign: "left" }}>
-            <thead>
-              <tr style={{ backgroundColor: "#e5e7eb" }}>
-                <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>S.No</th>
-                <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Particulars</th>
-                <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Qty</th>
-                <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Rate</th>
-                <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Discount</th>
-                <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Amount</th>
-                <th style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>Taxable Amount</th>
-              </tr>
-            </thead>
+          <table
+            style={{
+              borderCollapse: "collapse",
+              border: "1px solid #d1d5db",
+              width: "100%",
+              textAlign: "left",
+            }}
+          >
             <tbody>
               <tr>
-                <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>1</td>
-                <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>{editingData?.name}</td>
-                <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>{row?.quantity}</td>
-                <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
-                  {/* {parseInt(row?.offer_price || 0) - parseInt(row?.totalTaxAmount || 0)} */}
-                  {parseInt(editingData?.offer_price || 0)}
+                <td
+                  colSpan="6"
+                  style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                >
+                  Invoice Number: {row?.invoiceNumber}
                 </td>
-                <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>{row?.transactionType == "Pre-paid" ? "10%":"-"}</td>
-                <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
-                  {/* {row?.taxExclusiveGross} */}
-                  {row?.invoiceAmount}
-                  {/* {(((parseInt(editData?.offer_price) / 112 ) * 100) * parseInt(row?.quantity)).toFixed(2)} */}
-                </td>
-                <td style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
-                  {/* {row?.taxExclusiveGross} */}
-                  {row?.taxExclusiveGross}
-                  {/* {parseInt(row?.invoiceAmount) - parseInt(row?.totalTaxAmount)} */}
-                  </td>
-              </tr>
-              <tr>
-                <td colSpan="6" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "right", fontWeight: "bold" }}>
-                  SGST :
-                </td>
-                <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
-                  {row?.sgstTax}
+                <td
+                  colSpan="6"
+                  style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                >
+                  Invoice Date: {row?.invoiceDate}
                 </td>
               </tr>
               <tr>
-                <td colSpan="6" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "right", fontWeight: "bold" }}>
-                  CGST :
+                <td
+                  colSpan="6"
+                  style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                >
+                  <span style={{ fontWeight: "bold" }}>Billing Address:</span>{" "}
+                  <br />
+                  <p style={{ fontWeight: "500" }}>
+                    {row?.address} <br /> {row?.city}, {row?.state},{" "}
+                    {row?.country}
+                  </p>
                 </td>
-                <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
-                  {row?.cgstTax}
-                </td>
-              </tr>
-              <tr>
-                <td colSpan="6" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "right", fontWeight: "bold" }}>
-                  IGST:
-                </td>
-                <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
-                  {row?.igstTax}
-                </td>
-              </tr>
-              <tr>
-                <td colSpan="6" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "right", fontWeight: "bold" }}>
-                  UTGST:
-                </td>
-                <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
-                  {row?.utgstTax}
-                </td>
-              </tr>
-              <tr>
-                <td colSpan="6" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "right", fontWeight: "bold" }}>
-                  Total GST Amount:
-                </td>
-                <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
-                  {row?.totalTaxAmount}
-                </td>
-              </tr>
-              <tr>
-                <td colSpan="6" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "right", fontWeight: "bold" }}>
-                  Roundoff:
-                </td>
-                <td colSpan="2" style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}>
-                 {(Math.abs(parseFloat(row?.invoiceAmount) - (
-  (Number(row?.totalTaxAmount) || 0) + 
-  (((parseInt(editingData?.offer_price) || 0) / 112) * 100 * (Number(row?.quantity) || 0))
-))).toFixed(2)}
 
-
+                <td
+                  colSpan="6"
+                  style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                >
+                  <span style={{ fontWeight: "bold" }}>Place Of Supply:</span>{" "}
+                  <br />
+                  <p style={{ fontWeight: "500" }}>
+                    {row?.address} <br /> {row?.city}, {row?.state},{" "}
+                    {row?.country}
+                  </p>
                 </td>
               </tr>
               <tr>
-                <td colSpan="3" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "center", fontWeight: "bold" }}>
-                  HSN Code: 30049011 GST: 12%
-                </td>
-                <td colSpan="3" style={{ border: "1px solid #d1d5db", padding: "0.5rem", textAlign: "right", fontWeight: "bold" }}>
-                  Total Invoice Amount:
-                </td>
-                <td colSpan="3" style={{ border: "1px solid #d1d5db", padding: "0.5rem", fontWeight: "bold" }}>
-                  {row?.invoiceAmount}
+                <td
+                  colSpan="12"
+                  style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                >
+                  GSTIN: {row?.customerBillToGST}
                 </td>
               </tr>
             </tbody>
           </table>
-        </div>
 
-      </div>}
+          <div style={{ width: "100%" }}>
+            <table
+              style={{
+                borderCollapse: "collapse",
+                border: "1px solid #d1d5db",
+                width: "100%",
+                textAlign: "left",
+              }}
+            >
+              <thead>
+                <tr style={{ backgroundColor: "#e5e7eb" }}>
+                  <th
+                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                  >
+                    S.No
+                  </th>
+                  <th
+                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                  >
+                    Particulars
+                  </th>
+                  <th
+                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                  >
+                    Qty
+                  </th>
+                  <th
+                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                  >
+                    Rate
+                  </th>
+                  <th
+                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                  >
+                    Discount
+                  </th>
+                  <th
+                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                  >
+                    Amount
+                  </th>
+                  <th
+                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                  >
+                    Taxable Amount
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td
+                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                  >
+                    1
+                  </td>
+                  <td
+                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                  >
+                    {editingData?.name}
+                  </td>
+                  <td
+                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                  >
+                    {row?.quantity}
+                  </td>
+                  <td
+                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                  >
+                    {/* {parseInt(row?.offer_price || 0) - parseInt(row?.totalTaxAmount || 0)} */}
+                    {parseInt(editingData?.offer_price || 0)}
+                  </td>
+                  <td
+                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                  >
+                    {row?.transactionType == "Pre-paid" ? "10%" : "-"}
+                  </td>
+                  <td
+                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                  >
+                    {/* {row?.taxExclusiveGross} */}
+                    {row?.invoiceAmount}
+                    {/* {(((parseInt(editData?.offer_price) / 112 ) * 100) * parseInt(row?.quantity)).toFixed(2)} */}
+                  </td>
+                  <td
+                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                  >
+                    {/* {row?.taxExclusiveGross} */}
+                    {row?.taxExclusiveGross}
+                    {/* {parseInt(row?.invoiceAmount) - parseInt(row?.totalTaxAmount)} */}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    colSpan="6"
+                    style={{
+                      border: "1px solid #d1d5db",
+                      padding: "0.5rem",
+                      textAlign: "right",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    SGST :
+                  </td>
+                  <td
+                    colSpan="2"
+                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                  >
+                    {row?.sgstTax}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    colSpan="6"
+                    style={{
+                      border: "1px solid #d1d5db",
+                      padding: "0.5rem",
+                      textAlign: "right",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    CGST :
+                  </td>
+                  <td
+                    colSpan="2"
+                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                  >
+                    {row?.cgstTax}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    colSpan="6"
+                    style={{
+                      border: "1px solid #d1d5db",
+                      padding: "0.5rem",
+                      textAlign: "right",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    IGST:
+                  </td>
+                  <td
+                    colSpan="2"
+                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                  >
+                    {row?.igstTax}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    colSpan="6"
+                    style={{
+                      border: "1px solid #d1d5db",
+                      padding: "0.5rem",
+                      textAlign: "right",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    UTGST:
+                  </td>
+                  <td
+                    colSpan="2"
+                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                  >
+                    {row?.utgstTax}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    colSpan="6"
+                    style={{
+                      border: "1px solid #d1d5db",
+                      padding: "0.5rem",
+                      textAlign: "right",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Total GST Amount:
+                  </td>
+                  <td
+                    colSpan="2"
+                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                  >
+                    {row?.totalTaxAmount}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    colSpan="6"
+                    style={{
+                      border: "1px solid #d1d5db",
+                      padding: "0.5rem",
+                      textAlign: "right",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Roundoff:
+                  </td>
+                  <td
+                    colSpan="2"
+                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
+                  >
+                    {Math.abs(
+                      parseFloat(row?.invoiceAmount) -
+                        ((Number(row?.totalTaxAmount) || 0) +
+                          ((parseInt(editingData?.offer_price) || 0) / 112) *
+                            100 *
+                            (Number(row?.quantity) || 0))
+                    ).toFixed(2)}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    colSpan="3"
+                    style={{
+                      border: "1px solid #d1d5db",
+                      padding: "0.5rem",
+                      textAlign: "center",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    HSN Code: 30049011 GST: 12%
+                  </td>
+                  <td
+                    colSpan="3"
+                    style={{
+                      border: "1px solid #d1d5db",
+                      padding: "0.5rem",
+                      textAlign: "right",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Total Invoice Amount:
+                  </td>
+                  <td
+                    colSpan="3"
+                    style={{
+                      border: "1px solid #d1d5db",
+                      padding: "0.5rem",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {row?.invoiceAmount}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
 
       <div className="flex items-center justify-center mt-5">
-
         <button
           type="button"
           onClick={handlePrint}
@@ -765,8 +1072,6 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           Download Invoice
         </button>
       </div>
-
-
     </div>
   );
 };

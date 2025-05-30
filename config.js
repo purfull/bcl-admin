@@ -1,4 +1,3 @@
-
 export const AppEnv = {
-    baseUrl: "https://api.thailash.com",
-}
+  baseUrl: "https://api.purfull.com",
+};

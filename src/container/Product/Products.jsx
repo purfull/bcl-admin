@@ -1,9 +1,9 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import Pageheader from '../../components/common/pageheader/pageheader';
+import React, { Fragment, useState, useEffect } from "react";
+import Pageheader from "../../components/common/pageheader/pageheader";
 import EditProducts from "./EditProducts";
 import { ResponsiveProductsDataTable } from "./Productsdata";
-import Alert from '../dashboards/alert/Alert';
-import { AppEnv } from '../../../config';
+import Alert from "../dashboards/alert/Alert";
+import { AppEnv } from "../../../config";
 
 const Products = () => {
   const [editingRow, setEditingRow] = useState(null); // State to keep track of the row being edited
@@ -11,109 +11,63 @@ const Products = () => {
   const [isAlertOpen, setIsAlertOpen] = useState(false); // State to control alert visibility
   const [rowToDelete, setRowToDelete] = useState(null); // State to keep track of the row to delete
   const [rowToAdd, setRowToAdd] = useState(null);
-  const [listData, setListData] = useState([]); 
-  const [run, setRun] = useState(true)
+  const [listData, setListData] = useState([]);
+  const [run, setRun] = useState(true);
 
   const [data, setData] = useState([]);
 
-  
-  // {
-  //   "Product id" : 1,
-  //   "Product Name": "200ml mini bottle",
-  //   "Stock Quantity": 400,
-  //   "Selling Price": "₹400",
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${AppEnv.baseUrl}/product/get-all-product`,
+          {
+            method: "POST",
+          }
+        );
+        const result = await response.json();
+        console.log(result, "Filtered Data");
 
-  // },
-  // {
-  //   "Product id" : 2,
-  //   "Product Name": "500ml regular bottle",
-  //   "Stock Quantity": 300,
-  //   "Selling Price": "₹700",
+        if (result) {
+          setData(result.data);
+        }
+      } catch (error) {
+        console.log("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, [run]);
 
-  // },
-  // {
-  //   "Product id" : 3,
-  //   "Product Name": "1Lt large bottle",
-  //   "Stock Quantity": 200,
-  //   "Selling Price": "₹1100",
-
-  // },
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
-    const year = date.getFullYear();
-    return `${day}-${month}-${year}`;
-};
-
-
-  // useEffect(() => {
-  //     const fetchData = async () => {
-  //         try {
-  //             const response = await fetch('http://luxcycs.com:3000/api/admin/products');
-  //             const result = await response.json();
-  //             console.log(result , "Filtered Data");
-
-  //             if (result) {
-  //                 // Filter the data to only include the specified fields
-  //                 const filteredData = result.map(item => ({
-  //                     Product_name: item.product_name,
-  //                     Type: item.type,
-  //                     Logo: item.marketing_defaultImage_content,
-  //                     CreatedAt: formatDate(item.createdAt),
-  //                   }));
-  //                 setData(filteredData);
-  //             }
-  //         } catch (error) {
-  //             console.error('Error fetching data:', error);
-  //         }
-  //     };
-
-  //     fetchData();
-  // }, []);
-
-
-  // useEffect(() => {
-  //   const abortController = new AbortController();
-
-  //   fetch(`${AppEnv.baseUrl}/admin/products`, {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     signal: abortController.signal,
-  //   })
-  //     .then(result => result.json())
-  //     .then(data => setData(data.data))
-  //     .catch(err => console.log(err));
-
-  //   return () => {
-  //     abortController.abort();
-  //   };
-  // }, [run]);
+  // const formatDate = (dateString) => {
+  //   const date = new Date(dateString);
+  //   const day = String(date.getDate()).padStart(2, "0");
+  //   const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+  //   const year = date.getFullYear();
+  //   return `${day}-${month}-${year}`;
+  // };
 
   useEffect(() => {
     if (data.length > 0) {
-      setListData(data.map(el => ({
-        id: el.id,
-        size: el.bottle_size,
-        name: el.name,
-        "Offer Price": el.offer_price,
-        "Actual Price": el.actual_price,
-        "Created At": el.createdAt.split('T')[0],
-      })));
+      setListData(
+        data.map((el) => ({
+          id: el.id,
+          size: el.bottle_size,
+          name: el.name,
+          "Offer Price": el.offer_price,
+          "Actual Price": el.actual_price,
+          "Created At": el.createdAt.split("T")[0],
+        }))
+      );
     }
   }, [data]);
 
   const handleEdit = (row) => {
-    setEditingRow(row); 
-    
+    setEditingRow(row);
   };
 
   const handleCancelEdit = () => {
     setEditingRow(null); // Cancel edit and return to view mode
-    setRun(!run)
+    setRun(!run);
   };
 
   const handleCheckboxChange = () => {
@@ -121,8 +75,8 @@ const Products = () => {
   };
 
   const handleDeleteClick = (row, add) => {
-    const deleteData = {row : row, add : add.add}
-    
+    const deleteData = { row: row, add: add.add };
+
     setRowToDelete(deleteData);
     setIsAlertOpen(true);
   };
@@ -136,36 +90,36 @@ const Products = () => {
     // Create a new AbortController instance
     const abortController = new AbortController();
     console.log("ddddddddd", rowToDelete);
-    
-    const path = rowToDelete.add ? 'add' : 'delete'
+
+    const path = rowToDelete.add ? "add" : "delete";
     // Perform the delete action here, e.g., call an API to delete the row
 
     fetch(`${AppEnv.baseUrl}/admin/products/${rowToDelete.row.id}`, {
-      method: 'DELETE', // Ensure this is the correct method for your API
+      method: "DELETE", // Ensure this is the correct method for your API
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       signal: abortController.signal,
-      body: JSON.stringify({ ProductsCode: rowToDelete.row.ProductsCode }) // Ensure the payload is correctly formatted
+      body: JSON.stringify({ ProductsCode: rowToDelete.row.ProductsCode }), // Ensure the payload is correctly formatted
     })
-      .then(result => result.json())
-      .then(response => {
-        if (response.success) { // Check if the response indicates a successful deletion
+      .then((result) => result.json())
+      .then((response) => {
+        if (response.success) {
+          // Check if the response indicates a successful deletion
           // Remove the row from the data
-          setRun(!run)
+          setRun(!run);
         } else {
-          console.error('Failed to delete the row:', response.message);
+          console.error("Failed to delete the row:", response.message);
         }
         setIsAlertOpen(false); // Close the alert
         setRowToDelete(null); // Reset the rowToDelete state
       })
-      .catch(err => {
-        console.error('Error:', err);
+      .catch((err) => {
+        console.error("Error:", err);
         setIsAlertOpen(false); // Close the alert
         setRowToDelete(null); // Reset the rowToDelete state
       });
   };
-  
 
   const handleCloseAlert = () => {
     setIsAlertOpen(false);
@@ -174,8 +128,11 @@ const Products = () => {
 
   return (
     <Fragment>
-      <Pageheader currentpage="Products" activepage="Master" mainpage="Products" />
-
+      <Pageheader
+        currentpage="Products"
+        activepage="Master"
+        mainpage="Products"
+      />
 
       <div id="a1" className="grid grid-cols-12 gap-6">
         <div className="col-span-12">
@@ -193,14 +150,16 @@ const Products = () => {
           </div> */}
           <div className="box ">
             <div className="box-body space-y-3">
-              
               <div className="overflow-hidden">
-                <div id="reactivity-table" className="ti-custom-table ti-striped-table ti-custom-table-hover">
-                
+                <div
+                  id="reactivity-table"
+                  className="ti-custom-table ti-striped-table ti-custom-table-hover"
+                >
                   {editingRow ? (
-                    <EditProducts 
-                      row={editingRow} 
-                      onCancel={handleCancelEdit} 
+                    <EditProducts
+                      row={editingRow}
+                      onEdit={handleEdit}
+                      onCancel={handleCancelEdit}
                       active={isActive}
                     />
                   ) : (
@@ -219,10 +178,12 @@ const Products = () => {
         </div>
       </div>
 
-      <Alert 
-        isOpen={isAlertOpen} 
-        onClose={handleCloseAlert} 
+      <Alert
+        isOpen={isAlertOpen}
+        onCancel={() => setIsAlertOpen(false)}
+        onClose={handleCloseAlert}
         onConfirm={handleConfirmDelete}
+        message="Are you sure you want to delete this product?"
       />
     </Fragment>
   );
