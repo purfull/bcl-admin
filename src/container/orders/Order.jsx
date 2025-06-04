@@ -19,15 +19,18 @@ const Order = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${AppEnv.baseUrl}/api/orders`, {
-          method: "GET",
-        });
+        const response = await fetch(
+          `https://api.purfull.com/order/get-all-orders`,
+          {
+            method: "GET",
+          }
+        );
 
         const result = await response.json();
         console.log(result, "Fetched orders Data");
 
         if (result) {
-          setListData(result.data);
+          setListData(result);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -84,7 +87,7 @@ const Order = () => {
   };
 
   useEffect(() => {
-    if (listData.length > 0) {
+    if (listData?.length > 0) {
       setData(
         listData.map((el) => ({
           Id: el.id,

@@ -93,46 +93,57 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("dataaa ", editData);
-    const dataToSend = {
-      // "name",
-      // "message": editData.message,
-      // "image": logo,
-      // "designation": editData.designation,
-      // "isActive": editData.isActive,
-      status: data[0]?.status,
-      orderId: data[0]?.orderId,
-    };
-    console.log("data to send", dataToSend);
+    console.log("editData:", editData);
 
-    //   try {
-    //     // const response = await fetch(`${AppEnv.baseUrl}/order/create-order'`, {
-    //     const response = await fetch(`${AppEnv.baseUrl}/order/update-status`, {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify(dataToSend),
-    //     });
+    // if (!row) return;
 
-    //     if (!response.ok) {
-    //       throw new Error("Network response was not ok");
-    //     }
+    // const payload = {
+    //   customer_id: row?.orderId || "",
+    //   shipping_address: row?.address || "",
+    //   billing_address: row?.address || "",
+    //   items: [
+    //     {
+    //       name: row?.buyerName || "",
+    //       quantity: row?.quantity || "",
+    //       // price: "",       // Add if required by backend
+    //       // category: "",    // Add if required by backend
+    //     },
+    //   ],
+    // };
 
-    //     const data = await response.json();
-    //     console.log("Success:", data);
-    //   } catch (error) {
-    //     console.error("Error:", error);
+    // console.log("Payload to send:", payload);
+
+    // try {
+    //   const response = await fetch(`${AppEnv.baseUrl}/order/create-order`, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(payload),
+    //   });
+
+    //   const result = await response.json();
+    //   console.log("Response from order create:", result);
+
+    //   if (result?.data) {
+    //     setListData(result.data);
     //   }
+    // } catch (error) {
+    //   console.error("Error creating order:", error);
+    // }
   };
+
   // get by id
   const { id } = useParams();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${AppEnv.baseUrl}/api/orders/${id}`, {
-          method: "GET",
-        });
+        const response = await fetch(
+          `https://api.purfull.com/order/get-order/${id}`,
+          {
+            method: "GET",
+          }
+        );
 
         const result = await response.json();
         console.log(result, "Fetched orders Data using Id");
@@ -149,45 +160,6 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
       fetchData(); // only fetch when ID exists
     }
   }, [id]);
-
-  //post
-  useEffect(() => {
-    if (!row) return;
-    const fetchData = async () => {
-      const payload = {
-        customer_id: row?.orderId || "",
-        shipping_address: row?.address || "",
-        billing_address: row?.address || "",
-        items: [
-          {
-            name: "",
-            quantity: row?.quantity || "",
-            price: "",
-            category: "",
-          },
-        ],
-      };
-      try {
-        const response = await fetch(`${AppEnv.baseUrl}/api/orders`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        });
-        const result = await response.json();
-        console.log(result, "Filtered Data from orders post req");
-        console.log(AppEnv.baseUrl); // check if correct
-
-        if (result) {
-          setListData(result.data);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, [row]);
 
   return (
     <div className="pb-[10vh]">

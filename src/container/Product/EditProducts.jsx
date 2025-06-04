@@ -33,7 +33,7 @@ const EditProducts = ({ row, onCancel }) => {
       .then((res) => res.json())
       .then((data) => {
         setEditData(data.data);
-        setLogo(data.data.image);
+        //setLogo(data.data.image);
       })
       .catch((err) => {
         if (err.name !== "AbortError") {
@@ -113,7 +113,7 @@ const EditProducts = ({ row, onCancel }) => {
     }
     // const dataToSend = {
     //   ...editData,
-    //   image: logo,     
+    //   image: logo,
     // };
     // console.log(req);
     // console.log("dataaa ", dataToSend);

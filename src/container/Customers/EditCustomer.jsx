@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import Select from 'react-select';
-import countryList from 'react-select-country-list';
-import { AppEnv } from '../../../config';
-import { CleaningServices } from '@mui/icons-material';
-import { Navigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import Select from "react-select";
+import countryList from "react-select-country-list";
+import { AppEnv } from "../../../config";
+import { CleaningServices } from "@mui/icons-material";
+import { Navigate } from "react-router-dom";
 
-const EditCustomer = ({ row, onCancel, createMessage, setCreateMessage }) => {
+const EditCustomer = ({
+  row,
+  onCancel,
+  createMessage,
+  setCreateMessage,
+  //handleEdit,
+}) => {
   console.log(row, "ooooooooooo");
 
   const [editData, setEditData] = useState({
@@ -31,50 +37,71 @@ const EditCustomer = ({ row, onCancel, createMessage, setCreateMessage }) => {
     country: "",
     phone: "",
     email: "",
-    gst: ""
+    gst: "",
   });
-
 
   console.log(editData);
 
-
   const [custId, setCustId] = useState(null);
 
+  useEffect(() => {
+    if (row) {
+      console.log("Prepopulating form with row:", row);
+      setEditData({
+        name: row.first_name || "",
+        last_name: row.last_name || "",
+        address: row.address || "",
+        city: row.city || "",
+        state: row.state || "",
+        postal_code: row.postal_code || "",
+        //country: row.country || "India",
+        phone: row.phone || "",
+        email: row.email || "",
+        gst: row.gst || "",
+      });
+    }
+  }, [row]);
+  console.log(row);
 
   useEffect(() => {
     if (row?.newCustomer) {
     } else {
       setCustId(row.Id);
     }
-  }, [row])
+  }, [row]);
 
-  useEffect(() => {
-    const fetchCustomerData = async () => {
-      if (custId) {
-        try {
-          // const response = await fetch(`http://luxcycs.com:3000/api/admin/customer/get_customer/${custId}`);
-          const response = await fetch(`${AppEnv.baseUrl}/customer/get-customer-detial/${row.Id}`);
+  // useEffect(() => {
+  //   const fetchCustomerData = async () => {
+  //     if (custId) {
+  //       try {
+  //         const response = await fetch(
+  //           // `${AppEnv.baseUrl}/user/get-user/${row.Id}`,
+  //           `https://api.purfull.com/user/get-user/${custId}`,
+  //           {
+  //             method: "GET",
+  //           }
+  //         );
 
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
+  //         if (!response.ok) {
+  //           throw new Error("Network response was not ok");
+  //         }
 
-          const data = await response.json();
+  //         const data = await response.json();
 
-          if (data) {
-            console.log(data, "pppppppppppppppppppppp")
-            setEditData(data?.data);
-          }
-        } catch (error) {
-          console.error('Error fetching customer data:', error);
-        }
-      }
-    };
+  //         if (data) {
+  //           console.log(data, "pppppppppppppppppppppp");
+  //           setEditData(data?.data); //prepopulate
+  //         }
+  //       } catch (error) {
+  //         console.error("Error fetching customer data:", error);
+  //       }
+  //     }
+  //   };
 
-    fetchCustomerData();
-  }, [custId]);
+  //   fetchCustomerData();
+  // }, [custId]);
 
-  // const [countryOptions] = useState(countryList().getData());
+  const [] = useState(countryList().getData());
 
   const [countryOptions] = useState("India");
 
@@ -84,9 +111,9 @@ const EditCustomer = ({ row, onCancel, createMessage, setCreateMessage }) => {
     console.log(id, value);
 
     // Check if id is for customerAddress
-    if (id.startsWith('customerAddress.')) {
-      const addressField = id.split('.')[1]; // Get the specific address field
-      setEditData(prevData => ({
+    if (id.startsWith("customerAddress.")) {
+      const addressField = id.split(".")[1]; // Get the specific address field
+      setEditData((prevData) => ({
         ...prevData,
         customerAddress: {
           ...prevData.customerAddress,
@@ -94,7 +121,7 @@ const EditCustomer = ({ row, onCancel, createMessage, setCreateMessage }) => {
         },
       }));
     } else {
-      setEditData(prevData => ({
+      setEditData((prevData) => ({
         ...prevData,
         [id]: value,
       }));
@@ -102,7 +129,7 @@ const EditCustomer = ({ row, onCancel, createMessage, setCreateMessage }) => {
   };
 
   const handleCountryChange = (value) => {
-    setEditData(prevData => ({
+    setEditData((prevData) => ({
       ...prevData,
       customerAddress: {
         ...prevData.customerAddress,
@@ -111,25 +138,23 @@ const EditCustomer = ({ row, onCancel, createMessage, setCreateMessage }) => {
     }));
   };
 
- 
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const dataToSend = {
       ...editData,
-      languageCode: "EN"
+      languageCode: "EN",
     };
 
     fetch(`${AppEnv.baseUrl}/customer/create-customer`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(dataToSend),
     })
-      .then(response => response.json())
-      .then(data => setCreateMessage(data.message))
-      .catch(error => console.error('Error:', error));
+      .then((response) => response.json())
+      .then((data) => setCreateMessage(data.message))
+      .catch((error) => console.error("Error:", error));
   };
 
   useEffect(() => {
@@ -143,43 +168,99 @@ const EditCustomer = ({ row, onCancel, createMessage, setCreateMessage }) => {
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-4">
           <div className="flex items-center justify-start">
-            <label htmlFor="first_name" className="w-[30%] font-medium">First Name</label>
+            <label htmlFor="first_name" className="w-[30%] font-medium">
+              First Name
+            </label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="first_name" value={editData.first_name} onChange={handleChange} disabled={row?.newCustomer != true ? true : false} />
+              <input
+                type="text"
+                className="form-control"
+                id="first_name"
+                value={editData.first_name}
+                onChange={handleChange}
+                disabled={row?.newCustomer != true ? true : false}
+              />
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="last_name" className="w-[30%] font-medium">Last Name</label>
+            <label htmlFor="last_name" className="w-[30%] font-medium">
+              Last Name
+            </label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="last_name" value={editData.last_name} onChange={handleChange} disabled={row?.newCustomer != true ? true : false} />
+              <input
+                type="text"
+                className="form-control"
+                id="last_name"
+                value={editData.last_name}
+                onChange={handleChange}
+                disabled={row?.newCustomer != true ? true : false}
+              />
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="address" className="w-[30%] font-medium">Address Line/Street</label>
+            <label htmlFor="address" className="w-[30%] font-medium">
+              Address Line/Street
+            </label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="address" value={editData.address} onChange={handleChange} disabled={row?.newCustomer != true ? true : false} />
+              <input
+                type="text"
+                className="form-control"
+                id="address"
+                value={editData.address}
+                onChange={handleChange}
+                disabled={row?.newCustomer != true ? true : false}
+              />
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="city" className="w-[30%] font-medium">City</label>
+            <label htmlFor="city" className="w-[30%] font-medium">
+              City
+            </label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="city" value={editData.city} onChange={handleChange} disabled={row?.newCustomer != true ? true : false} />
+              <input
+                type="text"
+                className="form-control"
+                id="city"
+                value={editData.city}
+                onChange={handleChange}
+                disabled={row?.newCustomer != true ? true : false}
+              />
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="state" className="w-[30%] font-medium">State</label>
+            <label htmlFor="state" className="w-[30%] font-medium">
+              State
+            </label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="state" value={editData.state} onChange={handleChange} disabled={row?.newCustomer != true ? true : false} />
+              <input
+                type="text"
+                className="form-control"
+                id="state"
+                value={editData.state}
+                onChange={handleChange}
+                disabled={row?.newCustomer != true ? true : false}
+              />
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="postal_code" className="w-[30%] font-medium">Postal Code</label>
+            <label htmlFor="postal_code" className="w-[30%] font-medium">
+              Postal Code
+            </label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="postal_code" value={editData.postal_code} onChange={handleChange} disabled={row?.newCustomer != true ? true : false} />
+              <input
+                type="text"
+                className="form-control"
+                id="postal_code"
+                value={editData.postal_code}
+                onChange={handleChange}
+                disabled={row?.newCustomer != true ? true : false}
+              />
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="country" className="w-[30%] font-medium">Country</label>
+            <label htmlFor="country" className="w-[30%] font-medium">
+              Country
+            </label>
             <div className="w-[70%]">
               {/* <Select
                 id="country"
@@ -190,28 +271,45 @@ const EditCustomer = ({ row, onCancel, createMessage, setCreateMessage }) => {
                 isClearable
                 disabled={row?.newCustomer != true ? true : false}
               /> */}
-              <select disabled={row?.newCustomer != true ? true : false}
+              <select
+                disabled={row?.newCustomer != true ? true : false}
                 className="form-control"
                 id="country"
                 // value={editData.CountryId || ''}
                 onChange={handleChange}
               >
-                <option value={"India"}>
-                  {"India"}
-                </option>
+                <option value={"India"}>{"India"}</option>
               </select>
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="phone" className="w-[30%] font-medium">Phone</label>
+            <label htmlFor="phone" className="w-[30%] font-medium">
+              Phone
+            </label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="phone" value={editData.phone} onChange={handleChange} disabled={row?.newCustomer != true ? true : false} />
+              <input
+                type="text"
+                className="form-control"
+                id="phone"
+                value={editData.phone}
+                onChange={handleChange}
+                disabled={row?.newCustomer != true ? true : false}
+              />
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="email" className="w-[30%] font-medium">Email</label>
+            <label htmlFor="email" className="w-[30%] font-medium">
+              Email
+            </label>
             <div className="w-[70%]">
-              <input type="email" className="form-control" id="email" value={editData.email} onChange={handleChange} disabled={row?.newCustomer != true ? true : false} />
+              <input
+                type="email"
+                className="form-control"
+                id="email"
+                value={editData.email}
+                onChange={handleChange}
+                disabled={row?.newCustomer != true ? true : false}
+              />
             </div>
           </div>
           {/* <div className="flex items-center justify-start">
@@ -227,9 +325,18 @@ const EditCustomer = ({ row, onCancel, createMessage, setCreateMessage }) => {
             </div>
           </div> */}
           <div className="flex items-center justify-start">
-            <label htmlFor="gst" className="w-[30%] font-medium">GST</label>
+            <label htmlFor="gst" className="w-[30%] font-medium">
+              GST
+            </label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="gst" value={editData.gst} onChange={handleChange} disabled={row?.newCustomer != true ? true : false} />
+              <input
+                type="text"
+                className="form-control"
+                id="gst"
+                value={editData.gst}
+                onChange={handleChange}
+                disabled={row?.newCustomer != true ? true : false}
+              />
             </div>
           </div>
         </div>
@@ -250,12 +357,14 @@ const EditCustomer = ({ row, onCancel, createMessage, setCreateMessage }) => {
           >
             Cancel
           </button>
-          {row?.newCustomer && <button
-            type="submit"
-            className="ti-btn bg-[#2EAF4B] text-white !px-[20px] !py-[2px] !text-[18px]"
-          >
-            Save
-          </button>}
+          {row?.newCustomer && (
+            <button
+              type="submit"
+              className="ti-btn bg-[#2EAF4B] text-white !px-[20px] !py-[2px] !text-[18px]"
+            >
+              Save
+            </button>
+          )}
         </div>
       </form>
     </div>
