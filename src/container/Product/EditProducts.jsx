@@ -8,11 +8,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { json } from "react-router-dom";
 import axios from "axios";
 
-const EditProducts = ({ row, onCancel }) => {
+const EditProducts = ({ row, onCancel, onSave }) => {
   const [editData, setEditData] = useState({});
   const [country, setCountry] = useState([]);
   const [logo, setLogo] = useState(noImage);
-  // console.log(row);
+  //console.log(onSave);
 
   const fileInputRef = useRef(null);
   const req = row.newProducts ? "POST" : "PUT";
@@ -111,12 +111,6 @@ const EditProducts = ({ row, onCancel }) => {
     } else {
       handleUpdate();
     }
-    // const dataToSend = {
-    //   ...editData,
-    //   image: logo,
-    // };
-    // console.log(req);
-    // console.log("dataaa ", dataToSend);
   };
 
   //payload for product creation
@@ -146,6 +140,11 @@ const EditProducts = ({ row, onCancel }) => {
       );
       console.log("Data saved successfully", response.data);
       toast.success("Product created successfully");
+
+      if (response.data.success) {
+        onSave();
+        console.log("saved");
+      }
     } catch (error) {
       console.error("Error creating product:", error);
       toast.error("Failed to create product");
@@ -180,6 +179,11 @@ const EditProducts = ({ row, onCancel }) => {
     } catch (error) {
       console.error("Error updating product:", error);
       toast.error("Failed to update product");
+    }
+    // After save is successful, call onSave prop
+    if (response.data.success) {
+      onSave();
+      console.log("updated");
     }
   };
 

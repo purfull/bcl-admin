@@ -13,6 +13,7 @@ const Products = () => {
   const [rowToAdd, setRowToAdd] = useState(null);
   const [listData, setListData] = useState([]);
   const [run, setRun] = useState(true);
+  const [isEditMode, setIsEditMode] = useState(null); // state to Close edit mode and return to view mode
 
   const [data, setData] = useState([]);
 
@@ -67,6 +68,12 @@ const Products = () => {
 
   const handleCancelEdit = () => {
     setEditingRow(null); // Cancel edit and return to view mode
+    setRun(!run);
+  };
+
+  const handleDataSave = () => {
+    setEditingRow(null);
+    //setIsEditMode(null); // save  and return to view mode
     setRun(!run);
   };
 
@@ -159,6 +166,7 @@ const Products = () => {
                     <EditProducts
                       row={editingRow}
                       onEdit={handleEdit}
+                      onSave={handleDataSave}
                       onCancel={handleCancelEdit}
                       active={isActive}
                     />
@@ -166,6 +174,7 @@ const Products = () => {
                     <ResponsiveProductsDataTable
                       data={listData}
                       onEdit={handleEdit}
+                      // onSave={handleDataSave}
                       onDelete={handleDeleteClick} // Pass the delete handler
                       // onAdd={handleAddClick}
                       active={isActive}
