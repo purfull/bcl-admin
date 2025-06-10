@@ -1,5 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useTable, useSortBy, useGlobalFilter, usePagination } from 'react-table';
+import React, { useState, useEffect } from "react";
+import {
+  useTable,
+  useSortBy,
+  useGlobalFilter,
+  usePagination,
+} from "react-table";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 // Function to dynamically generate columns from data
 const generateColumns = (data, onEdit, onDelete, active) => {
@@ -9,16 +15,14 @@ const generateColumns = (data, onEdit, onDelete, active) => {
   const firstItem = data[0];
   const keys = Object.keys(firstItem);
 
-  
-
-  const columns = keys.map(key => {
+  const columns = keys.map((key) => {
     // If the key is 'Logo', render an image
-    if (key === 'Logo') {
+    if (key === "Logo") {
       return {
         Header: key,
         accessor: key,
         Cell: ({ cell: { value } }) => (
-          <img src={value} alt="Product Logo" style={{ width: '100px' }} />
+          <img src={value} alt="Product Logo" style={{ width: "100px" }} />
         ),
       };
     }
@@ -29,62 +33,65 @@ const generateColumns = (data, onEdit, onDelete, active) => {
     };
   });
 
-
   // Add the "Action" column
   columns.push({
-    Header: 'Action',
-    accessor: 'edit',
-    Cell: ({ row }) => (
+    Header: "Action",
+    accessor: "edit",
+    Cell: ({ row }) =>
       active ? (
         <div className="">
-        <button
-          className='px-4 py-1 bg-[#2EAF4B] text-white'
-          onClick={() => onEdit(row.original)} // Use the onEdit prop
-        >
-          Edit
-        </button>
-        <button
-          className='px-4 ti-btn ti-btn-outline-danger !py-1 !mx-2'
-          onClick={() => onDelete(row.original,{add: false})} // Use the onDelete prop
-        >
-          Delete
-        </button>
+          <button
+            className="px-4 py-1 bg-[#2EAF4B] text-white"
+            onClick={() => onEdit(row.original)} // Use the onEdit prop
+          >
+            Edit
+          </button>
+          <button
+            className="px-4 ti-btn ti-btn-outline-danger !py-1 !mx-2"
+            onClick={() => onDelete(row.original, { add: false })} // Use the onDelete prop
+          >
+            Delete
+          </button>
         </div>
       ) : (
         <div className="">
           <button
-            className='px-4 py-1 bg-violet-700 text-white mx-2'
-            onClick={() => onDelete(row.original,{add: true})}
+            className="px-4 py-1 bg-violet-700 text-white mx-2"
+            onClick={() => onDelete(row.original, { add: true })}
           >
             Active
           </button>
         </div>
-      )
-    ),
+      ),
   });
 
   return columns;
 };
 
-
-
 export const GlobalFilter = ({ filter, setFilter }) => (
   <span className="flex ms-auto">
     <input
-      value={filter || ''}
+      value={filter || ""}
       onChange={(e) => setFilter(e.target.value)}
-      className="form-control mb-4"
+      className="form-control mb-4 mt-4"
       placeholder="Search..."
     />
   </span>
 );
 
-export const ResponsiveProductsDataTable = ({ data = [], onEdit, onDelete, active }) => {
+export const ResponsiveProductsDataTable = ({
+  data = [],
+  onEdit,
+  onDelete,
+  active,
+}) => {
   // Handle null or undefined data
-  
 
   // Generate columns and table instance based on props.data
-  const columns = React.useMemo(() => generateColumns(data, onEdit, onDelete, active), [data, onEdit, onDelete,  active]);
+  const columns = React.useMemo(
+    () => generateColumns(data, onEdit, onDelete, active),
+    [data, onEdit, onDelete, active]
+  );
 
   const tableInstance = useTable(
     {
@@ -117,10 +124,9 @@ export const ResponsiveProductsDataTable = ({ data = [], onEdit, onDelete, activ
   return (
     <>
       <div className="e-table pb-5  ">
-        <div className="">
-        </div>
-        <div className="flex">
-          <div className="flex items-center justify-between mb-4">
+        <div className=""></div>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+          <div className="order-2 sm:order-1 flex items-center sm:justify-between mb-2 sm:mb-0 ">
             <span>show</span>
             <select
               className="selectpage border text-[16px] mx-2"
@@ -135,10 +141,26 @@ export const ResponsiveProductsDataTable = ({ data = [], onEdit, onDelete, activ
             </select>
             <span>entities</span>
           </div>
-          <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
-          <div className="">
-            <button className='px-[1vw] py-[1.5vh] bg-[#2EAF4B] text-white ml-[1vw] rounded-md ' onClick={() => {onEdit({ newProducts: true }) }} >+ NEW PRODUCT</button>
+          {/* <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} /> */}
+          <div className="order-1 sm:order-2 flex items-center justify-between gap-6 sm:justify-start sm:gap-4">
+            <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+            <button
+              className="px-[1vw] py-[1.5vh] bg-[#2EAF4B] text-white ml-[1vw] rounded-md "
+              onClick={() => {
+                onEdit({ newProducts: true });
+              }}
+            >
+              + NEW
+            </button>
           </div>
+          {/* <div className="flex justify-center sm:justify-start px-2">
+            <button
+              className="px-4 py-2 sm:px-3 sm:py-3 bg-[#2EAF4B] text-white ml-0 sm:ml-2 rounded-md text-xs sm:text-base"
+              onClick={() => onEdit({ newProducts: true })}
+            >
+              + NEW PRODUCT
+            </button>
+          </div> */}
         </div>
         <div className="table-responsive table-bordered text-center ">
           <table
@@ -154,7 +176,9 @@ export const ResponsiveProductsDataTable = ({ data = [], onEdit, onDelete, activ
                       key={Math.random()}
                       className={column.className}
                     >
-                      <span className="tabletitle">{column.render('Header')}</span>
+                      <span className="tabletitle">
+                        {column.render("Header")}
+                      </span>
                       <span>
                         {column.isSorted ? (
                           column.isSortedDesc ? (
@@ -163,7 +187,7 @@ export const ResponsiveProductsDataTable = ({ data = [], onEdit, onDelete, activ
                             <i className="fa fa-angle-up"></i>
                           )
                         ) : (
-                          ''
+                          ""
                         )}
                       </span>
                     </th>
@@ -177,8 +201,12 @@ export const ResponsiveProductsDataTable = ({ data = [], onEdit, onDelete, activ
                 return (
                   <tr {...row.getRowProps()} key={Math.random()}>
                     {row.cells.map((cell) => (
-                      <td {...cell.getCellProps()} key={Math.random()} style={{textAlign:'left'}}>
-                        {cell.render('Cell')}
+                      <td
+                        {...cell.getCellProps()}
+                        key={Math.random()}
+                        style={{ textAlign: "left" }}
+                      >
+                        {cell.render("Cell")}
                       </td>
                     ))}
                   </tr>
@@ -187,39 +215,37 @@ export const ResponsiveProductsDataTable = ({ data = [], onEdit, onDelete, activ
             </tbody>
           </table>
         </div>
-        <div className="block sm:flex mt-4 px-4">
+        <div className="flex flex-col sm:flex-row justify-between items-center mt-4 px-4">
+          {/* <div className="block sm:flex mt-4 px-4"> */}
           <span className="">
             Showing {page.length} of {data.length} entries
           </span>
-          <span className="sm:ms-auto">
+          <span className="sm:ms-auto flex gap-2 mt-2 sm:mt-0">
             <button
-              className="btn-outline-light tablebutton me-2 my-2 sm:inline block"
-              onClick={() => gotoPage(0)}
-              disabled={!canNextPage}
-            >
-              {' Previous '}
-            </button>
-            <button
-              className="tablebutton me-2 my-2"
+              // className="tablebutton me-2 my-2"
+              className="w-8 h-8 flex items-center justify-center rounded-full bg-[#2EAF4B] text-white disabled:opacity-50"
               onClick={previousPage}
               disabled={!canNextPage}
             >
-              {' Previous Page '}
+              {/* {" Previous Page "} */}
+              <i className="fa fa-angle-left"></i>
             </button>
             <button
-              className="btn-outline-light tablebutton me-2 my-2"
+              // className="btn-outline-light tablebutton me-2 my-2 bg-[#2EAF4B]"
+              className="w-8 h-8 flex items-center justify-center rounded-full bg-[#2EAF4B] text-white disabled:opacity-50"
               onClick={nextPage}
               disabled={!canNextPage}
             >
-              {' Next Page '}
+              {/* {" Next Page "} */}
+              <i className="fa fa-angle-right"></i>
             </button>
-            <button
+            {/* <button
               className="btn-outline-light tablebutton me-2 my-2"
               onClick={() => gotoPage(pageCount - 1)}
               disabled={!canNextPage}
             >
-              {' Next '}
-            </button>
+              {" Next "}
+            </button> */}
           </span>
         </div>
       </div>

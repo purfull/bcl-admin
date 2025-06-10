@@ -165,9 +165,9 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
     <div className="pb-[10vh]">
       <form onSubmit={handleSubmit} style={{ marginBottom: "30px" }}>
         <ToastContainer />
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex items-center justify-start">
-            <label htmlFor="name" className="w-[20%] font-medium">
+            <label htmlFor="name" className="w-[25%] sm:w-[20%] font-medium">
               Customer
             </label>
             <div className="w-[80%]">
@@ -184,7 +184,7 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="message" className="w-[20%] font-medium">
+            <label htmlFor="message" className="w-[25%] sm:w-[20%] font-medium">
               Order Id
             </label>
             <div className="w-[80%]">
@@ -231,7 +231,7 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div> */}
 
           <div className="flex items-center justify-start">
-            <label htmlFor="address" className="w-[20%] font-medium">
+            <label htmlFor="address" className="w-[25%] sm:w-[20%] font-medium">
               Address
             </label>
             <div className="w-[80%]">
@@ -248,7 +248,10 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="address_type" className="w-[20%] font-medium">
+            <label
+              htmlFor="address_type"
+              className="w-[25%] sm:w-[20%] font-medium"
+            >
               Address Type
             </label>
             <div className="w-[80%]">
@@ -265,7 +268,7 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="phone" className="w-[20%] font-medium">
+            <label htmlFor="phone" className="w-[25%] sm:w-[20%] font-medium">
               Mobile No
             </label>
             <div className="w-[80%]">
@@ -282,7 +285,10 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="postal_code" className="w-[20%] font-medium">
+            <label
+              htmlFor="postal_code"
+              className="w-[25%] sm:w-[20%] font-medium"
+            >
               Pin
             </label>
             <div className="w-[80%]">
@@ -299,7 +305,7 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="country" className="w-[20%] font-medium">
+            <label htmlFor="country" className="w-[25%] sm:w-[20%] font-medium">
               Country
             </label>
             <div className="w-[80%]">
@@ -318,7 +324,10 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="shipping_mode" className="w-[20%] font-medium">
+            <label
+              htmlFor="shipping_mode"
+              className="w-[25%] sm:w-[20%] font-medium"
+            >
               Shipping mode
             </label>
             <div className="w-[80%]">
@@ -337,7 +346,10 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="invoice_number" className="w-[20%] font-medium">
+            <label
+              htmlFor="invoice_number"
+              className="w-[25%] sm:w-[20%] font-medium"
+            >
               invoice Number
             </label>
             <div className="w-[80%]">
@@ -354,7 +366,10 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="transactionType" className="w-[20%] font-medium">
+            <label
+              htmlFor="transactionType"
+              className="w-[25%] sm:w-[20%] font-medium"
+            >
               Transaction type
             </label>
             <div className="w-[80%]">
@@ -371,7 +386,7 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="City" className="w-[20%] font-medium">
+            <label htmlFor="City" className="w-[25%] sm:w-[20%] font-medium">
               City
             </label>
             <div className="w-[80%]">
@@ -388,7 +403,7 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="state" className="w-[20%] font-medium">
+            <label htmlFor="state" className="w-[25%] sm:w-[20%] font-medium">
               State
             </label>
             <div className="w-[80%]">
@@ -405,7 +420,7 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="sku" className="w-[20%] font-medium">
+            <label htmlFor="sku" className="w-[25%] sm:w-[20%] font-medium">
               Sku
             </label>
             <div className="w-[80%]">
@@ -422,7 +437,10 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="invoice_date" className="w-[20%] font-medium">
+            <label
+              htmlFor="invoice_date"
+              className="w-[25%] sm:w-[20%] font-medium"
+            >
               Invoice Date
             </label>
             <div className="w-[80%]">
@@ -440,7 +458,10 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="invoice_amount" className="w-[20%] font-medium">
+            <label
+              htmlFor="invoice_amount"
+              className="w-[25%] sm:w-[20%] font-medium"
+            >
               Invoice Amount
             </label>
             <div className="w-[80%]">
@@ -459,7 +480,7 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           <div className="flex items-center justify-start">
             <label
               htmlFor="tax_exclusive_gross"
-              className="w-[20%] font-medium"
+              className="w-[25%] sm:w-[20%] font-medium"
             >
               Tax Exclusive Gross
             </label>
@@ -477,7 +498,10 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="total_cost_amount" className="w-[20%] font-medium">
+            <label
+              htmlFor="total_cost_amount"
+              className="w-[25%] sm:w-[20%] font-medium"
+            >
               Total Tax amount
             </label>
             <div className="w-[80%]">
@@ -494,7 +518,7 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="cgs_tax" className="w-[20%] font-medium">
+            <label htmlFor="cgs_tax" className="w-[25%] sm:w-[20%] font-medium">
               Cgs Tax
             </label>
             <div className="w-[80%]">
@@ -511,7 +535,10 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="sgst_tax" className="w-[20%] font-medium">
+            <label
+              htmlFor="sgst_tax"
+              className="w-[25%] sm:w-[20%] font-medium"
+            >
               Sgst Tax
             </label>
             <div className="w-[80%]">
@@ -528,7 +555,10 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="utgst_tax" className="w-[20%] font-medium">
+            <label
+              htmlFor="utgst_tax"
+              className="w-[25%] sm:w-[20%] font-medium"
+            >
               utgst Tax
             </label>
             <div className="w-[80%]">
@@ -545,7 +575,10 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="igst_tax" className="w-[20%] font-medium">
+            <label
+              htmlFor="igst_tax"
+              className="w-[25%] sm:w-[20%] font-medium"
+            >
               igst Tax
             </label>
             <div className="w-[80%]">
@@ -564,7 +597,7 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           <div className="flex items-center justify-start">
             <label
               htmlFor="customer_bill_to_gst"
-              className="w-[20%] font-medium"
+              className="w-[25%] sm:w-[20%] font-medium"
             >
               Customer Bill To Gst
             </label>
@@ -582,7 +615,10 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="total_product_cost" className="w-[20%] font-medium">
+            <label
+              htmlFor="total_product_cost"
+              className="w-[25%] sm:w-[20%] font-medium"
+            >
               Total Product Cost
             </label>
             <div className="w-[80%]">
@@ -601,7 +637,7 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           <div className="flex items-center justify-start">
             <label
               htmlFor="total_shipment_cost"
-              className="w-[20%] font-medium"
+              className="w-[25%] sm:w-[20%] font-medium"
             >
               Total Shipment Cost
             </label>
@@ -619,7 +655,10 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="way_bill" className="w-[20%] font-medium">
+            <label
+              htmlFor="way_bill"
+              className="w-[25%] sm:w-[20%] font-medium"
+            >
               Way Bill
             </label>
             <div className="w-[80%]">
@@ -636,7 +675,7 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="payment" className="w-[20%] font-medium">
+            <label htmlFor="payment" className="w-[25%] sm:w-[20%] font-medium">
               Payment
             </label>
             <div className="w-[80%]">
@@ -653,7 +692,7 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="remarks" className="w-[20%] font-medium">
+            <label htmlFor="remarks" className="w-[25%] sm:w-[20%] font-medium">
               Remarks
             </label>
             <div className="w-[80%]">
@@ -670,7 +709,10 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="designation" className="w-[20%] font-medium">
+            <label
+              htmlFor="designation"
+              className="w-[25%] sm:w-[20%] font-medium"
+            >
               Total Amount
             </label>
             <div className="w-[80%]">

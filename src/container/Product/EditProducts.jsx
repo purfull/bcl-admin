@@ -191,9 +191,12 @@ const EditProducts = ({ row, onCancel, onSave }) => {
     <div>
       <form onSubmit={handleSubmit}>
         <ToastContainer />
-        <div className="grid grid-cols-2 gap-4 mb-[4vh]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-[4vh]">
           <div className="flex items-center justify-start">
-            <label htmlFor="productName" className="w-[30%] font-medium">
+            <label
+              htmlFor="productName"
+              className="w-[30%] sm:w-[25%] ml-0 sm:ml-5  font-medium"
+            >
               Products Name
             </label>
             <div className="w-[70%]">
@@ -208,7 +211,10 @@ const EditProducts = ({ row, onCancel, onSave }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="size" className="w-[30%] font-medium ">
+            <label
+              htmlFor="size"
+              className="w-[30%] sm:w-[25%] ml-0 sm:ml-5 font-medium "
+            >
               Category
             </label>
             <div className="w-[70%]">
@@ -222,7 +228,10 @@ const EditProducts = ({ row, onCancel, onSave }) => {
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="actual_price" className="w-[30%] font-medium ">
+            <label
+              htmlFor="actual_price"
+              className="w-[30%] sm:w-[25%] ml-0 sm:ml-5  font-medium "
+            >
               Actual Price
             </label>
             <div className="w-[70%]">
@@ -236,7 +245,10 @@ const EditProducts = ({ row, onCancel, onSave }) => {
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="offer_price" className="w-[30%] font-medium ">
+            <label
+              htmlFor="offer_price"
+              className="w-[30%] sm:w-[25%] ml-0 sm:ml-5 font-medium "
+            >
               Offer Price
             </label>
             <div className="w-[70%]">
@@ -250,7 +262,10 @@ const EditProducts = ({ row, onCancel, onSave }) => {
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="stock_quantity" className="w-[30%] font-medium ">
+            <label
+              htmlFor="stock_quantity"
+              className="w-[30%] sm:w-[25%] ml-0 sm:ml-5 font-medium "
+            >
               Stock Quantity
             </label>
             <div className="w-[70%]">
@@ -264,7 +279,10 @@ const EditProducts = ({ row, onCancel, onSave }) => {
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="sku" className="w-[30%] font-medium ">
+            <label
+              htmlFor="sku"
+              className="w-[30%] sm:w-[25%] ml-0 sm:ml-5 font-medium "
+            >
               Status
             </label>
             <div className="w-[70%]">
@@ -273,7 +291,7 @@ const EditProducts = ({ row, onCancel, onSave }) => {
                 <select
                   id="status"
                   name="status"
-                  className="form-control"
+                  className="form-control "
                   value={editData.status || ""}
                   onChange={handleChange}
                 >
@@ -285,7 +303,10 @@ const EditProducts = ({ row, onCancel, onSave }) => {
             </div>
           </div>
           <div className="flex items-start justify-start">
-            <label htmlFor="name" className="w-[30%] font-medium mt-4">
+            <label
+              htmlFor="name"
+              className="w-[30%] sm:w-[25%] ml-0 sm:ml-5 font-medium mt-4"
+            >
               Product Image
             </label>
             <div className="w-[15vw] mt-4">
@@ -310,9 +331,12 @@ const EditProducts = ({ row, onCancel, onSave }) => {
         <div className="bg-slate-100 mb-[4vh] py-1 px-4 col-span-full">
           <h5>English</h5>
         </div>
-        <div className="grid grid-cols-2 gap-4 mb-[4vh]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-[4vh]">
           <div className="flex items-center justify-start">
-            <label htmlFor="title" className="w-[30%] font-medium ">
+            <label
+              htmlFor="title"
+              className="w-[30%] sm:w-[25%] ml-0 sm:ml-5 font-medium "
+            >
               Title
             </label>
             <div className="w-[70%]">
@@ -326,7 +350,10 @@ const EditProducts = ({ row, onCancel, onSave }) => {
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="description" className="w-[30%] font-medium ">
+            <label
+              htmlFor="description"
+              className="w-[30%] sm:w-[25%] ml-0 sm:ml-5 font-medium "
+            >
               Description
             </label>
             <div className="w-[70%] flex">
@@ -344,9 +371,12 @@ const EditProducts = ({ row, onCancel, onSave }) => {
         <div className="bg-slate-100 mb-[4vh] py-1 px-4">
           <h5>Tamil</h5>
         </div>
-        <div className="grid grid-cols-2 gap-4 mb-[4vh]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-[4vh]">
           <div className="flex items-center justify-start">
-            <label htmlFor="title" className="w-[30%] font-medium ">
+            <label
+              htmlFor="title"
+              className="w-[30%] sm:w-[25%] ml-0 sm:ml-5  font-medium "
+            >
               Title
             </label>
             <div className="w-[70%]">
