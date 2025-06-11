@@ -183,7 +183,7 @@ import Products from "./container/Product/Products.jsx";
 import Customer from "./container/Customers/Customer.jsx";
 import AdminUser from "./container/AdminUser/AdminUser.jsx";
 import Permission from "./container/Permissions/Permissions.jsx";
-
+import Deliveries from "./container/delivery/Deliveries.jsx";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Order from "./container/orders/Order.jsx";
@@ -209,6 +209,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route path={`customers`} element={<Customer />} />
             <Route path={`admin-user`} element={<AdminUser />} />
             <Route path={`permission`} element={<Permission />} />
+            <Route path={`delivery`} element={<Deliveries />} />
 
             {/* till this  */}
           </Route>

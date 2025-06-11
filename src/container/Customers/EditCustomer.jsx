@@ -166,9 +166,12 @@ const EditCustomer = ({
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex items-center justify-start">
-            <label htmlFor="first_name" className="w-[30%] font-medium">
+            <label
+              htmlFor="first_name"
+              className="w-[30%] sm:w-[25%] font-medium"
+            >
               First Name
             </label>
             <div className="w-[70%]">
@@ -183,7 +186,10 @@ const EditCustomer = ({
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="last_name" className="w-[30%] font-medium">
+            <label
+              htmlFor="last_name"
+              className="w-[30%] sm:w-[25%] font-medium"
+            >
               Last Name
             </label>
             <div className="w-[70%]">
@@ -198,7 +204,7 @@ const EditCustomer = ({
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="address" className="w-[30%] font-medium">
+            <label htmlFor="address" className="w-[30%] sm:w-[25%] font-medium">
               Address Line/Street
             </label>
             <div className="w-[70%]">
@@ -213,7 +219,7 @@ const EditCustomer = ({
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="city" className="w-[30%] font-medium">
+            <label htmlFor="city" className="w-[30%] sm:w-[25%] font-medium">
               City
             </label>
             <div className="w-[70%]">
@@ -228,7 +234,7 @@ const EditCustomer = ({
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="state" className="w-[30%] font-medium">
+            <label htmlFor="state" className="w-[30%] sm:w-[25%] font-medium">
               State
             </label>
             <div className="w-[70%]">
@@ -243,7 +249,10 @@ const EditCustomer = ({
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="postal_code" className="w-[30%] font-medium">
+            <label
+              htmlFor="postal_code"
+              className="w-[30%] sm:w-[25%] font-medium"
+            >
               Postal Code
             </label>
             <div className="w-[70%]">
@@ -258,7 +267,7 @@ const EditCustomer = ({
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="country" className="w-[30%] font-medium">
+            <label htmlFor="country" className="w-[30%] sm:w-[25%] font-medium">
               Country
             </label>
             <div className="w-[70%]">
@@ -283,7 +292,7 @@ const EditCustomer = ({
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="phone" className="w-[30%] font-medium">
+            <label htmlFor="phone" className="w-[30%] sm:w-[25%] font-medium">
               Phone
             </label>
             <div className="w-[70%]">
@@ -298,7 +307,7 @@ const EditCustomer = ({
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <label htmlFor="email" className="w-[30%] font-medium">
+            <label htmlFor="email" className="w-[30%] sm:w-[25%] font-medium">
               Email
             </label>
             <div className="w-[70%]">
@@ -325,7 +334,7 @@ const EditCustomer = ({
             </div>
           </div> */}
           <div className="flex items-center justify-start">
-            <label htmlFor="gst" className="w-[30%] font-medium">
+            <label htmlFor="gst" className="w-[30%] sm:w-[25%] font-medium">
               GST
             </label>
             <div className="w-[70%]">

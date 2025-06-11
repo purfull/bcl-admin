@@ -1,13 +1,12 @@
 import React, { Fragment, useState, useEffect } from "react";
 import Pageheader from "../../components/common/pageheader/pageheader";
-import EditProducts from "./EditProducts";
-import { ResponsiveProductsDataTable } from "./Productsdata";
+import EditDelivery from "./EditDelivery";
+import { ResponsiveDeliveryDataTable } from "./Deliverydata";
 import Alert from "../dashboards/alert/Alert";
 import { AppEnv } from "../../../config";
 
-const Products = () => {
+const Deliveries = () => {
   const [editingRow, setEditingRow] = useState(null); // State to keep track of the row being edited
-  const [isActive, setIsActive] = useState(true); // State to track the checkbox
   const [isAlertOpen, setIsAlertOpen] = useState(false); // State to control alert visibility
   const [rowToDelete, setRowToDelete] = useState(null); // State to keep track of the row to delete
   const [rowToAdd, setRowToAdd] = useState(null);
@@ -17,27 +16,27 @@ const Products = () => {
 
   const [data, setData] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `${AppEnv.baseUrl}/product/get-all-product`,
-          {
-            method: "POST",
-          }
-        );
-        const result = await response.json();
-        console.log(result, "Filtered Data");
+  //   useEffect(() => {
+  //     const fetchData = async () => {
+  //       try {
+  //         const response = await fetch(
+  //           `${AppEnv.baseUrl}/product/get-all-product`,
+  //           {
+  //             method: "POST",
+  //           }
+  //         );
+  //         const result = await response.json();
+  //         console.log(result, "Filtered Data");
 
-        if (result) {
-          setData(result.data);
-        }
-      } catch (error) {
-        console.log("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, [run]);
+  //         if (result) {
+  //           setData(result.data);
+  //         }
+  //       } catch (error) {
+  //         console.log("Error fetching data:", error);
+  //       }
+  //     };
+  //     fetchData();
+  //   }, [run]);
 
   // const formatDate = (dateString) => {
   //   const date = new Date(dateString);
@@ -52,10 +51,11 @@ const Products = () => {
       setListData(
         data.map((el) => ({
           id: el.id,
-          //size: el.bottle_size,
           name: el.name,
-          "Offer Price": el.offer_price,
-          "Actual Price": el.actual_price,
+          phone: el.phone,
+          state: el.state,
+          country: el.country,
+          "Delivery Area": el.areas,
           "Created At": el.createdAt.split("T")[0],
         }))
       );
@@ -75,10 +75,6 @@ const Products = () => {
     setEditingRow(null);
     //setIsEditMode(null); // save  and return to view mode
     setRun(!run);
-  };
-
-  const handleCheckboxChange = () => {
-    setIsActive(!isActive); // Toggle the checkbox state
   };
 
   const handleDeleteClick = (row, add) => {
@@ -101,13 +97,13 @@ const Products = () => {
     const path = rowToDelete.add ? "add" : "delete";
     // Perform the delete action here, e.g., call an API to delete the row
 
-    fetch(`${AppEnv.baseUrl}/admin/products/${rowToDelete.row.id}`, {
+    fetch(`${AppEnv.baseUrl}/admin/Deliveries/${rowToDelete.row.id}`, {
       method: "DELETE", // Ensure this is the correct method for your API
       headers: {
         "Content-Type": "application/json",
       },
       signal: abortController.signal,
-      body: JSON.stringify({ ProductsCode: rowToDelete.row.ProductsCode }), // Ensure the payload is correctly formatted
+      body: JSON.stringify({ DeliveriesCode: rowToDelete.row.DeliveriesCode }), // Ensure the payload is correctly formatted
     })
       .then((result) => result.json())
       .then((response) => {
@@ -136,25 +132,13 @@ const Products = () => {
   return (
     <Fragment>
       <Pageheader
-        currentpage="Products"
+        currentpage="Delivery"
         activepage="Master"
-        mainpage="Products"
+        mainpage="Delivery"
       />
 
       <div id="a1" className="grid grid-cols-12 gap-6">
         <div className="col-span-12">
-          {/* <div className={`${editingRow ? 'hidden' : 'flex'} items-center justify-start mb-[2vh]`}>
-            <label htmlFor="B2B" className="font-medium mr-[1vw]">Is Active</label>
-            <label className="switch">
-              <input 
-                type="checkbox" 
-                id="B2B" 
-                checked={isActive} 
-                onChange={handleCheckboxChange} 
-              />
-              <span className="slider round"></span>
-            </label>
-          </div> */}
           <div className="box ">
             <div className="box-body space-y-3">
               <div className="overflow-hidden">
@@ -163,21 +147,19 @@ const Products = () => {
                   className="ti-custom-table ti-striped-table ti-custom-table-hover"
                 >
                   {editingRow ? (
-                    <EditProducts
+                    <EditDelivery
                       row={editingRow}
                       onEdit={handleEdit}
                       onSave={handleDataSave}
                       onCancel={handleCancelEdit}
-                      active={isActive}
                     />
                   ) : (
-                    <ResponsiveProductsDataTable
+                    <ResponsiveDeliveryDataTable
                       data={listData}
                       onEdit={handleEdit}
                       // onSave={handleDataSave}
                       onDelete={handleDeleteClick} // Pass the delete handler
                       // onAdd={handleAddClick}
-                      active={isActive}
                     />
                   )}
                 </div>
@@ -198,4 +180,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default Deliveries;
