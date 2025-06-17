@@ -9,7 +9,7 @@ import {
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 // Function to dynamically generate columns from data
-const generateColumns = (data, onEdit, onDelete, active) => {
+const generateColumns = (data, onEdit, onDelete, active, onView) => {
   if (!Array.isArray(data) || data.length === 0) return [];
 
   // Safely get keys from the first object in the array
@@ -37,33 +37,40 @@ const generateColumns = (data, onEdit, onDelete, active) => {
   // Add the "Action" column
   columns.push({
     Header: "Action",
-    accessor: "edit",
-    Cell: ({ row }) =>
-      active ? (
-        <div className="">
-          <button
-            className="px-4 py-1 bg-[#2EAF4B] text-white"
-            onClick={() => onEdit(row.original)} // Use the onEdit prop
-          >
-            Edit
-          </button>
-          <button
-            className="px-4 ti-btn ti-btn-outline-danger !py-1 !mx-2"
-            onClick={() => onDelete(row.original, { add: false })} // Use the onDelete prop
-          >
-            Delete
-          </button>
-        </div>
+    accessor: "action",
+    Cell: ({ row }) => (
+      // active ? (
+      <div className="flex gap-2">
+        <button
+          className="px-4 py-1 bg-[#2EAF4B] text-white"
+          onClick={() => onEdit(row.original)} // Use the onEdit prop
+        >
+          Edit
+        </button>
+        <button
+          className="px-4 ti-btn ti-btn-outline-danger !py-1 !mx-2"
+          onClick={() => onDelete(row.original, { add: false })} // Use the onDelete prop
+        >
+          Delete
+        </button>
+        {/* <button
+          className="px-4 py-1 bg-blue-600 text-black"
+          onClick={() => console.log("View clicked", row.original)} // Replace with your view handler
+        >
+          View
+        </button> */}
+        {/* </div>
       ) : (
-        <div className="">
-          <button
-            className="px-4 py-1 bg-violet-700 text-white mx-2"
-            onClick={() => onDelete(row.original, { add: true })}
-          >
-            Active
-          </button>
-        </div>
-      ),
+        <div className=""> */}
+        {/* <button
+          className="px-4 py-1 bg-violet-700 text-white mx-2"
+          onClick={() => onDelete(row.original, { add: true })}
+        >
+          Active
+        </button> */}
+      </div>
+    ),
+    // ),
   });
 
   return columns;
@@ -85,6 +92,7 @@ export const ResponsiveDeliveryDataTable = ({
   onEdit,
   onDelete,
   active,
+  // onView,
 }) => {
   // Handle null or undefined data
 

@@ -16,35 +16,35 @@ const Deliveries = () => {
 
   const [data, setData] = useState([]);
 
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       try {
-  //         const response = await fetch(
-  //           `${AppEnv.baseUrl}/product/get-all-product`,
-  //           {
-  //             method: "POST",
-  //           }
-  //         );
-  //         const result = await response.json();
-  //         console.log(result, "Filtered Data");
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${AppEnv.baseUrl}/delivery/get-all-delivery`,
+          {
+            method: "GET",
+          }
+        );
+        const result = await response.json();
+        console.log(result, "Filtered Data");
 
-  //         if (result) {
-  //           setData(result.data);
-  //         }
-  //       } catch (error) {
-  //         console.log("Error fetching data:", error);
-  //       }
-  //     };
-  //     fetchData();
-  //   }, [run]);
+        if (result) {
+          setData(result.data);
+        }
+      } catch (error) {
+        console.log("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, [run]);
 
-  // const formatDate = (dateString) => {
-  //   const date = new Date(dateString);
-  //   const day = String(date.getDate()).padStart(2, "0");
-  //   const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
-  //   const year = date.getFullYear();
-  //   return `${day}-${month}-${year}`;
-  // };
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
 
   useEffect(() => {
     if (data.length > 0) {
@@ -53,14 +53,20 @@ const Deliveries = () => {
           id: el.id,
           name: el.name,
           phone: el.phone,
+          email: el.email,
+          password: el.password,
           state: el.state,
           country: el.country,
-          "Delivery Area": el.areas,
+          "Delivery Area": el.delivery_areas,
           "Created At": el.createdAt.split("T")[0],
         }))
       );
     }
   }, [data]);
+
+  // const handleView = (row) => {
+  //   console.log("Viewing delivery row", row);
+  // };
 
   const handleEdit = (row) => {
     setEditingRow(row);
@@ -97,7 +103,7 @@ const Deliveries = () => {
     const path = rowToDelete.add ? "add" : "delete";
     // Perform the delete action here, e.g., call an API to delete the row
 
-    fetch(`${AppEnv.baseUrl}/admin/Deliveries/${rowToDelete.row.id}`, {
+    fetch(`${AppEnv.baseUrl}/delivery/delete-delivery/${rowToDelete.row.id}`, {
       method: "DELETE", // Ensure this is the correct method for your API
       headers: {
         "Content-Type": "application/json",
@@ -160,6 +166,8 @@ const Deliveries = () => {
                       // onSave={handleDataSave}
                       onDelete={handleDeleteClick} // Pass the delete handler
                       // onAdd={handleAddClick}
+                      //onView={handleView}
+                      //active={true}
                     />
                   )}
                 </div>

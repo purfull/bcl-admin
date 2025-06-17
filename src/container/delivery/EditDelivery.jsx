@@ -10,7 +10,7 @@ import axios from "axios";
 
 const EditDelivery = ({ row, onCancel, onSave }) => {
   const [editData, setEditData] = useState({});
-  const [country, setCountry] = useState([]);
+  // const [country, setCountry] = useState([]);
   const [logo, setLogo] = useState(noImage);
   //console.log(onSave);
 
@@ -23,8 +23,8 @@ const EditDelivery = ({ row, onCancel, onSave }) => {
     const abortController = new AbortController();
     // console.log(row);
 
-    fetch(`${AppEnv.baseUrl}/product/get-product/${row.id}`, {
-      method: "POST",
+    fetch(`${AppEnv.baseUrl}/delivery/get-delivery/${row.id}`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
@@ -47,13 +47,13 @@ const EditDelivery = ({ row, onCancel, onSave }) => {
   }, []);
 
   // useEffect(() => {
-  //       if (editData && editData.Logo) {
-  //           // Convert the buffer data to a Base64 string
-  //           const bufferData = editData.Logo.data;
-  //           const base64String = Buffer.from(bufferData).toString('base64');
-  //           setLogo(`data:image/png;base64,${base64String}`);
-  //       }
-  //   }, [editData]);
+  //   if (editData && editData.Logo) {
+  //     // Convert the buffer data to a Base64 string
+  //     const bufferData = editData.Logo.data;
+  //     const base64String = Buffer.from(bufferData).toString("base64");
+  //     setLogo(`data:image/png;base64,${base64String}`);
+  //   }
+  // }, [editData]);
 
   // console.log(editData);
 
@@ -94,16 +94,6 @@ const EditDelivery = ({ row, onCancel, onSave }) => {
     }
   };
 
-  // const handleAddress = (event) => {
-  //   event.preventDefault();
-  //   fetch(`${AppEnv.baseUrl}/address`, {
-  //     method: "GET",
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => console.log(data))
-  //     .catch((err) => console.log(err));
-  // };
-
   const handleSubmit = (event) => {
     event.preventDefault();
     if (row.newDelivery) {
@@ -119,35 +109,37 @@ const EditDelivery = ({ row, onCancel, onSave }) => {
       name: editData.name || "",
       phone: editData.phone || "",
       email: editData.email || "",
+      password: editData.password || "",
       country: editData.country || "",
       state: editData.state || "",
-      areas: editData.areas || "",
+      delivery_areas: editData.delivery_areas || "",
+      status: editData.status || "",
     };
 
-    // console.log("API base URL:", AppEnv.baseUrl);
-    // console.log("Payload:", createdProduct);
+    console.log("API base URL:", AppEnv.baseUrl);
+    console.log("Payload:", createdProduct);
 
-    // try {
-    //   const response = await axios.post(
-    //     `${AppEnv.baseUrl}/product/create-product`,
-    //     createdProduct,
-    //     {
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //     }
-    //   );
-    //   console.log("Data saved successfully", response.data);
-    //   toast.success("delivery done successfully");
+    try {
+      const response = await axios.post(
+        `${AppEnv.baseUrl}/delivery/create-delivery`,
+        createdProduct,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("Data saved successfully", response.data);
+      toast.success("delivery done successfully");
 
-    //   if (response.data.success) {
-    //     onSave();
-    //     console.log("saved");
-    //   }
-    // } catch (error) {
-    //   console.error("Error creating delivery:", error);
-    //   toast.error("Failed delivery");
-    // }
+      if (response.data.success) {
+        onSave();
+        console.log("saved");
+      }
+    } catch (error) {
+      console.error("Error creating delivery:", error);
+      toast.error("Failed delivery");
+    }
   };
 
   //update
@@ -156,9 +148,11 @@ const EditDelivery = ({ row, onCancel, onSave }) => {
       name: editData.name || "",
       phone: editData.phone || "",
       email: editData.email || "",
+      password: editData.password || "",
       country: editData.country || "",
       state: editData.state || "",
-      areas: editData.areas || "",
+      delivery_areas: editData.delivery_areas || "",
+      status: editData.status || " ",
     };
     console.log("updatedProduct", updateProduct);
 
@@ -251,7 +245,7 @@ const EditDelivery = ({ row, onCancel, onSave }) => {
             </label>
             <div className="w-[70%]">
               <input
-                type="number"
+                type="text"
                 className="form-control"
                 id="country"
                 value={editData.country || ""}
@@ -268,6 +262,7 @@ const EditDelivery = ({ row, onCancel, onSave }) => {
             </label>
             <div className="w-[70%]">
               <input
+                type="text"
                 className="form-control"
                 id="state"
                 value={editData.state || ""}
@@ -284,14 +279,35 @@ const EditDelivery = ({ row, onCancel, onSave }) => {
             </label>
             <div className="w-[70%]">
               <input
-                type="number"
+                type="text"
                 className="form-control"
-                id="areas"
-                value={editData.areas || ""}
+                id="delivery_areas"
+                value={editData.delivery_areas || ""}
                 onChange={handleChange}
               />
             </div>
           </div>
+          <div className="flex items-center justify-start">
+            <label
+              htmlFor="status"
+              className="w-[30%] sm:w-[25%] ml-0 sm:ml-5 font-medium "
+            >
+              Status
+            </label>
+            <div className="w-[70%]">
+              <select
+                id="status"
+                value={editData.status || ""}
+                onChange={handleChange}
+                className="form-control"
+              >
+                <option value="">Select Status</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+          </div>
+
           <div className="flex items-center justify-start">
             <label
               htmlFor="password"
