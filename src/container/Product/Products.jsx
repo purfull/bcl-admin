@@ -23,7 +23,7 @@ const Products = () => {
         const response = await fetch(
           `${AppEnv.baseUrl}/product/get-all-product`,
           {
-            method: "POST",
+            method: "GET",
           }
         );
         const result = await response.json();
@@ -52,10 +52,11 @@ const Products = () => {
       setListData(
         data.map((el) => ({
           id: el.id,
-          //size: el.bottle_size,
-          name: el.name,
+          category: el.category,
+          //name: el.name,
+          quantity_available: el.quantity_available,
+          Price: el.price,
           "Offer Price": el.offer_price,
-          "Actual Price": el.actual_price,
           "Created At": el.createdAt.split("T")[0],
         }))
       );
@@ -81,57 +82,57 @@ const Products = () => {
     setIsActive(!isActive); // Toggle the checkbox state
   };
 
-  const handleDeleteClick = (row, add) => {
-    const deleteData = { row: row, add: add.add };
+  // const handleDeleteClick = (row, add) => {
+  //   const deleteData = { row: row, add: add.add };
 
-    setRowToDelete(deleteData);
-    setIsAlertOpen(true);
-  };
+  //   setRowToDelete(deleteData);
+  //   setIsAlertOpen(true);
+  // };
 
   // const handleAddClick = (row) => {
   //   setRowToAdd(row);
   //   setIsAlertOpen(true);
   // };
 
-  const handleConfirmDelete = () => {
-    // Create a new AbortController instance
-    const abortController = new AbortController();
-    console.log("ddddddddd", rowToDelete);
+  // const handleConfirmDelete = () => {
+  //   // Create a new AbortController instance
+  //   const abortController = new AbortController();
+  //   console.log("ddddddddd", rowToDelete);
 
-    const path = rowToDelete.add ? "add" : "delete";
-    // Perform the delete action here, e.g., call an API to delete the row
+  //   const path = rowToDelete.add ? "add" : "delete";
+  //   // Perform the delete action here, e.g., call an API to delete the row
 
-    fetch(`${AppEnv.baseUrl}/admin/products/${rowToDelete.row.id}`, {
-      method: "DELETE", // Ensure this is the correct method for your API
-      headers: {
-        "Content-Type": "application/json",
-      },
-      signal: abortController.signal,
-      body: JSON.stringify({ ProductsCode: rowToDelete.row.ProductsCode }), // Ensure the payload is correctly formatted
-    })
-      .then((result) => result.json())
-      .then((response) => {
-        if (response.success) {
-          // Check if the response indicates a successful deletion
-          // Remove the row from the data
-          setRun(!run);
-        } else {
-          console.error("Failed to delete the row:", response.message);
-        }
-        setIsAlertOpen(false); // Close the alert
-        setRowToDelete(null); // Reset the rowToDelete state
-      })
-      .catch((err) => {
-        console.error("Error:", err);
-        setIsAlertOpen(false); // Close the alert
-        setRowToDelete(null); // Reset the rowToDelete state
-      });
-  };
+  //   fetch(`${AppEnv.baseUrl}/admin/products/${rowToDelete.row.id}`, {
+  //     method: "DELETE", // Ensure this is the correct method for your API
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     signal: abortController.signal,
+  //     body: JSON.stringify({ ProductsCode: rowToDelete.row.ProductsCode }), // Ensure the payload is correctly formatted
+  //   })
+  //     .then((result) => result.json())
+  //     .then((response) => {
+  //       if (response.success) {
+  //         // Check if the response indicates a successful deletion
+  //         // Remove the row from the data
+  //         setRun(!run);
+  //       } else {
+  //         console.error("Failed to delete the row:", response.message);
+  //       }
+  //       setIsAlertOpen(false); // Close the alert
+  //       setRowToDelete(null); // Reset the rowToDelete state
+  //     })
+  //     .catch((err) => {
+  //       console.error("Error:", err);
+  //       setIsAlertOpen(false); // Close the alert
+  //       setRowToDelete(null); // Reset the rowToDelete state
+  //     });
+  // };
 
-  const handleCloseAlert = () => {
-    setIsAlertOpen(false);
-    setRowToDelete(null);
-  };
+  // const handleCloseAlert = () => {
+  //   setIsAlertOpen(false);
+  //   setRowToDelete(null);
+  // };
 
   return (
     <Fragment>
@@ -175,7 +176,7 @@ const Products = () => {
                       data={listData}
                       onEdit={handleEdit}
                       // onSave={handleDataSave}
-                      onDelete={handleDeleteClick} // Pass the delete handler
+                      //onDelete={handleDeleteClick} // Pass the delete handler
                       // onAdd={handleAddClick}
                       active={isActive}
                     />
@@ -187,13 +188,13 @@ const Products = () => {
         </div>
       </div>
 
-      <Alert
+      {/* <Alert
         isOpen={isAlertOpen}
         onCancel={() => setIsAlertOpen(false)}
         onClose={handleCloseAlert}
         onConfirm={handleConfirmDelete}
         message="Are you sure you want to delete this product?"
-      />
+      /> */}
     </Fragment>
   );
 };

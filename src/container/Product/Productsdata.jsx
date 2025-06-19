@@ -46,12 +46,12 @@ const generateColumns = (data, onEdit, onDelete, active) => {
           >
             Edit
           </button>
-          <button
+          {/* <button
             className="px-4 ti-btn ti-btn-outline-danger !py-1 !mx-2"
             onClick={() => onDelete(row.original, { add: false })} // Use the onDelete prop
           >
             Delete
-          </button>
+          </button> */}
         </div>
       ) : (
         <div className="">

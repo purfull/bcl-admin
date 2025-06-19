@@ -10,21 +10,20 @@ import axios from "axios";
 
 const EditProducts = ({ row, onCancel, onSave }) => {
   const [editData, setEditData] = useState({});
-  const [country, setCountry] = useState([]);
   const [logo, setLogo] = useState(noImage);
   //console.log(onSave);
 
   const fileInputRef = useRef(null);
-  const req = row.newProducts ? "POST" : "PUT";
+  // const req = row.newProducts ? "POST" : "PUT";
 
   useEffect(() => {
-    if (row.newProducts) return;
+    if (row.newProducts || !row?.id) return;
 
     const abortController = new AbortController();
-    // console.log(row);
+    console.log(row);
 
-    fetch(`${AppEnv.baseUrl}/product/get-product/${row.id}`, {
-      method: "POST",
+    fetch(`${AppEnv.baseUrl}/product/get-product/${row?.id}`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
@@ -32,7 +31,10 @@ const EditProducts = ({ row, onCancel, onSave }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        setEditData(data.data);
+        const normalizedStatus =
+          data.data.status?.toLowerCase() === "active" ? "Active" : "Inactive";
+
+        setEditData({ ...data.data, status: normalizedStatus });
         //setLogo(data.data.image);
       })
       .catch((err) => {
@@ -40,6 +42,7 @@ const EditProducts = ({ row, onCancel, onSave }) => {
           console.error("Error fetching product:", err);
         }
       });
+    console.log("Product ID from row:", row?.id);
 
     return () => {
       abortController.abort();
@@ -66,10 +69,23 @@ const EditProducts = ({ row, onCancel, onSave }) => {
 
   const handleChange = (event) => {
     const { id, value } = event.target;
-    setEditData((prevData) => ({
-      ...prevData,
-      [id]: value,
-    }));
+
+    if (id.includes(".")) {
+      const [parent, child] = id.split(".");
+
+      setEditData((prevData) => ({
+        ...prevData,
+        [parent]: {
+          ...(prevData[parent] || {}),
+          [child]: value,
+        },
+      }));
+    } else {
+      setEditData((prevData) => ({
+        ...prevData,
+        [id]: value,
+      }));
+    }
   };
 
   const handleCountryChange = (event) => {
@@ -116,13 +132,23 @@ const EditProducts = ({ row, onCancel, onSave }) => {
   //payload for product creation
   const handleSave = async () => {
     const createdProduct = {
-      name: editData.name || "",
-      description: editData.description || "",
-      price: editData.actual_price || "",
+      //name: editData.name || "",
+      name: {
+        en: editData.name?.name_en || "",
+        tn: editData.name?.name_tn || "",
+      },
+      description: {
+        en: editData.description?.desc_en || "",
+        tn: editData.description?.desc_tn || "",
+      },
+      thumbnail_image: editData.thumbnail_image || "",
+      product_image: editData.product_image || "",
+      price: editData.price || "",
       offer_price: editData.offer_price || "",
-      category: editData.bottle_size || "",
-      quantity_available: editData.stock_quantity || "",
-      status: editData.status || "",
+      category: editData.category || "",
+      quantity_available: editData.quantity_available || "",
+      status:
+        editData.status?.toLowerCase() === "active" ? "Active" : "Inactive",
     };
 
     console.log("API base URL:", AppEnv.baseUrl);
@@ -145,6 +171,7 @@ const EditProducts = ({ row, onCancel, onSave }) => {
         onSave();
         console.log("saved");
       }
+      toast.success("Product created successfully");
     } catch (error) {
       console.error("Error creating product:", error);
       toast.error("Failed to create product");
@@ -154,19 +181,28 @@ const EditProducts = ({ row, onCancel, onSave }) => {
   //update
   const handleUpdate = async () => {
     const updateProduct = {
-      name: editData.name || "",
-      description: editData.description || "",
-      price: editData.actual_price || "",
+      name: {
+        en: editData.name?.name_en || "",
+        tn: editData.name?.name_tn || "",
+      },
+      description: {
+        en: editData.description?.desc_en || "",
+        tn: editData.description?.desc_tn || "",
+      },
+      thumbnail_image: editData.thumbnail_image || "",
+      product_image: editData.product_image || "",
+      price: editData.price || "",
       offer_price: editData.offer_price || "",
-      category: editData.bottle_size || "",
-      quantity_available: editData.stock_quantity || "",
-      status: editData.status || "",
+      category: editData.category || "",
+      quantity_available: editData.quantity_available || "",
+      status:
+        editData.status?.toLowerCase() === "active" ? "Active" : "Inactive",
     };
     console.log("updatedProduct", updateProduct);
 
     try {
       const response = await axios.put(
-        `${AppEnv.baseUrl}/product/update-product/${row.id}`,
+        `${AppEnv.baseUrl}/product/update-product/${row?.id}`,
         updateProduct,
         {
           headers: {
@@ -174,12 +210,17 @@ const EditProducts = ({ row, onCancel, onSave }) => {
           },
         }
       );
-      console.log("Product updated successfully", response.data);
-      toast.success("Product updated successfully");
+      if (response.success) {
+        console.log("Product updated successfully", response.data);
+        toast.success("Product updated successfully");
+      } else {
+        toast.error("Failed to update product");
+      }
     } catch (error) {
       console.error("Error updating product:", error);
       toast.error("Failed to update product");
     }
+
     // After save is successful, call onSave prop
     if (response.data.success) {
       onSave();
@@ -191,8 +232,111 @@ const EditProducts = ({ row, onCancel, onSave }) => {
     <div>
       <form onSubmit={handleSubmit}>
         <ToastContainer />
+
+        <div className="bg-slate-100 mb-[4vh] py-1 px-4 col-span-full">
+          <h5>English</h5>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-[4vh]">
           <div className="flex items-center justify-start">
+            <label
+              htmlFor="name"
+              className="w-[30%] sm:w-[25%] ml-0 sm:ml-5 font-medium "
+            >
+              Name
+            </label>
+            <div className="w-[70%]">
+              <input
+                type="text"
+                className="form-control"
+                id="name?.en"
+                value={editData.name?.en || ""}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          <div className="flex items-center justify-start">
+            <label
+              htmlFor="description"
+              className="w-[30%] sm:w-[25%] ml-0 sm:ml-5 font-medium "
+            >
+              Description
+            </label>
+            <div className="w-[70%] flex">
+              <input
+                type="text"
+                className="form-control"
+                id="description?.desc_en"
+                value={editData.description?.desc_en || ""}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-slate-100 mb-[4vh] py-1 px-4">
+          <h5>Tamil</h5>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-[4vh]">
+          <div className="flex items-center justify-start">
+            <label
+              htmlFor="name"
+              className="w-[30%] sm:w-[25%] ml-0 sm:ml-5  font-medium "
+            >
+              Name
+            </label>
+            <div className="w-[70%]">
+              <input
+                type="text"
+                className="form-control"
+                id="name?.name_tn"
+                value={editData.name?.name_tn || ""}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          <div className="flex items-center justify-start">
+            <label htmlFor="description" className="w-[30%] font-medium ">
+              Description
+            </label>
+            <div className="w-[70%] flex">
+              <input
+                type="text"
+                className="form-control"
+                id="description?.desc_tn"
+                value={editData.description?.desc_tn || ""}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="flex items-start justify-start">
+          <label
+            htmlFor="name"
+            className="w-[30%] sm:w-[25%] ml-0 sm:ml-5 font-medium mt-4"
+          >
+            Product Image
+          </label>
+          <div className="w-[15vw] mt-4">
+            <img
+              src={logo || noImage}
+              className="form-control cursor-pointer"
+              name="image"
+              value={editData.product_image}
+              id="product_image"
+              alt="logo"
+              onClick={handleImageClick}
+            />
+            <input
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              ref={fileInputRef}
+              onChange={handleFileChange}
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-[4vh]">
+          {/* <div className="flex items-center justify-start">
             <label
               htmlFor="productName"
               className="w-[30%] sm:w-[25%] ml-0 sm:ml-5  font-medium"
@@ -208,7 +352,7 @@ const EditProducts = ({ row, onCancel, onSave }) => {
                 onChange={handleChange}
               />
             </div>
-          </div>
+          </div> */}
 
           <div className="flex items-center justify-start">
             <label
@@ -219,27 +363,27 @@ const EditProducts = ({ row, onCancel, onSave }) => {
             </label>
             <div className="w-[70%]">
               <input
-                type="number"
+                type="text"
                 className="form-control"
-                id="bottle_size"
-                value={editData.bottle_size || ""}
+                id="category"
+                value={editData.category || ""}
                 onChange={handleChange}
               />
             </div>
           </div>
           <div className="flex items-center justify-start">
             <label
-              htmlFor="actual_price"
+              htmlFor="price"
               className="w-[30%] sm:w-[25%] ml-0 sm:ml-5  font-medium "
             >
-              Actual Price
+              Price
             </label>
             <div className="w-[70%]">
               <input
-                type="text"
+                type="number"
                 className="form-control"
-                id="actual_price"
-                value={editData.actual_price || ""}
+                id="price"
+                value={editData.price || ""}
                 onChange={handleChange}
               />
             </div>
@@ -253,7 +397,7 @@ const EditProducts = ({ row, onCancel, onSave }) => {
             </label>
             <div className="w-[70%]">
               <input
-                type="text"
+                type="number"
                 className="form-control"
                 id="offer_price"
                 value={editData.offer_price || ""}
@@ -263,24 +407,24 @@ const EditProducts = ({ row, onCancel, onSave }) => {
           </div>
           <div className="flex items-center justify-start">
             <label
-              htmlFor="stock_quantity"
+              htmlFor="quantity_available"
               className="w-[30%] sm:w-[25%] ml-0 sm:ml-5 font-medium "
             >
-              Stock Quantity
+              Quantity Available
             </label>
             <div className="w-[70%]">
               <input
                 type="number"
                 className="form-control"
-                id="stock_quantity"
-                value={editData.stock_quantity || ""}
+                id="quantity_available"
+                value={editData.quantity_available || ""}
                 onChange={handleChange}
               />
             </div>
           </div>
           <div className="flex items-center justify-start">
             <label
-              htmlFor="sku"
+              htmlFor="status"
               className="w-[30%] sm:w-[25%] ml-0 sm:ml-5 font-medium "
             >
               Status
@@ -300,107 +444,6 @@ const EditProducts = ({ row, onCancel, onSave }) => {
                   <option value="Inactive">Inactive</option>
                 </select>
               </div>
-            </div>
-          </div>
-          <div className="flex items-start justify-start">
-            <label
-              htmlFor="name"
-              className="w-[30%] sm:w-[25%] ml-0 sm:ml-5 font-medium mt-4"
-            >
-              Product Image
-            </label>
-            <div className="w-[15vw] mt-4">
-              <img
-                src={logo || noImage}
-                className="form-control cursor-pointer"
-                name="image"
-                alt="logo"
-                onClick={handleImageClick}
-              />
-              <input
-                type="file"
-                accept="image/*"
-                style={{ display: "none" }}
-                ref={fileInputRef}
-                onChange={handleFileChange}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-slate-100 mb-[4vh] py-1 px-4 col-span-full">
-          <h5>English</h5>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-[4vh]">
-          <div className="flex items-center justify-start">
-            <label
-              htmlFor="title"
-              className="w-[30%] sm:w-[25%] ml-0 sm:ml-5 font-medium "
-            >
-              Title
-            </label>
-            <div className="w-[70%]">
-              <input
-                type="text"
-                className="form-control"
-                id="title"
-                value={editData.title || ""}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          <div className="flex items-center justify-start">
-            <label
-              htmlFor="description"
-              className="w-[30%] sm:w-[25%] ml-0 sm:ml-5 font-medium "
-            >
-              Description
-            </label>
-            <div className="w-[70%] flex">
-              <input
-                type="text"
-                className="form-control"
-                id="description"
-                value={editData.description || ""}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-slate-100 mb-[4vh] py-1 px-4">
-          <h5>Tamil</h5>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-[4vh]">
-          <div className="flex items-center justify-start">
-            <label
-              htmlFor="title"
-              className="w-[30%] sm:w-[25%] ml-0 sm:ml-5  font-medium "
-            >
-              Title
-            </label>
-            <div className="w-[70%]">
-              <input
-                type="text"
-                className="form-control"
-                id="title"
-                value={editData.title || ""}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          <div className="flex items-center justify-start">
-            <label htmlFor="description" className="w-[30%] font-medium ">
-              Description
-            </label>
-            <div className="w-[70%] flex">
-              <input
-                type="text"
-                className="form-control"
-                id="description"
-                value={editData.description || ""}
-                onChange={handleChange}
-              />
             </div>
           </div>
         </div>

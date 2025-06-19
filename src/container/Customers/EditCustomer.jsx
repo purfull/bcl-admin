@@ -4,6 +4,8 @@ import countryList from "react-select-country-list";
 import { AppEnv } from "../../../config";
 import { CleaningServices } from "@mui/icons-material";
 import { Navigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const EditCustomer = ({
   row,
@@ -98,8 +100,12 @@ const EditCustomer = ({
           if (data) {
             console.log(data, "pppppppppppppppppppppp");
             setEditData(data?.data); //prepopulate
+            toast.success("successfully fetched customer data.");
+          } else {
+            toast.error("Error fetching customer data.");
           }
         } catch (error) {
+          toast.error("Error fetching customer data.");
           console.error("Error fetching customer data:", error);
         }
       }
@@ -203,6 +209,7 @@ const EditCustomer = ({
   return (
     <div>
       <form onSubmit={handleSubmit}>
+        <ToastContainer />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex items-center justify-start">
             <label htmlFor="name" className="w-[30%] sm:w-[25%] font-medium">

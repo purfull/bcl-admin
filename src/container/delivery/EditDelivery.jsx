@@ -134,11 +134,13 @@ const EditDelivery = ({ row, onCancel, onSave }) => {
         }
       );
       console.log("Data saved successfully", response.data);
-      toast.success("delivery done successfully");
 
       if (response.data.success) {
+        toast.success("delivery created successfully");
         onSave();
-        console.log("saved");
+        //console.log("saved");
+      } else {
+        toast.error("Delivery failed to create");
       }
     } catch (error) {
       console.error("Error creating delivery:", error);
@@ -172,22 +174,25 @@ const EditDelivery = ({ row, onCancel, onSave }) => {
         }
       );
       console.log("Product updated successfully", response.data);
-      toast.success("Product updated successfully");
+
+      // After save is successful, call onSave prop
+      if (response.data.success) {
+        toast.success("Product updated successfully");
+        onSave();
+        console.log("updated");
+      } else {
+        toast.error("Product failed to update");
+      }
     } catch (error) {
       console.error("Error updating product:", error);
       toast.error("Failed to update product");
-    }
-    // After save is successful, call onSave prop
-    if (response.data.success) {
-      onSave();
-      console.log("updated");
     }
   };
 
   return (
     <div>
+      <ToastContainer />
       <form onSubmit={handleSubmit}>
-        <ToastContainer />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-[4vh]">
           <div className="flex items-center justify-start">
             <label
