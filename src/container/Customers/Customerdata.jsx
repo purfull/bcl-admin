@@ -17,20 +17,25 @@ const generateColumns = (data, onEdit, onDelete, active) => {
 
   const columns = keys.map((key) => {
     // If the key is 'Logo', render an image
-    if (key === "Logo") {
-      return {
-        Header: key,
-        accessor: key,
-        Cell: ({ cell: { value } }) => (
-          <img src={value} alt="Product Logo" style={{ width: "100px" }} />
-        ),
-      };
-    }
-
+    // if (key === "Logo") {
     return {
       Header: key,
       accessor: key,
+      Cell: ({ cell: { value } }) => {
+        if (typeof value === "object" && value !== null) {
+          // Customize how you want to render the object
+          return Object.entries(value)
+            .map(([k, v]) => `${k}: ${v}`)
+            .join(", ");
+        }
+        return value;
+      },
     };
+
+    // return {
+    //   Header: key,
+    //   accessor: key,
+    // };
   });
 
   // Add the "Action" column

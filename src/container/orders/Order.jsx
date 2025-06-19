@@ -19,18 +19,15 @@ const Order = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `https://api.purfull.com/order/get-all-orders`,
-          {
-            method: "GET",
-          }
-        );
+        const response = await fetch(`${AppEnv.baseUrl}/order/get-all-orders`, {
+          method: "GET",
+        });
 
         const result = await response.json();
         console.log(result, "Fetched orders Data");
 
         if (result) {
-          setListData(result);
+          setListData(result.data);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -42,9 +39,9 @@ const Order = () => {
 
   const handleEdit = async (row) => {
     console.log("qqqqqqqqq", row, listData);
-    const data = listData.filter((el) => el.id === row.Id);
+    const data = listData.filter((el) => el.id === row.id);
     setEditingRow(data); // Set the row to be edited
-
+    setEditData(data[0]);
     // try {
     //   const response = await fetch(
     //     `${AppEnv.baseUrl}/admin/products-by-sku/${data[0].sku}`
@@ -53,7 +50,7 @@ const Order = () => {
     //   console.log(result, "Filtered Data");
 
     //   if (result) {
-    //     setEditData(result.data);
+    //setEditData(result.data);
     //   }
     // } catch (error) {
     //   console.error("Error fetching data:", error);
@@ -91,22 +88,24 @@ const Order = () => {
       setData(
         listData.map((el) => ({
           Id: el.id,
-          AWB: el.waybill,
+          asign_to: el.asign_to,
           "Customer Name": el.name,
-          "payment  method": el.transactionType,
-          "Order date": el.createdAt?.split("T")[0],
+          remarks: el.remarks,
           Status: el.status,
+          //"payment  method": el.transactionType,
+          "Order date": el.createdAt?.split("T")[0],
+          "Updated date": el.updatedAt?.split("T")[0],
         }))
       );
     }
   }, [listData]);
 
-  console.log("editingRow==>", editingRow);
+  console.log("listData ==>", listData);
   return (
     <Fragment>
       <Pageheader currentpage="Order" activepage="Home" mainpage="Order" />
 
-      {editingRow && (
+      {/* {editingRow && (
         <div
           className="flex items-center justify-start"
           style={{ marginBottom: "10px" }}
@@ -131,7 +130,7 @@ const Order = () => {
             <span className="slider round"></span>
           </label>
         </div>
-      )}
+      )} */}
 
       <div id="a1" className="grid grid-cols-12 gap-6">
         <div className="col-span-12">
@@ -145,7 +144,7 @@ const Order = () => {
                   {editingRow ? (
                     <EditTestimonial
                       data={editingRow}
-                      editData={editingData}
+                      //editData={editingData}
                       onCancel={handleCancelEdit}
                       active={isActive}
                     />

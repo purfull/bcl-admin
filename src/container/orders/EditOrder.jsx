@@ -5,161 +5,118 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
+import { map } from "leaflet";
 
-const EditTestimonial = ({ data, editData, onCancel }) => {
-  const [editingData, setEdittingData] = useState({});
-  const [logo, setLogo] = useState(noImage);
-  const [row, setRow] = useState();
-  const fileInputRef = useRef(null);
-  const req = data.newOrder ? true : false;
+const EditTestimonial = ({ data = [], onCancel }) => {
+  const { id } = useParams();
 
-  const handleChange = (event) => {
-    const { id, value } = event.target;
-    setEdittingData((prevData) => ({
-      ...prevData,
-      [id]: value,
-    }));
-  };
+  const [formData, setFormData] = useState({
+    customer_detials: {
+      address: {
+        city: "",
+        country: "",
+        postal_code: "",
+        line1: "",
+        line2: "",
+        state: "",
+      },
+      email: "",
+      name: "",
+      phone: "",
+    },
 
-  useEffect(() => {
-    const fetchData = async () => {
-      console.log("rowww ", editData);
-      setRow(data[0]);
-      setEdittingData(editData);
-      // try {
-      //   const response = await fetch(`${AppEnv.baseUrl}/admin/products-by-sku/${data[0].sku}`);
-      //   const result = await response.json();
-      //   console.log(result, "Filtered Data");
-
-      //   if (result) {
-
-      //     // console.log(result , "kkkkkkkkkkkkkkkkkkkkkk")
-      //     //   const filteredData = result.map(item => ({
-      //     //       Product_name: item.product_name,
-      //     //       Logo: item.marketing_defaultImage_content,
-      //     //       Type: item.type,
-      //     //       Price: item.amount,
-      //     //       CreatedAt: formatDate(item.createdAt),
-      //     //     }));
-      //     //   setData(filteredData);
-      //     // setListData(result.data);
-      //     setEditData(result.data);
-
-      //   }
-      // } catch (error) {
-      //   console.error('Error fetching data:', error);
-      // }
-    };
-
-    fetchData();
-  }, []);
-
-  const componentRef = useRef(null);
-  const handlePrint = useReactToPrint({
-    contentRef: componentRef,
+    order_detials: {
+      description: "",
+      quantity: "",
+      object: "",
+      amount_total: "",
+    },
+    asign_to: "",
+    remarks: "",
+    status: "",
   });
 
-  const handleImageChange = (event) => {
-    const logoFile = event.target.files[0];
-    if (logoFile) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result;
-        setLogo(base64String);
-        setEdittingData((prevData) => ({
-          ...prevData,
-          image: base64String,
-        }));
-      };
-      reader.readAsDataURL(logoFile);
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+
+    setFormData((prevData) => {
+      // Custom logic for nested fields
+      if (id.includes(".")) {
+        const keys = id.split(".");
+        const updatedData = { ...prevData };
+        let temp = updatedData;
+        for (let i = 0; i < keys.length - 1; i++) {
+          temp[keys[i]] = { ...temp[keys[i]] };
+          temp = temp[keys[i]];
+        }
+        temp[keys[keys.length - 1]] = value;
+        return updatedData;
+      }
+
+      return { ...prevData, [id]: value };
+    });
+  };
+
+  const mapToFormData = (source) => ({
+    customer_detials: {
+      address: {
+        city: source?.customer_detials?.address?.city || "",
+        country: source?.customer_detials?.address?.country || "",
+        postal_code: source?.customer_detials?.address?.postal_code || "",
+        line1: source?.customer_detials?.address?.line1 || "",
+        line2: source?.customer_detials?.address?.line2 || "",
+        state: source?.customer_detials?.address?.state || "",
+      },
+      email: source?.customer_detials?.email || "",
+      name: source?.customer_detials?.name || "",
+      phone: source?.customer_detials?.phone || "",
+    },
+    order_detials: {
+      description: source?.order_detials?.description || "",
+      quantity: source?.order_detials?.quantity || "",
+      object: source?.order_detials?.object || "",
+      amount_total: source?.order_detials?.amount_total || "",
+    },
+    asign_to: source?.asign_to || "",
+    remarks: source?.remarks || "",
+    status: source?.status || "",
+  });
+
+  useEffect(() => {
+    if (data?.length > 0) {
+      const incoming = mapToFormData(data[0]);
+      setFormData(incoming);
     }
-  };
-
-  const handleImageClick = () => {
-    fileInputRef.current.click();
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result;
-        setLogo(base64String);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    console.log("editData:", editData);
-
-    // if (!row) return;
-
-    // const payload = {
-    //   customer_id: row?.orderId || "",
-    //   shipping_address: row?.address || "",
-    //   billing_address: row?.address || "",
-    //   items: [
-    //     {
-    //       name: row?.buyerName || "",
-    //       quantity: row?.quantity || "",
-    //       // price: "",       // Add if required by backend
-    //       // category: "",    // Add if required by backend
-    //     },
-    //   ],
-    // };
-
-    // console.log("Payload to send:", payload);
-
-    // try {
-    //   const response = await fetch(`${AppEnv.baseUrl}/order/create-order`, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(payload),
-    //   });
-
-    //   const result = await response.json();
-    //   console.log("Response from order create:", result);
-
-    //   if (result?.data) {
-    //     setListData(result.data);
-    //   }
-    // } catch (error) {
-    //   console.error("Error creating order:", error);
-    // }
-  };
+  }, [data]);
 
   // get by id
-  const { id } = useParams();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `https://api.purfull.com/order/get-order/${id}`,
-          {
-            method: "GET",
-          }
-        );
-
-        const result = await response.json();
-        console.log(result, "Fetched orders Data using Id");
-
-        if (result) {
-          setListData(result.data);
+        const res = await fetch(`${AppEnv.baseUrl}/order/get-order/${id}`);
+        const result = await res.json();
+        if (result?.data) {
+          console.log("Raw API result.data:", result.data); // before mapping
+          const transformedData = mapToFormData(result.data);
+          console.log(" Transformed formData:", transformedData); // after mapping
+          setFormData(transformedData);
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching order by ID:", error);
+        toast.error("Failed to fetch order details.");
       }
     };
 
-    if (id) {
-      fetchData(); // only fetch when ID exists
+    if ((!data || data.length === 0) && id) {
+      fetchData();
     }
-  }, [id]);
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Submitted Data:", formData);
+  };
 
   return (
     <div className="pb-[10vh]">
@@ -168,78 +125,48 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex items-center justify-start">
             <label htmlFor="name" className="w-[25%] sm:w-[20%] font-medium">
-              Customer
+              Name
             </label>
             <div className="w-[80%]">
               <input
                 type="text"
                 className="form-control"
-                id="name"
-                disabled={row ? true : false}
+                id="customer_detials.name"
+                //disabled={row ? true : false}
                 required
-                value={row?.buyerName || ""}
+                value={formData.customer_detials.name || ""}
                 onChange={handleChange}
               />
             </div>
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="message" className="w-[25%] sm:w-[20%] font-medium">
-              Order Id
+            <label htmlFor="email" className="w-[25%] sm:w-[20%] font-medium">
+              Email
             </label>
             <div className="w-[80%]">
               <input
                 className="form-control"
-                id="message"
+                id="customer_detials.email"
                 rows="4"
                 required
-                disabled={row ? true : false}
-                value={row?.orderId || ""}
+                //disabled={row ? true : false}
+                value={formData.customer_detials.email || ""}
                 onChange={handleChange}
               ></input>
             </div>
           </div>
 
-          {/* <div className="flex items-center justify-start">
-            <label htmlFor="designation" className="w-[20%] font-medium">Order Type</label>
-            <div className="w-[80%]">
-              <select
-                className="form-control"
-                id="CountryId"
-              // defaultValue={editData.CountryId || ''}
-              // onChange={handleCountryChange}
-              >
-                <option value="" >Online</option>
-                <option value="" >Cash On Delivery</option>
-
-              </select>
-            </div>
-          </div> */}
-
-          {/* <div className="flex items-center justify-start">
-            <label htmlFor="designation" className="w-[20%] font-medium">Payment Id</label>
-            <div className="w-[80%]">
-              <input
-                type="text"
-                className="form-control"
-                id="designation"
-                required
-                value={editData?.designation || ''}
-                onChange={handleChange}
-              />
-            </div>
-          </div> */}
-
           <div className="flex items-center justify-start">
-            <label htmlFor="address" className="w-[25%] sm:w-[20%] font-medium">
-              Address
+            <label htmlFor="line1" className="w-[25%] sm:w-[20%] font-medium">
+              Line1
             </label>
             <div className="w-[80%]">
               <input
-                disabled={row ? true : false}
+                //disabled={row ? true : false}
                 className="form-control"
-                id="address"
-                value={row?.address || ""}
+                id="customer_detials.address.line1"
+                value={formData.customer_detials.address.line1 || ""}
                 // defaultValue={editData.CountryId || ''}
                 // onChange={handleCountryChange}
                 onChange={handleChange}
@@ -248,18 +175,15 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label
-              htmlFor="address_type"
-              className="w-[25%] sm:w-[20%] font-medium"
-            >
-              Address Type
+            <label htmlFor="line2" className="w-[25%] sm:w-[20%] font-medium">
+              Line2
             </label>
             <div className="w-[80%]">
               <input
                 className="form-control"
-                disabled={row ? true : false}
-                value={row?.address_type || ""}
-                id="address_type"
+                //disabled={row ? true : false}
+                value={formData.customer_detials.address.line2 || ""}
+                id="customer_detials.address.line2"
                 // defaultValue={editData.CountryId || ''}
                 // onChange={handleCountryChange}
                 onChange={handleChange}
@@ -273,10 +197,10 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
             </label>
             <div className="w-[80%]">
               <input
-                disabled={row ? true : false}
-                value={row?.phone || ""}
+                //disabled={row ? true : false}
+                value={formData.customer_detials.phone || ""}
                 className="form-control"
-                id="phone"
+                id="customer_detials.phone"
                 // defaultValue={editData.CountryId || ''}
                 // onChange={handleCountryChange}
                 onChange={handleChange}
@@ -293,10 +217,10 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
             </label>
             <div className="w-[80%]">
               <input
-                disabled={row ? true : false}
-                value={row?.pin || ""}
+                //disabled={row ? true : false}
+                value={formData.customer_detials.address.postal_code || ""}
                 className="form-control"
-                id="postal_code"
+                id="customer_detials.address.postal_code"
                 // defaultValue={editData.CountryId || ''}
                 // onChange={handleCountryChange}
                 onChange={handleChange}
@@ -309,79 +233,15 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
               Country
             </label>
             <div className="w-[80%]">
-              <select
-                disabled={row ? true : false}
-                value={row?.country || ""}
-                className="form-control"
-                id="country"
-                // defaultValue={editData.CountryId || ''}
-                // onChange={handleCountryChange}
-                onChange={handleChange}
-              >
-                <option>India</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-start">
-            <label
-              htmlFor="shipping_mode"
-              className="w-[25%] sm:w-[20%] font-medium"
-            >
-              Shipping mode
-            </label>
-            <div className="w-[80%]">
-              <select
-                disabled={row ? true : false}
-                value={row?.shipping_mode || ""}
-                className="form-control"
-                id="shipping_mode"
-                // defaultValue={editData.CountryId || ''}
-                // onChange={handleCountryChange}
-                onChange={handleChange}
-              >
-                <option>Surface</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-start">
-            <label
-              htmlFor="invoice_number"
-              className="w-[25%] sm:w-[20%] font-medium"
-            >
-              invoice Number
-            </label>
-            <div className="w-[80%]">
               <input
-                disabled={row ? true : false}
-                value={row?.invoiceNumber || ""}
+                //disabled={row ? true : false}
+                value={formData.customer_detials.address.country || ""}
                 className="form-control"
-                id="invoice_number"
+                id="customer_detials.address.country"
                 // defaultValue={editData.CountryId || ''}
                 // onChange={handleCountryChange}
                 onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center justify-start">
-            <label
-              htmlFor="transactionType"
-              className="w-[25%] sm:w-[20%] font-medium"
-            >
-              Transaction type
-            </label>
-            <div className="w-[80%]">
-              <input
-                disabled={row ? true : false}
-                value={row?.transactionType || ""}
-                className="form-control"
-                id="transaction_type"
-                // defaultValue={editData.CountryId || ''}
-                // onChange={handleCountryChange}
-                onChange={handleChange}
-              />
+              ></input>
             </div>
           </div>
 
@@ -391,10 +251,10 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
             </label>
             <div className="w-[80%]">
               <input
-                disabled={row ? true : false}
-                value={row?.city || ""}
+                //disabled={row ? true : false}
+                value={formData.customer_detials.address.city || ""}
                 className="form-control"
-                id="City"
+                id="customer_detials.address.city"
                 // defaultValue={editData.CountryId || ''}
                 // onChange={handleCountryChange}
                 onChange={handleChange}
@@ -408,10 +268,10 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
             </label>
             <div className="w-[80%]">
               <input
-                disabled={row ? true : false}
-                value={row?.state || ""}
+                //disabled={row ? true : false}
+                value={formData.customer_detials.address.state || ""}
                 className="form-control"
-                id="state"
+                id="customer_detials.address.state"
                 // defaultValue={editData.CountryId || ''}
                 // onChange={handleCountryChange}
                 onChange={handleChange}
@@ -420,36 +280,15 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label htmlFor="sku" className="w-[25%] sm:w-[20%] font-medium">
-              Sku
+            <label htmlFor="object" className="w-[25%] sm:w-[20%] font-medium">
+              Object
             </label>
             <div className="w-[80%]">
               <input
-                disabled={row ? true : false}
-                value={row?.sku || ""}
+                //disabled={row ? true : false}
+                value={formData.order_detials.object || ""}
                 className="form-control"
-                id="sku"
-                // defaultValue={editData.CountryId || ''}
-                // onChange={handleCountryChange}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center justify-start">
-            <label
-              htmlFor="invoice_date"
-              className="w-[25%] sm:w-[20%] font-medium"
-            >
-              Invoice Date
-            </label>
-            <div className="w-[80%]">
-              <input
-                disabled={row ? true : false}
-                value={row?.invoiceDate || ""}
-                className="form-control"
-                id="invoice_date"
-                type="date"
+                id="order_detials.object"
                 // defaultValue={editData.CountryId || ''}
                 // onChange={handleCountryChange}
                 onChange={handleChange}
@@ -459,17 +298,17 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
 
           <div className="flex items-center justify-start">
             <label
-              htmlFor="invoice_amount"
+              htmlFor="description"
               className="w-[25%] sm:w-[20%] font-medium"
             >
-              Invoice Amount
+              Description
             </label>
             <div className="w-[80%]">
               <input
-                disabled={row ? true : false}
-                value={row?.invoiceAmount || ""}
+                //disabled={row ? true : false}
+                value={formData.order_detials.description || ""}
                 className="form-control"
-                id="state"
+                id="order_detials.description"
                 // defaultValue={editData.CountryId || ''}
                 // onChange={handleCountryChange}
                 onChange={handleChange}
@@ -479,211 +318,17 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
 
           <div className="flex items-center justify-start">
             <label
-              htmlFor="tax_exclusive_gross"
+              htmlFor="quantity"
               className="w-[25%] sm:w-[20%] font-medium"
             >
-              Tax Exclusive Gross
+              Quantity
             </label>
             <div className="w-[80%]">
               <input
+                //disabled={row ? true : false}
+                value={formData.order_detials.quantity || ""}
                 className="form-control"
-                id="state"
-                disabled={row ? true : false}
-                value={row?.taxExclusiveGross || ""}
-                // defaultValue={editData.CountryId || ''}
-                // onChange={handleCountryChange}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center justify-start">
-            <label
-              htmlFor="total_cost_amount"
-              className="w-[25%] sm:w-[20%] font-medium"
-            >
-              Total Tax amount
-            </label>
-            <div className="w-[80%]">
-              <input
-                className="form-control"
-                id="state"
-                disabled={row ? true : false}
-                value={row?.totalTaxAmount || ""}
-                // defaultValue={editData.CountryId || ''}
-                // onChange={handleCountryChange}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center justify-start">
-            <label htmlFor="cgs_tax" className="w-[25%] sm:w-[20%] font-medium">
-              Cgs Tax
-            </label>
-            <div className="w-[80%]">
-              <input
-                disabled={row ? true : false}
-                value={row?.cgstTax || ""}
-                className="form-control"
-                id="cgs_tax"
-                // defaultValue={editData.CountryId || ''}
-                // onChange={handleCountryChange}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center justify-start">
-            <label
-              htmlFor="sgst_tax"
-              className="w-[25%] sm:w-[20%] font-medium"
-            >
-              Sgst Tax
-            </label>
-            <div className="w-[80%]">
-              <input
-                disabled={row ? true : false}
-                value={row?.sgstTax || ""}
-                className="form-control"
-                id="sgst_tax"
-                // defaultValue={editData.CountryId || ''}
-                // onChange={handleCountryChange}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center justify-start">
-            <label
-              htmlFor="utgst_tax"
-              className="w-[25%] sm:w-[20%] font-medium"
-            >
-              utgst Tax
-            </label>
-            <div className="w-[80%]">
-              <input
-                disabled={row ? true : false}
-                value={row?.utgstTax || ""}
-                className="form-control"
-                id="utgst_tax"
-                // defaultValue={editData.CountryId || ''}
-                // onChange={handleCountryChange}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center justify-start">
-            <label
-              htmlFor="igst_tax"
-              className="w-[25%] sm:w-[20%] font-medium"
-            >
-              igst Tax
-            </label>
-            <div className="w-[80%]">
-              <input
-                disabled={row ? true : false}
-                value={row?.igstTax || ""}
-                className="form-control"
-                id="igst_tax"
-                // defaultValue={editData.CountryId || ''}
-                // onChange={handleCountryChange}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center justify-start">
-            <label
-              htmlFor="customer_bill_to_gst"
-              className="w-[25%] sm:w-[20%] font-medium"
-            >
-              Customer Bill To Gst
-            </label>
-            <div className="w-[80%]">
-              <input
-                disabled={row ? true : false}
-                value={row?.customerBillToGST || ""}
-                className="form-control"
-                id="customer_bill_to_gst"
-                // defaultValue={editData.CountryId || ''}
-                // onChange={handleCountryChange}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center justify-start">
-            <label
-              htmlFor="total_product_cost"
-              className="w-[25%] sm:w-[20%] font-medium"
-            >
-              Total Product Cost
-            </label>
-            <div className="w-[80%]">
-              <input
-                disabled={row ? true : false}
-                value={row?.total_product_cost || ""}
-                className="form-control"
-                id="total_product_cost"
-                // defaultValue={editData.CountryId || ''}
-                // onChange={handleCountryChange}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center justify-start">
-            <label
-              htmlFor="total_shipment_cost"
-              className="w-[25%] sm:w-[20%] font-medium"
-            >
-              Total Shipment Cost
-            </label>
-            <div className="w-[80%]">
-              <input
-                disabled={row ? true : false}
-                value={row?.total_shipment_cost || ""}
-                className="form-control"
-                id="total_shipment_cost"
-                // defaultValue={editData.CountryId || ''}
-                // onChange={handleCountryChange}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center justify-start">
-            <label
-              htmlFor="way_bill"
-              className="w-[25%] sm:w-[20%] font-medium"
-            >
-              Way Bill
-            </label>
-            <div className="w-[80%]">
-              <input
-                className="form-control"
-                id="way_bill"
-                disabled={row ? true : false}
-                value={row?.waybill || ""}
-                // defaultValue={editData.CountryId || ''}
-                // onChange={handleCountryChange}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center justify-start">
-            <label htmlFor="payment" className="w-[25%] sm:w-[20%] font-medium">
-              Payment
-            </label>
-            <div className="w-[80%]">
-              <input
-                disabled={row ? true : false}
-                value={row?.payment || ""}
-                className="form-control"
-                id="payment"
+                id="order_detials.quantity"
                 // defaultValue={editData.CountryId || ''}
                 // onChange={handleCountryChange}
                 onChange={handleChange}
@@ -697,8 +342,8 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
             </label>
             <div className="w-[80%]">
               <input
-                disabled={row ? true : false}
-                value={row?.remarks || ""}
+                //disabled={row ? true : false}
+                value={formData.remarks || ""}
                 className="form-control"
                 id="remarks"
                 // defaultValue={editData.CountryId || ''}
@@ -709,19 +354,37 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </div>
 
           <div className="flex items-center justify-start">
-            <label
-              htmlFor="designation"
-              className="w-[25%] sm:w-[20%] font-medium"
-            >
+            <label htmlFor="status" className="w-[25%] sm:w-[20%] font-medium ">
+              Status
+            </label>
+            <div className="w-[80%]">
+              <select
+                id="status"
+                value={formData.status || ""}
+                onChange={handleChange}
+                className="form-control"
+              >
+                <option value="">Select Status</option>
+                <option value="failed">order-failed</option>
+                <option value="received">order-received</option>
+                <option value="shipped">shipped</option>
+                <option value="out-for-delivery">out-for-delivery</option>
+                <option value="delivered">delivered</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-start">
+            <label htmlFor="amount" className="w-[25%] sm:w-[20%] font-medium">
               Total Amount
             </label>
             <div className="w-[80%]">
               <input
-                disabled={row ? true : false}
-                value={row?.invoiceAmount || ""}
-                type="text"
+                //disabled={row ? true : false}
+                value={formData.order_detials.amount_total || ""}
+                type="number"
                 className="form-control"
-                id="designation"
+                id="order_detials.amount_total"
                 required
                 onChange={handleChange}
               />
@@ -745,347 +408,6 @@ const EditTestimonial = ({ data, editData, onCancel }) => {
           </button>
         </div>
       </form>
-      {editingData && (
-        <div ref={componentRef} style={{ width: "100%" }}>
-          <div
-            style={{
-              textAlign: "center",
-              width: "100%",
-              border: "1px solid #ccc",
-              padding: "0.5rem",
-            }}
-          >
-            <h1 style={{ fontSize: "1.875rem", fontWeight: "bold" }}>
-              Thailash
-            </h1>
-            <p style={{ fontSize: "1.125rem" }}>
-              THAILASH ORIGINAL THENNAMARAKUDI OIL
-            </p>
-            <p style={{ fontSize: "0.875rem", color: "#6b7280" }}>
-              3/127, Madhura Nagar, Plot No. 144, Sirangudi Puliyur, <br />{" "}
-              Nagapattinam - 611 104
-            </p>
-          </div>
-
-          <table
-            style={{
-              borderCollapse: "collapse",
-              border: "1px solid #d1d5db",
-              width: "100%",
-              textAlign: "left",
-            }}
-          >
-            <tbody>
-              <tr>
-                <td
-                  colSpan="6"
-                  style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                >
-                  Invoice Number: {row?.invoiceNumber}
-                </td>
-                <td
-                  colSpan="6"
-                  style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                >
-                  Invoice Date: {row?.invoiceDate}
-                </td>
-              </tr>
-              <tr>
-                <td
-                  colSpan="6"
-                  style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                >
-                  <span style={{ fontWeight: "bold" }}>Billing Address:</span>{" "}
-                  <br />
-                  <p style={{ fontWeight: "500" }}>
-                    {row?.address} <br /> {row?.city}, {row?.state},{" "}
-                    {row?.country}
-                  </p>
-                </td>
-
-                <td
-                  colSpan="6"
-                  style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                >
-                  <span style={{ fontWeight: "bold" }}>Place Of Supply:</span>{" "}
-                  <br />
-                  <p style={{ fontWeight: "500" }}>
-                    {row?.address} <br /> {row?.city}, {row?.state},{" "}
-                    {row?.country}
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td
-                  colSpan="12"
-                  style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                >
-                  GSTIN: {row?.customerBillToGST}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          <div style={{ width: "100%" }}>
-            <table
-              style={{
-                borderCollapse: "collapse",
-                border: "1px solid #d1d5db",
-                width: "100%",
-                textAlign: "left",
-              }}
-            >
-              <thead>
-                <tr style={{ backgroundColor: "#e5e7eb" }}>
-                  <th
-                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                  >
-                    S.No
-                  </th>
-                  <th
-                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                  >
-                    Particulars
-                  </th>
-                  <th
-                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                  >
-                    Qty
-                  </th>
-                  <th
-                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                  >
-                    Rate
-                  </th>
-                  <th
-                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                  >
-                    Discount
-                  </th>
-                  <th
-                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                  >
-                    Amount
-                  </th>
-                  <th
-                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                  >
-                    Taxable Amount
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td
-                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                  >
-                    1
-                  </td>
-                  <td
-                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                  >
-                    {editingData?.name}
-                  </td>
-                  <td
-                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                  >
-                    {row?.quantity}
-                  </td>
-                  <td
-                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                  >
-                    {/* {parseInt(row?.offer_price || 0) - parseInt(row?.totalTaxAmount || 0)} */}
-                    {parseInt(editingData?.offer_price || 0)}
-                  </td>
-                  <td
-                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                  >
-                    {row?.transactionType == "Pre-paid" ? "10%" : "-"}
-                  </td>
-                  <td
-                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                  >
-                    {/* {row?.taxExclusiveGross} */}
-                    {row?.invoiceAmount}
-                    {/* {(((parseInt(editData?.offer_price) / 112 ) * 100) * parseInt(row?.quantity)).toFixed(2)} */}
-                  </td>
-                  <td
-                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                  >
-                    {/* {row?.taxExclusiveGross} */}
-                    {row?.taxExclusiveGross}
-                    {/* {parseInt(row?.invoiceAmount) - parseInt(row?.totalTaxAmount)} */}
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    colSpan="6"
-                    style={{
-                      border: "1px solid #d1d5db",
-                      padding: "0.5rem",
-                      textAlign: "right",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    SGST :
-                  </td>
-                  <td
-                    colSpan="2"
-                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                  >
-                    {row?.sgstTax}
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    colSpan="6"
-                    style={{
-                      border: "1px solid #d1d5db",
-                      padding: "0.5rem",
-                      textAlign: "right",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    CGST :
-                  </td>
-                  <td
-                    colSpan="2"
-                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                  >
-                    {row?.cgstTax}
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    colSpan="6"
-                    style={{
-                      border: "1px solid #d1d5db",
-                      padding: "0.5rem",
-                      textAlign: "right",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    IGST:
-                  </td>
-                  <td
-                    colSpan="2"
-                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                  >
-                    {row?.igstTax}
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    colSpan="6"
-                    style={{
-                      border: "1px solid #d1d5db",
-                      padding: "0.5rem",
-                      textAlign: "right",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    UTGST:
-                  </td>
-                  <td
-                    colSpan="2"
-                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                  >
-                    {row?.utgstTax}
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    colSpan="6"
-                    style={{
-                      border: "1px solid #d1d5db",
-                      padding: "0.5rem",
-                      textAlign: "right",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Total GST Amount:
-                  </td>
-                  <td
-                    colSpan="2"
-                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                  >
-                    {row?.totalTaxAmount}
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    colSpan="6"
-                    style={{
-                      border: "1px solid #d1d5db",
-                      padding: "0.5rem",
-                      textAlign: "right",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Roundoff:
-                  </td>
-                  <td
-                    colSpan="2"
-                    style={{ border: "1px solid #d1d5db", padding: "0.5rem" }}
-                  >
-                    {Math.abs(
-                      parseFloat(row?.invoiceAmount) -
-                        ((Number(row?.totalTaxAmount) || 0) +
-                          ((parseInt(editingData?.offer_price) || 0) / 112) *
-                            100 *
-                            (Number(row?.quantity) || 0))
-                    ).toFixed(2)}
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    colSpan="3"
-                    style={{
-                      border: "1px solid #d1d5db",
-                      padding: "0.5rem",
-                      textAlign: "center",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    HSN Code: 30049011 GST: 12%
-                  </td>
-                  <td
-                    colSpan="3"
-                    style={{
-                      border: "1px solid #d1d5db",
-                      padding: "0.5rem",
-                      textAlign: "right",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Total Invoice Amount:
-                  </td>
-                  <td
-                    colSpan="3"
-                    style={{
-                      border: "1px solid #d1d5db",
-                      padding: "0.5rem",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {row?.invoiceAmount}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-
-      <div className="flex items-center justify-center mt-5">
-        <button
-          type="button"
-          onClick={handlePrint}
-          className="ti-btn bg-[#2EAF4B] text-white !px-[20px] !py-[2px] !text-[18px]"
-        >
-          Download Invoice
-        </button>
-      </div>
     </div>
   );
 };

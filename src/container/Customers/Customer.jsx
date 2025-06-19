@@ -27,7 +27,7 @@ const Customer = () => {
     const customerApi = async () => {
       try {
         const response = await fetch(`${AppEnv.baseUrl}/user/get-all-user`, {
-          method: "POST",
+          method: "GET",
         });
         const result = await response.json();
         console.log(result, "get all users ");

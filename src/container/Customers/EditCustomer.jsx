@@ -15,30 +15,21 @@ const EditCustomer = ({
   console.log(row, "ooooooooooo");
 
   const [editData, setEditData] = useState({
-    // customerOrganization: "",
-    // customerAddress: {
-    //   street: "",
-    //   city: "",
-    //   state: "",
-    //   zip: "",
-    //   country: ""
-    // },
-    // customerName: "",
-    // customerEmail: "",
-    // customerTitle: "",
-    // customerPhone: "",
-    // customerDomain: "",
-    first_name: "",
-    last_name: "",
-    address: "",
-    city: "",
-    state: "",
-    postal_code: "",
-    country: "",
-    phone: "",
+    name: "",
     email: "",
-    gst: "",
+
+    // city: "",
+    // state: "",
+    address: {
+      address: "",
+      zip_code: "",
+      country: "",
+      location: "",
+    },
+
+    status: "",
   });
+  const [locationStr, setLocationStr] = useState("");
 
   console.log(editData);
 
@@ -47,18 +38,34 @@ const EditCustomer = ({
   useEffect(() => {
     if (row) {
       console.log("Prepopulating form with row:", row);
+      console.log("row.address.location actual value:", row.address?.location);
+      const latLng =
+        typeof row.address?.location === "object"
+          ? row.address.location
+          : { lat: "", lng: "" };
+
+      console.log("latLng KKKK extracted from row.address.location:", latLng);
       setEditData({
-        name: row.first_name || "",
-        last_name: row.last_name || "",
-        address: row.address || "",
-        city: row.city || "",
-        state: row.state || "",
-        postal_code: row.postal_code || "",
-        //country: row.country || "India",
-        phone: row.phone || "",
+        name: row.name || "",
         email: row.email || "",
-        gst: row.gst || "",
+
+        address: {
+          address: row.address?.address || "",
+          zip_code: row.address?.zip_code || "",
+          country: row.address?.country || "",
+          location: latLng || "",
+        },
+        //city: row.city || "",
+        //state: row.state || "",
+
+        status: row?.status?.toLowerCase() === "active" ? "Active" : "Inactive",
       });
+      if (latLng.lat && latLng.lng) {
+        setLocationStr(`${latLng.lat} ${latLng.lng}`);
+      } else {
+        setLocationStr("");
+      }
+      console.log("latLng extracted from row.location:", latLng);
     }
   }, [row]);
   console.log(row);
@@ -70,59 +77,89 @@ const EditCustomer = ({
     }
   }, [row]);
 
-  // useEffect(() => {
-  //   const fetchCustomerData = async () => {
-  //     if (custId) {
-  //       try {
-  //         const response = await fetch(
-  //           // `${AppEnv.baseUrl}/user/get-user/${row.Id}`,
-  //           `https://api.purfull.com/user/get-user/${custId}`,
-  //           {
-  //             method: "GET",
-  //           }
-  //         );
+  useEffect(() => {
+    const fetchCustomerData = async () => {
+      if (custId) {
+        try {
+          const response = await fetch(
+            //`${AppEnv.baseUrl}/user/get-user/${row.Id}`,
+            `https://api.purfull.com/user/get-user/${custId}`,
+            {
+              method: "GET",
+            }
+          );
 
-  //         if (!response.ok) {
-  //           throw new Error("Network response was not ok");
-  //         }
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
 
-  //         const data = await response.json();
+          const data = await response.json();
 
-  //         if (data) {
-  //           console.log(data, "pppppppppppppppppppppp");
-  //           setEditData(data?.data); //prepopulate
-  //         }
-  //       } catch (error) {
-  //         console.error("Error fetching customer data:", error);
-  //       }
-  //     }
-  //   };
+          if (data) {
+            console.log(data, "pppppppppppppppppppppp");
+            setEditData(data?.data); //prepopulate
+          }
+        } catch (error) {
+          console.error("Error fetching customer data:", error);
+        }
+      }
+    };
 
-  //   fetchCustomerData();
-  // }, [custId]);
+    fetchCustomerData();
+  }, [custId]);
 
   const [] = useState(countryList().getData());
 
   const [countryOptions] = useState("India");
 
-  const handleChange = (event) => {
-    const { id, value } = event.target;
+  // const handleChange = (event) => {
+  //   const { id, value } = event.target;
 
-    console.log(id, value);
+  //   console.log(id, value);
 
-    // Check if id is for customerAddress
-    if (id.startsWith("customerAddress.")) {
-      const addressField = id.split(".")[1]; // Get the specific address field
-      setEditData((prevData) => ({
-        ...prevData,
-        customerAddress: {
-          ...prevData.customerAddress,
-          [addressField]: value,
+  //   // Check if id is for customerAddress
+  //   if (id.startsWith("customerAddress.")) {
+  //     const addressField = id.split(".")[1]; // Get the specific address field
+  //     setEditData((prevData) => ({
+  //       ...prevData,
+  //       customerAddress: {
+  //         ...prevData.customerAddress,
+  //         [addressField]: value,
+  //       },
+  //     }));
+  //   } else {
+  //     setEditData((prevData) => ({
+  //       ...prevData,
+  //       [id]: value,
+  //     }));
+  //   }
+  // };
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+
+    if (id === "lat" || id === "lng") {
+      setEditData((prev) => ({
+        ...prev,
+        address: {
+          ...prev.address,
+          location: {
+            ...prev.address.location,
+            [id]: value,
+          },
+        },
+      }));
+    } else if (["address", "zip_code", "country"].includes(id)) {
+      setEditData((prev) => ({
+        ...prev,
+        address: {
+          ...prev.address,
+          [id]: value,
         },
       }));
     } else {
-      setEditData((prevData) => ({
-        ...prevData,
+      setEditData((prev) => ({
+        ...prev,
         [id]: value,
       }));
     }
@@ -144,65 +181,45 @@ const EditCustomer = ({
       ...editData,
       languageCode: "EN",
     };
-
-    fetch(`${AppEnv.baseUrl}/customer/create-customer`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(dataToSend),
-    })
-      .then((response) => response.json())
-      .then((data) => setCreateMessage(data.message))
-      .catch((error) => console.error("Error:", error));
   };
+  //   fetch(`${AppEnv.baseUrl}/customer/create-customer`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(dataToSend),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => setCreateMessage(data.message))
+  //     .catch((error) => console.error("Error:", error));
+  // };
 
-  useEffect(() => {
-    if (createMessage) {
-      console.log(createMessage);
-      alert(createMessage);
-    }
-  }, [createMessage]);
+  // useEffect(() => {
+  //   if (createMessage) {
+  //     console.log(createMessage);
+  //     alert(createMessage);
+  //   }
+  // }, [createMessage]);
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex items-center justify-start">
-            <label
-              htmlFor="first_name"
-              className="w-[30%] sm:w-[25%] font-medium"
-            >
-              First Name
+            <label htmlFor="name" className="w-[30%] sm:w-[25%] font-medium">
+              Name
             </label>
             <div className="w-[70%]">
               <input
                 type="text"
                 className="form-control"
-                id="first_name"
-                value={editData.first_name}
+                id="name"
+                value={editData.name}
                 onChange={handleChange}
                 disabled={row?.newCustomer != true ? true : false}
               />
             </div>
           </div>
-          <div className="flex items-center justify-start">
-            <label
-              htmlFor="last_name"
-              className="w-[30%] sm:w-[25%] font-medium"
-            >
-              Last Name
-            </label>
-            <div className="w-[70%]">
-              <input
-                type="text"
-                className="form-control"
-                id="last_name"
-                value={editData.last_name}
-                onChange={handleChange}
-                disabled={row?.newCustomer != true ? true : false}
-              />
-            </div>
-          </div>
+
           <div className="flex items-center justify-start">
             <label htmlFor="address" className="w-[30%] sm:w-[25%] font-medium">
               Address Line/Street
@@ -212,55 +229,26 @@ const EditCustomer = ({
                 type="text"
                 className="form-control"
                 id="address"
-                value={editData.address}
+                value={editData.address.address}
                 onChange={handleChange}
                 disabled={row?.newCustomer != true ? true : false}
               />
             </div>
           </div>
-          <div className="flex items-center justify-start">
-            <label htmlFor="city" className="w-[30%] sm:w-[25%] font-medium">
-              City
-            </label>
-            <div className="w-[70%]">
-              <input
-                type="text"
-                className="form-control"
-                id="city"
-                value={editData.city}
-                onChange={handleChange}
-                disabled={row?.newCustomer != true ? true : false}
-              />
-            </div>
-          </div>
-          <div className="flex items-center justify-start">
-            <label htmlFor="state" className="w-[30%] sm:w-[25%] font-medium">
-              State
-            </label>
-            <div className="w-[70%]">
-              <input
-                type="text"
-                className="form-control"
-                id="state"
-                value={editData.state}
-                onChange={handleChange}
-                disabled={row?.newCustomer != true ? true : false}
-              />
-            </div>
-          </div>
+
           <div className="flex items-center justify-start">
             <label
-              htmlFor="postal_code"
+              htmlFor="zip_code"
               className="w-[30%] sm:w-[25%] font-medium"
             >
-              Postal Code
+              Zip Code
             </label>
             <div className="w-[70%]">
               <input
-                type="text"
+                type="number"
                 className="form-control"
-                id="postal_code"
-                value={editData.postal_code}
+                id="zip_code"
+                value={editData.address.zip_code}
                 onChange={handleChange}
                 disabled={row?.newCustomer != true ? true : false}
               />
@@ -271,36 +259,11 @@ const EditCustomer = ({
               Country
             </label>
             <div className="w-[70%]">
-              {/* <Select
-                id="country"
-                // value={countryOptions.find(option => option.value === editData.country)}
-                value={"India"}
-                onChange={handleCountryChange}
-                options={countryOptions}
-                isClearable
-                disabled={row?.newCustomer != true ? true : false}
-              /> */}
-              <select
-                disabled={row?.newCustomer != true ? true : false}
-                className="form-control"
-                id="country"
-                // value={editData.CountryId || ''}
-                onChange={handleChange}
-              >
-                <option value={"India"}>{"India"}</option>
-              </select>
-            </div>
-          </div>
-          <div className="flex items-center justify-start">
-            <label htmlFor="phone" className="w-[30%] sm:w-[25%] font-medium">
-              Phone
-            </label>
-            <div className="w-[70%]">
               <input
                 type="text"
                 className="form-control"
-                id="phone"
-                value={editData.phone}
+                id="country"
+                value={editData.address.country}
                 onChange={handleChange}
                 disabled={row?.newCustomer != true ? true : false}
               />
@@ -321,59 +284,77 @@ const EditCustomer = ({
               />
             </div>
           </div>
-          {/* <div className="flex items-center justify-start">
-            <label htmlFor="customerTitle" className="w-[30%] font-medium">Age</label>
+          <div className="flex items-center justify-start">
+            <label
+              htmlFor="status"
+              className="w-[30%] sm:w-[25%] ml-0  font-medium "
+            >
+              Status
+            </label>
             <div className="w-[70%]">
-              <input type="text" className="form-control" id="customerTitle" value={editData.customerTitle} onChange={handleChange} />
+              <select
+                id="status"
+                value={editData.status || ""}
+                onChange={handleChange}
+                className="form-control"
+              >
+                <option value="">Select Status</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
             </div>
           </div>
-          <div className="flex items-center justify-start">
-            <label htmlFor="customerDomain" className="w-[30%] font-medium">Gender</label>
-            <div className="w-[70%]">
-              <input type="text" className="form-control" id="customerDomain" value={editData.customerDomain} onChange={handleChange} />
-            </div>
-          </div> */}
-          <div className="flex items-center justify-start">
-            <label htmlFor="gst" className="w-[30%] sm:w-[25%] font-medium">
-              GST
+
+          <div className="flex items-center justify-start w-full sm:col-span-1">
+            <label
+              htmlFor="location"
+              className="w-[30%] sm:w-[25%] font-medium"
+            >
+              Location
             </label>
             <div className="w-[70%]">
               <input
-                type="text"
+                //type="text"
+                id="location"
                 className="form-control"
-                id="gst"
-                value={editData.gst}
-                onChange={handleChange}
-                disabled={row?.newCustomer != true ? true : false}
+                value={locationStr}
+                onChange={(e) => {
+                  const [lat, lng] = value.trim().split(" ");
+                  setLocationStr(e.target.value);
+                  setEditData((prev) => ({
+                    ...prev,
+                    address: {
+                      ...prev.address,
+                      location: {
+                        lat: lat || "",
+                        lng: lng || "",
+                      },
+                    },
+                  }));
+                }}
+                disabled={!row?.newCustomer}
+                //placeholder="Enter as: latitude longitude"
               />
             </div>
           </div>
-        </div>
-        {/* <div className="w-1/2 flex justify-between my-[4vh]">
-          <div className="flex items-center justify-start">
-            <label htmlFor="IsActive" className="font-medium mr-[1vw]">Is Active</label>
-            <label className="switch">
-              <input type="checkbox" id="IsActive" checked={editData.IsActive} onChange={(e) => setEditData(prevData => ({ ...prevData, IsActive: e.target.checked }))} />
-              <span className="slider round"></span>
-            </label>
-          </div>
-        </div> */}
-        <div className="fixed bottom-0 right-0 bg-white w-full py-4 px-6 flex justify-end mt-8">
-          <button
-            type="button"
-            onClick={onCancel}
-            className="ti-btn !border !border-[#2EAF4B] text-[#2EAF4B] !px-[20px] !py-[2px] !mr-[2vw] !text-[18px]"
-          >
-            Cancel
-          </button>
-          {row?.newCustomer && (
+
+          <div className="fixed bottom-0 right-0 bg-white w-full py-4 px-6 flex justify-end mt-8">
             <button
-              type="submit"
-              className="ti-btn bg-[#2EAF4B] text-white !px-[20px] !py-[2px] !text-[18px]"
+              type="button"
+              onClick={onCancel}
+              className="ti-btn !border !border-[#2EAF4B] text-[#2EAF4B] !px-[20px] !py-[2px] !mr-[2vw] !text-[18px]"
             >
-              Save
+              Cancel
             </button>
-          )}
+            {row?.newCustomer && (
+              <button
+                type="submit"
+                className="ti-btn bg-[#2EAF4B] text-white !px-[20px] !py-[2px] !text-[18px]"
+              >
+                Save
+              </button>
+            )}
+          </div>
         </div>
       </form>
     </div>

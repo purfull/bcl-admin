@@ -32,7 +32,10 @@ const EditDelivery = ({ row, onCancel, onSave }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        setEditData(data.data);
+        const normalizedStatus =
+          data.data.status?.toLowerCase() === "active" ? "Active" : "Inactive";
+
+        setEditData({ ...data.data, status: normalizedStatus });
         //setLogo(data.data.image);
       })
       .catch((err) => {
@@ -113,7 +116,8 @@ const EditDelivery = ({ row, onCancel, onSave }) => {
       country: editData.country || "",
       state: editData.state || "",
       delivery_areas: editData.delivery_areas || "",
-      status: editData.status || "",
+      status:
+        editData.status?.toLowerCase() === "active" ? "Active" : "Inactive",
     };
 
     console.log("API base URL:", AppEnv.baseUrl);
@@ -152,7 +156,8 @@ const EditDelivery = ({ row, onCancel, onSave }) => {
       country: editData.country || "",
       state: editData.state || "",
       delivery_areas: editData.delivery_areas || "",
-      status: editData.status || " ",
+      status:
+        editData.status?.toLowerCase() === "active" ? "Active" : "Inactive",
     };
     console.log("updatedProduct", updateProduct);
 
