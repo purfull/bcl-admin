@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Buffer } from "buffer";
 import { AppEnv } from "../../../config";
 // import "./org.css";
@@ -7,10 +7,14 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { json } from "react-router-dom";
 import axios from "axios";
+import { useDropzone } from "react-dropzone";
 
 const EditProducts = ({ row, onCancel, onSave }) => {
   const [editData, setEditData] = useState({});
   const [logo, setLogo] = useState(noImage);
+  const [galleryImages, setGalleryImages] = useState([]); // base64 preview
+  const galleryFileInputRef = useRef(null);
+const [selectedImageFile, setSelectedImageFile] = useState(null);
   //console.log(onSave);
 
   const fileInputRef = useRef(null);
@@ -67,26 +71,81 @@ const EditProducts = ({ row, onCancel, onSave }) => {
   //   setQrCode(`data:image/png;base64,${data.organisation[0].QR}`);
   // }
 
+  // const handleChange = (event) => {
+  //   const { id, value } = event.target;
+
+  //   if (id.includes(".")) {
+  //     const [parent, child] = id.split(".");
+
+  //     setEditData((prevData) => ({
+  //       ...prevData,
+  //       [parent]: {
+  //         ...(prevData[parent] || {}),
+  //         [child]: value,
+  //       },
+  //     }));
+  //   } else {
+  //     setEditData((prevData) => ({
+  //       ...prevData,
+  //       [id]: value,
+  //     }));
+  //   }
+  // };
+
   const handleChange = (event) => {
     const { id, value } = event.target;
+    const keys = id.split(".");
 
-    if (id.includes(".")) {
-      const [parent, child] = id.split(".");
+    setEditData((prevData) => {
+      const updatedData = { ...prevData };
+      let current = updatedData;
 
-      setEditData((prevData) => ({
-        ...prevData,
-        [parent]: {
-          ...(prevData[parent] || {}),
-          [child]: value,
-        },
-      }));
-    } else {
-      setEditData((prevData) => ({
-        ...prevData,
-        [id]: value,
-      }));
-    }
+      for (let i = 0; i < keys.length - 1; i++) {
+        const key = keys[i];
+        current[key] = current[key] || {};
+        current = current[key];
+      }
+
+      current[keys[keys.length - 1]] = value;
+      return updatedData;
+    });
   };
+
+  const handleGalleryChange = (e) => {
+    const files = Array.from(e.target.files);
+    const imagePreviews = [];
+
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        imagePreviews.push(reader.result);
+        if (imagePreviews.length === files.length) {
+          setGalleryImages(imagePreviews);
+          setEditData((prevData) => ({
+            ...prevData,
+            gallery_images: imagePreviews, // you can send this to API
+          }));
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+  const onDrop = useCallback((acceptedFiles) => {
+    const filesWithPreview = acceptedFiles.map((file) =>
+      Object.assign(file, {
+        preview: URL.createObjectURL(file),
+      })
+    );
+    setGalleryImages((prev) => [...prev, ...filesWithPreview]);
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      "image/*": [],
+    },
+    multiple: true,
+  });
 
   const handleCountryChange = (event) => {
     setEditData((prevData) => ({
@@ -98,17 +157,25 @@ const EditProducts = ({ row, onCancel, onSave }) => {
     fileInputRef.current.click();
   };
 
+  // const handleFileChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       const base64String = reader.result;
+  //       setLogo(base64String);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
+
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result;
-        setLogo(base64String);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  const file = e.target.files[0];
+  if (file) {
+    setSelectedImageFile(file);
+    setLogo(URL.createObjectURL(file)); // preview
+  }
+};
 
   // const handleAddress = (event) => {
   //   event.preventDefault();
@@ -130,48 +197,107 @@ const EditProducts = ({ row, onCancel, onSave }) => {
   };
 
   //payload for product creation
-  const handleSave = async () => {
-    const createdProduct = {
-      //name: editData.name || "",
-      name: {
-        en: editData.name?.name_en || "",
-        tn: editData.name?.name_tn || "",
-      },
-      description: {
-        en: editData.description?.desc_en || "",
-        tn: editData.description?.desc_tn || "",
-      },
-      thumbnail_image: editData.thumbnail_image || "",
-      product_image: editData.product_image || "",
-      price: editData.price || "",
-      offer_price: editData.offer_price || "",
-      category: editData.category || "",
-      quantity_available: editData.quantity_available || "",
-      status:
-        editData.status?.toLowerCase() === "active" ? "Active" : "Inactive",
-    };
+  // const handleSave = async () => {
+  //   const createdProduct = {
+  //     //name: editData.name || "",
+  //     name: {
+  //       en: editData.name?.name_en || "",
+  //       tn: editData.name?.name_tn || "",
+  //     },
+  //     description: {
+  //       en: editData.description?.desc_en || "",
+  //       tn: editData.description?.desc_tn || "",
+  //     },
+  //     thumbnail_image: editData.thumbnail_image || "",
+  //     product_image: editData.product_image || "",
+  //     price: editData.price || "",
+  //     offer_price: editData.offer_price || "",
+  //     category: editData.category || "",
+  //     quantity_available: editData.quantity_available || "",
+  //     status:
+  //       editData.status?.toLowerCase() === "active" ? "Active" : "Inactive",
+  //   };
 
-    console.log("API base URL:", AppEnv.baseUrl);
-    console.log("Payload:", createdProduct);
+  //   console.log("API base URL:", AppEnv.baseUrl);
+  //   console.log("Payload:", createdProduct);
+
+  //   try {
+  //     const response = await axios.post(
+  //       `${AppEnv.baseUrl}/product/create-product`,
+  //       createdProduct,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+  //     console.log("Data saved successfully", response.data);
+  //     toast.success("Product created successfully");
+
+  //     if (response.data.success) {
+  //       onSave();
+  //       console.log("saved");
+  //     }
+  //     toast.success("Product created successfully");
+  //   } catch (error) {
+  //     console.error("Error creating product:", error);
+  //     toast.error("Failed to create product");
+  //   }
+  // };
+
+  const handleSave = async () => {
+    const formData = new FormData();
+    console.log(editData);
+    formData.append(
+      "name",
+      JSON.stringify({
+        en: editData.name?.en || "",
+        tn: editData.name?.tn || "",
+      })
+    );
+
+    formData.append(
+      "description",
+      JSON.stringify({
+        en: editData.description?.en || "",
+        tn: editData.description?.tn || "",
+      })
+    );
+    // formData.append("thumbnail_image", editData.thumbnail_image || "");
+    formData.append("price", editData.price || "");
+    formData.append("offer_price", editData.offer_price || "");
+    formData.append("category", editData.category || "");
+    formData.append("quantity_available", editData.quantity_available || "");
+    formData.append(
+      "status",
+      editData.status?.toLowerCase() === "active" ? "Active" : "Inactive"
+    );
+    galleryImages.forEach((file, i) => {
+  formData.append(`galleryImage`, file);
+});
+
+    // 👇 Append the product image file
+    if (selectedImageFile) {
+      formData.append("thumbnailImage", selectedImageFile);
+    }
 
     try {
       const response = await axios.post(
         `${AppEnv.baseUrl}/product/create-product`,
-        createdProduct,
+        formData,
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data", // Important!
           },
         }
       );
+
       console.log("Data saved successfully", response.data);
       toast.success("Product created successfully");
 
       if (response.data.success) {
         onSave();
-        console.log("saved");
       }
-      toast.success("Product created successfully");
     } catch (error) {
       console.error("Error creating product:", error);
       toast.error("Failed to create product");
@@ -248,7 +374,7 @@ const EditProducts = ({ row, onCancel, onSave }) => {
               <input
                 type="text"
                 className="form-control"
-                id="name?.en"
+                id="name.en"
                 value={editData.name?.en || ""}
                 onChange={handleChange}
               />
@@ -265,8 +391,8 @@ const EditProducts = ({ row, onCancel, onSave }) => {
               <input
                 type="text"
                 className="form-control"
-                id="description?.desc_en"
-                value={editData.description?.desc_en || ""}
+                id="description.en"
+                value={editData.description?.en || ""}
                 onChange={handleChange}
               />
             </div>
@@ -288,8 +414,8 @@ const EditProducts = ({ row, onCancel, onSave }) => {
               <input
                 type="text"
                 className="form-control"
-                id="name?.name_tn"
-                value={editData.name?.name_tn || ""}
+                id="name.tn"
+                value={editData.name?.tn || ""}
                 onChange={handleChange}
               />
             </div>
@@ -302,8 +428,8 @@ const EditProducts = ({ row, onCancel, onSave }) => {
               <input
                 type="text"
                 className="form-control"
-                id="description?.desc_tn"
-                value={editData.description?.desc_tn || ""}
+                id="description.tn"
+                value={editData.description?.tn || ""}
                 onChange={handleChange}
               />
             </div>
@@ -335,6 +461,44 @@ const EditProducts = ({ row, onCancel, onSave }) => {
             />
           </div>
         </div>
+        <div className="flex items-start justify-start mt-6">
+          <label className="w-[30%] sm:w-[25%] ml-0 sm:ml-5 font-medium mt-2">
+            Gallery Images
+          </label>
+
+          <div className="w-[70%]">
+            <div
+              {...getRootProps()}
+              className={`border-2 border-dashed p-4 rounded-md cursor-pointer ${
+                isDragActive ? "bg-gray-200" : "bg-white"
+              }`}
+            >
+              <input {...getInputProps()} />
+              <p className="text-gray-500 text-sm">
+                {isDragActive
+                  ? "Drop the images here ..."
+                  : "Drag & drop images here, or click to select files"}
+              </p>
+            </div>
+
+            {/* Previews */}
+            <div className="flex flex-wrap gap-4 mt-4">
+              {galleryImages.map((file, index) => (
+                <div
+                  key={index}
+                  className="w-[80px] h-[80px] border rounded overflow-hidden"
+                >
+                  <img
+                    src={file.preview}
+                    alt={`gallery-${index}`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-[4vh]">
           {/* <div className="flex items-center justify-start">
             <label
